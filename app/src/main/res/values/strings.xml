@@ -10,4 +10,5 @@
     <string name="username">Username</string>
     <string name="password">Password:</string>
     <string name="login">Login</string>
+    <string name="rlogin">RLogin</string>
 </resources>
