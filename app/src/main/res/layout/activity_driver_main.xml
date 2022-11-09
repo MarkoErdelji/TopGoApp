@@ -29,19 +29,23 @@
         <RelativeLayout
             android:id="@+id/mainContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/backgroundC"/>
 
         <!-- The navigation drawer -->
+
         <RelativeLayout
+
             android:layout_width="280dp"
             android:layout_height="match_parent"
             android:id="@+id/drawerPane"
-            android:layout_gravity="start">
+            android:layout_gravity="start"
+            >
 
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:background="@color/gray"
+                android:background="@color/blackShadows"
                 android:id="@+id/profileBox"
                 android:layout_height="100sp">
                 <RelativeLayout
@@ -77,7 +81,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/profileBox"
                 android:choiceMode="singleChoice"
-                android:background="#ffffffff" />
+                android:background="@color/backgroundC"/>
 
         </RelativeLayout>
 
