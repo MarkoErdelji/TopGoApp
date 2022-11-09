@@ -6,13 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".UserLoginActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+>
 
+        <TextView
+            android:id="@+id/logoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/topgo"
+            android:textSize="50sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop = "20sp"
+            android:layout_marginBottom="40sp"
+            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logoText"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/round_edges_layout"
+            android:padding="20sp"
+            android:paddingEnd="40dp"
+            android:paddingStart="40dp"
+            tools:ignore="RtlSymmetry">
+            <RelativeLayout
+                android:id="@+id/usernameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                >
+
+                <TextView
+                    android:id="@+id/usernameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/username"
+                    android:layout_marginEnd="15sp"/>
+                <EditText
+                    android:id="@+id/usernameTextBox"
+                    android:layout_width="110sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/usernameText"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/passwordLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usernameLayout"
+                android:layout_centerHorizontal="true"
+                >
+
+                <TextView
+                    android:id="@+id/passwordText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/password"
+                    android:layout_marginEnd="15sp"/>
+                <EditText
+                    android:id="@+id/paswordTextBox"
+                    android:layout_width="110sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/passwordText"
+                    android:inputType="textPassword"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passwordLayout"
+                android:layout_marginTop="20sp"
+                >
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20sp"
+                    android:text="@string/login"/>
+                <Button
+
+                    android:id="@+id/reserveLoginButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/loginButton"
+                    android:text="RLogin"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
