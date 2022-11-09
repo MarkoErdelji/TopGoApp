@@ -11,4 +11,8 @@
     <string name="password">Password:</string>
     <string name="login">Login</string>
     <string name="rlogin">RLogin</string>
+    <string name="name">Name</string>
+    <string name="text">Text</string>
+    <string name="messageText">Text</string>
+    <string name="textMsg">Text</string>
 </resources>
