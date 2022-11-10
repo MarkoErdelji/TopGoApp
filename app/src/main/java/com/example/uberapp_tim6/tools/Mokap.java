@@ -21,4 +21,18 @@ public class Mokap {
         return messages;
     }
 
+
+    public static List<Message> getPassengerMessages(){
+        ArrayList<Message> messages = new ArrayList<Message>();
+        Message u1 = new Message(1, "Cao!","Ovo je poruka za passengera", LocalDateTime.now());
+        Message u2 = new Message(2, "TestTest","Druga poruka za passengera", LocalDateTime.now());
+        Message u3 = new Message(4, "Ovo je malo duzi naslov","Ovo treba da bude najduza poruka za passengera da bi videli izgled teksta kada se ispise",LocalDateTime.now());
+
+        messages.add(u1);
+        messages.add(u2);
+        messages.add(u3);
+
+        return messages;
+    }
+
 }
