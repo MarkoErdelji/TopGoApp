@@ -23,4 +23,7 @@
     <string name="messageText">Text</string>
     <string name="not_registered_create_accout">Not registered? Create accout here.</string>
     <string name="logopicture">logoPicture</string>
+    <string name="date">Date: </string>
+    <string name="destination">Destination: </string>
+    <string name="price">Price: </string>
 </resources>
