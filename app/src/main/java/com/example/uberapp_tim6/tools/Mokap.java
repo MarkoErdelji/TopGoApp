@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.uberapp_tim6.models.Message;
+import com.example.uberapp_tim6.models.RideHistory;
 
 
 public class Mokap {
@@ -33,6 +34,17 @@ public class Mokap {
         messages.add(u3);
 
         return messages;
+    }
+    public static List<RideHistory> getDriverRideHistory(){
+        ArrayList<RideHistory> rides = new ArrayList<RideHistory>();
+        RideHistory rh1 = new RideHistory(1, "11.9.2022", "Luksemburg", "100e");
+        RideHistory rh2 = new RideHistory(2, "11.9.2022", "Beograd", "1000e");
+        RideHistory rh3 = new RideHistory(3, "11.9.2022", "Kikinda", "1500e");
+
+        rides.add(rh1);
+        rides.add(rh2);
+        rides.add(rh3);
+        return rides;
     }
 
 }
