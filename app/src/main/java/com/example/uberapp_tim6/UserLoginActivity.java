@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.passenger.PassengerMainActivity;
+import com.example.uberapp_tim6.passenger.PassengerRegisterActivity;
 
 public class UserLoginActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class UserLoginActivity extends AppCompatActivity {
         reserveLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(UserLoginActivity.this, PassengerMainActivity.class));
+                startActivity(new Intent(UserLoginActivity.this, PassengerRegisterActivity.class));
             }
         });
 

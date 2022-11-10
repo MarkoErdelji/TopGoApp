@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".passenger.PassengerRegisterActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/registerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60sp"
+            android:layout_marginBottom="40sp"
+            android:text="@string/register"
+            android:textSize="50sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registerText"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/round_edges_layout"
+            android:layout_marginTop="15sp"
+            android:padding="20sp"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            tools:ignore="RtlSymmetry">
+
+            <RelativeLayout
+                android:id="@+id/nameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/nameText"
+                    android:layout_width="97sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15sp"
+                    android:text="@string/first_name" />
+
+                <EditText
+                    android:id="@+id/nameTextBox"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/nameText"
+                    android:inputType="textPassword" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/surnameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nameLayout"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/surnameText"
+                    android:layout_width="97sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15sp"
+                    android:text="@string/last_name" />
+
+                <EditText
+                    android:id="@+id/surnameTextBox"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/surnameText"
+                    android:inputType="textPassword" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/usernameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/surnameLayout">
+
+                <TextView
+                    android:id="@+id/usernameText"
+                    android:layout_width="97sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15sp"
+                    android:text="@string/username" />
+
+                <EditText
+                    android:id="@+id/usernameTextBox"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/usernameText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/passwordLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usernameLayout"
+                android:layout_marginTop="1dp">
+
+                <TextView
+                    android:id="@+id/passwordText"
+                    android:layout_width="97sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15sp"
+                    android:text="@string/password" />
+
+                <EditText
+                    android:id="@+id/paswordTextBox"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/passwordText"
+                    android:inputType="textPassword" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phoneNumberLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/passwordLayout"
+                android:layout_marginTop="1dp">
+
+                <TextView
+                    android:id="@+id/phoneNumberText"
+                    android:layout_width="97sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15sp"
+                    android:text="@string/phone_number" />
+
+                <EditText
+                    android:id="@+id/phoneNumberTextBox"
+                    android:layout_width="150sp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/phoneNumberText"
+                    android:inputType="phone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/phoneNumberLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20sp">
+
+                <Button
+                    android:id="@+id/registerButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20sp"
+                    android:text="@string/submit" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

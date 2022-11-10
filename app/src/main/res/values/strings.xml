@@ -15,4 +15,13 @@
     <string name="text">Text</string>
     <string name="messageText">Text</string>
     <string name="textMsg">Text</string>
+<<<<<<< Updated upstream
+=======
+    <string name="register">Register</string>
+    <string name="submit">Submit</string>
+    <string name="last_name">Last Name:</string>
+    <string name="first_name">First Name:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="userPlaceholder2">Marko Markovic</string>
+>>>>>>> Stashed changes
 </resources>
