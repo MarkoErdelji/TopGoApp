@@ -3,14 +3,10 @@ package com.example.uberapp_tim6.driver.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -24,19 +20,19 @@ import com.example.uberapp_tim6.tools.Mokap;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DriverRideHistoryFragment#newInstance} factory method to
+ * Use the {@link DriverInboxFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DriverRideHistoryFragment extends ListFragment {
+public class DriverInboxFragment extends ListFragment {
 
-    public static DriverRideHistoryFragment newInstance() {
-        return new DriverRideHistoryFragment();
+    public static DriverInboxFragment newInstance() {
+        return new DriverInboxFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup vg, Bundle data) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_driver_ride_history, vg, false);
+        return inflater.inflate(R.layout.fragment_driver_inbox, vg, false);
     }
 
     @Override
