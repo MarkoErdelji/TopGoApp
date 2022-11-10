@@ -55,7 +55,7 @@ public class PassengerInboxFragment extends ListFragment {
         Toast.makeText(getActivity(), "Dobavljene poruke!!", Toast.LENGTH_SHORT).show();
 
         //Dodaje se adapter
-        MessageAdapter adapter = new MessageAdapter(getActivity());
+        MessageAdapter adapter = new MessageAdapter(getActivity(),Mokap.getPassengerMessages());
         setListAdapter(adapter);
     }
 
@@ -63,7 +63,7 @@ public class PassengerInboxFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Message message = Mokap.getMessages().get(position);
+        Message message = Mokap.getPassengerMessages().get(position);
 
 
  /*     Ako nasoj aktivnosti zelimo da posaljemo nekakve podatke

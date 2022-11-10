@@ -11,6 +11,8 @@ import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.models.Message;
 import com.example.uberapp_tim6.tools.Mokap;
 
+import java.util.List;
+
 
 /*
  * Adapteri unutar Android-a sluze da prikazu unapred nedefinisanu kolicinu podataka
@@ -22,9 +24,11 @@ import com.example.uberapp_tim6.tools.Mokap;
  * */
 public class MessageAdapter extends BaseAdapter{
     private Activity activity;
+    private List<Message> messages;
 
-    public MessageAdapter(Activity activity) {
+    public MessageAdapter(Activity activity,List<Message> messages) {
         this.activity = activity;
+        this.messages = messages;
     }
 
     /*
@@ -32,7 +36,7 @@ public class MessageAdapter extends BaseAdapter{
      * */
     @Override
     public int getCount() {
-        return Mokap.getMessages().size();
+        return this.messages.size();
     }
 
     /*
@@ -40,7 +44,7 @@ public class MessageAdapter extends BaseAdapter{
      * */
     @Override
     public Object getItem(int position) {
-        return Mokap.getMessages().get(position);
+        return this.messages.get(position);
     }
 
 
@@ -67,7 +71,7 @@ public class MessageAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        Message message = Mokap.getMessages().get(position);
+        Message message = this.messages.get(position);
 
         if(convertView==null)
             vi = activity.getLayoutInflater().inflate(R.layout.message_list, null);

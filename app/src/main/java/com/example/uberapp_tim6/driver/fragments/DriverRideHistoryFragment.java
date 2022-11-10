@@ -66,7 +66,7 @@ public class DriverRideHistoryFragment extends ListFragment {
         Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
 
         //Dodaje se adapter
-        MessageAdapter adapter = new MessageAdapter(getActivity());
+        MessageAdapter adapter = new MessageAdapter(getActivity(),Mokap.getMessages());
         setListAdapter(adapter);
     }
 }
