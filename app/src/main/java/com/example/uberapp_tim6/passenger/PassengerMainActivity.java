@@ -38,7 +38,7 @@ public class PassengerMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_main);
+        setContentView(R.layout.activity_passenger_main);
 
         pvm = this;
 

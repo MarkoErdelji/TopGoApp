@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15sp"
-                    android:text="Phone Number:" />
+                    android:text="@string/phone_number" />
 
                 <EditText
                     android:id="@+id/phoneNumberTextBox"
@@ -152,7 +152,7 @@
                 android:layout_marginTop="20sp">
 
                 <Button
-                    android:id="@+id/loginButton"
+                    android:id="@+id/registerButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20sp"
