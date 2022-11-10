@@ -20,6 +20,7 @@ import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.TestFragment;
 import com.example.uberapp_tim6.driver.fragments.TestFragment2;
 import com.example.uberapp_tim6.models.NavItem;
+import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 
         mDrawerPane = findViewById(R.id.drawerPane);
 
-        mNavItems.add(new NavItem("Test", "Test", R.drawable.ic_launcher_background));
+        mNavItems.add(new NavItem("Inbox", "This is your inbox", R.drawable.ic_action_mail));
         mNavItems.add(new NavItem("Test2", "Test2", R.drawable.ic_launcher_background));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
@@ -113,7 +114,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if(position == 0){
-            FragmentTransition.to(TestFragment.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 1){
             FragmentTransition.to(TestFragment2.newInstance(), this, false,R.id.mainContent);
 
