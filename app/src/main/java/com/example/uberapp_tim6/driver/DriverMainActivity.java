@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
-import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
+import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.TestFragment;
 import com.example.uberapp_tim6.driver.fragments.TestFragment2;
@@ -56,7 +56,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         mNavItems.add(new NavItem("Test", "Test", R.drawable.ic_launcher_background));
         mNavItems.add(new NavItem("Test2", "Test2", R.drawable.ic_launcher_background));
-        mNavItems.add(new NavItem("History", "Ride history", R.drawable.ic_launcher_background));
+        mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_launcher_background));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -119,7 +119,7 @@ public class DriverMainActivity extends AppCompatActivity {
             FragmentTransition.to(TestFragment2.newInstance(), this, false,R.id.mainContent);
 
         }else if(position == 2){
-            FragmentTransition.to(DriverRideHistoryFragment.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(DriverInboxFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 3){
             //..
         }else if(position == 4){
