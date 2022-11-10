@@ -21,4 +21,6 @@
     <string name="name">Name</string>
     <string name="text">Text</string>
     <string name="messageText">Text</string>
+    <string name="not_registered_create_accout">Not registered? Create accout here.</string>
+    <string name="logopicture">logoPicture</string>
 </resources>
