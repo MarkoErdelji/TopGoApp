@@ -1,10 +1,12 @@
 package com.example.uberapp_tim6.tools;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.uberapp_tim6.models.Message;
 import com.example.uberapp_tim6.models.RideHistory;
+import com.example.uberapp_tim6.models.User;
 
 
 public class Mokap {
@@ -45,6 +47,10 @@ public class Mokap {
         rides.add(rh2);
         rides.add(rh3);
         return rides;
+    }
+
+    public static User getPassengerProfile(){
+        return new User(1,"Marko","Markovic","markomarkovic@gmail.com","testtest","063221355", LocalDate.now());
     }
 
 }

@@ -21,6 +21,7 @@ import com.example.uberapp_tim6.driver.fragments.TestFragment;
 import com.example.uberapp_tim6.driver.fragments.TestFragment2;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
+import com.example.uberapp_tim6.passenger.fragments.PassengerProfileFragment;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransition.to(ProfileFragment.newInstance(), pvm, false,R.id.mainContent);
+                FragmentTransition.to(PassengerProfileFragment.newInstance(), pvm, false,R.id.mainContent);
                 mDrawerLayout.closeDrawers();
             }
         });
