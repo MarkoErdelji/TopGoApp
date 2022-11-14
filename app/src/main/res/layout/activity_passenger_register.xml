@@ -51,7 +51,7 @@
                     android:layout_width="150sp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/nameText"
-                    android:inputType="textPassword" />
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -74,7 +74,7 @@
                     android:layout_width="150sp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/surnameText"
-                    android:inputType="textPassword" />
+                    />
             </RelativeLayout>
 
             <RelativeLayout
@@ -95,7 +95,8 @@
                     android:id="@+id/usernameTextBox"
                     android:layout_width="150sp"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/usernameText" />
+                    android:layout_toEndOf="@id/usernameText"
+                    android:inputType="textEmailAddress"/>
             </RelativeLayout>
 
             <RelativeLayout
