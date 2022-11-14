@@ -25,6 +25,7 @@ public class UserLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserLoginActivity.this, DriverMainActivity.class));
+                finish();
             }
         });
 
@@ -32,6 +33,7 @@ public class UserLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserLoginActivity.this, PassengerMainActivity.class));
+                finish();
             }
         });
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) //ne znam koji je ovo vrag...
@@ -40,6 +42,7 @@ public class UserLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserLoginActivity.this, PassengerRegisterActivity.class));
+                finish();
             }
         });
 

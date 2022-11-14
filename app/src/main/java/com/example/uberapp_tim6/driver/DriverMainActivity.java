@@ -6,14 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
@@ -23,6 +28,7 @@ import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class DriverMainActivity extends AppCompatActivity {
 
@@ -101,6 +107,25 @@ public class DriverMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                startActivity(new Intent(DriverMainActivity.this, UserLoginActivity.class));
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
