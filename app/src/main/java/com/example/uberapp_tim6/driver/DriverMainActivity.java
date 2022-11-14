@@ -18,8 +18,7 @@ import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
-import com.example.uberapp_tim6.driver.fragments.TestFragment;
-import com.example.uberapp_tim6.driver.fragments.TestFragment2;
+
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
@@ -55,9 +54,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         mDrawerPane = findViewById(R.id.drawerPane);
 
-        mNavItems.add(new NavItem("Test", "Test", R.drawable.ic_launcher_background));
-        mNavItems.add(new NavItem("Test2", "Test2", R.drawable.ic_launcher_background));
-        mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_launcher_background));
+        mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_action_mail));
         mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
@@ -116,14 +113,14 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if(position == 0){
-            FragmentTransition.to(TestFragment.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(DriverInboxFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 1){
-            FragmentTransition.to(TestFragment2.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(DriverRideHistoryFragment.newInstance(), this, false,R.id.mainContent);
 
         }else if(position == 2){
-            FragmentTransition.to(DriverInboxFragment.newInstance(), this, false,R.id.mainContent);
+
         }else if(position == 3){
-            FragmentTransition.to(DriverRideHistoryFragment.newInstance(), this, false,R.id.mainContent);
+
         }else if(position == 4){
             //..
         }else if(position == 5){

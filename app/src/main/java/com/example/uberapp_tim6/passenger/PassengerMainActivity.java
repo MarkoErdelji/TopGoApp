@@ -17,8 +17,6 @@ import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
-import com.example.uberapp_tim6.driver.fragments.TestFragment;
-import com.example.uberapp_tim6.driver.fragments.TestFragment2;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerProfileFragment;
@@ -57,7 +55,6 @@ public class PassengerMainActivity extends AppCompatActivity {
         mDrawerPane = findViewById(R.id.drawerPane);
 
         mNavItems.add(new NavItem("Inbox", "This is your inbox", R.drawable.ic_action_mail));
-        mNavItems.add(new NavItem("Test2", "Test2", R.drawable.ic_launcher_background));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -117,7 +114,6 @@ public class PassengerMainActivity extends AppCompatActivity {
         if(position == 0){
             FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 1){
-            FragmentTransition.to(TestFragment2.newInstance(), this, false,R.id.mainContent);
 
         }else if(position == 2){
             //..
