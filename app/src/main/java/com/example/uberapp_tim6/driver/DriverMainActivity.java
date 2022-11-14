@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
+import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.TestFragment;
@@ -65,7 +66,7 @@ public class DriverMainActivity extends AppCompatActivity {
         profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransition.to(ProfileFragment.newInstance(), dvm, false,R.id.mainContent);
+                FragmentTransition.to(DriverProfileFragment.newInstance(), dvm, false,R.id.mainContent);
                 mDrawerLayout.closeDrawers();
             }
         });
