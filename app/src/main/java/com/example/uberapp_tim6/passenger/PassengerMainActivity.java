@@ -19,9 +19,11 @@ import android.widget.RelativeLayout;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
+import com.example.uberapp_tim6.adapters.PassengerRideHistoryAdapter;
 import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 import com.example.uberapp_tim6.models.NavItem;
+import com.example.uberapp_tim6.passenger.fragments.PassengerDriveHistoryFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerProfileFragment;
 import com.example.uberapp_tim6.tools.FragmentTransition;
@@ -59,6 +61,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         mDrawerPane = findViewById(R.id.drawerPane);
 
         mNavItems.add(new NavItem("Inbox", "This is your inbox", R.drawable.ic_action_mail));
+        mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -137,7 +140,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         if(position == 0){
             FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 1){
-
+            FragmentTransition.to(PassengerDriveHistoryFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 2){
             //..
         }else if(position == 3){
