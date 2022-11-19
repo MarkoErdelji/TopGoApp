@@ -1,4 +1,4 @@
-package com.example.uberapp_tim6.models;
+package com.example.uberapp_tim6.driver.models;
 
 import java.time.LocalDateTime;
 

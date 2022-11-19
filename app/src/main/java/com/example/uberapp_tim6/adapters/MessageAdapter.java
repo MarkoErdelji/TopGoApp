@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.models.Message;
-import com.example.uberapp_tim6.tools.Mokap;
+import com.example.uberapp_tim6.driver.models.Message;
 
 import java.util.List;
 

@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
 import com.example.uberapp_tim6.adapters.PassengerRideHistoryAdapter;
-import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
-import com.example.uberapp_tim6.models.RideHistory;
+import com.example.uberapp_tim6.driver.models.RideHistory;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.util.List;

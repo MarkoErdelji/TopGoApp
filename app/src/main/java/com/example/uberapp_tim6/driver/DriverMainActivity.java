@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,13 +22,11 @@ import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
-import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 
-import com.example.uberapp_tim6.models.NavItem;
+import com.example.uberapp_tim6.driver.models.NavItem;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class DriverMainActivity extends AppCompatActivity {
 

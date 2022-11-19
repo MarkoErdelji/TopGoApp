@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.models.NavItem;
+import com.example.uberapp_tim6.driver.models.NavItem;
 
 import java.util.ArrayList;
 

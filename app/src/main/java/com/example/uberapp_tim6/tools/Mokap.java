@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.uberapp_tim6.models.Message;
-import com.example.uberapp_tim6.models.RideHistory;
-import com.example.uberapp_tim6.models.User;
+import com.example.uberapp_tim6.driver.models.Message;
+import com.example.uberapp_tim6.driver.models.RideHistory;
+import com.example.uberapp_tim6.driver.models.User;
 
 
 public class Mokap {
