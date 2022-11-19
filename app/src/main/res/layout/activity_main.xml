@@ -30,26 +30,24 @@
             android:padding="20sp"
             android:paddingEnd="40dp"
             android:paddingStart="40dp"
+            android:elevation="10dp"
             tools:ignore="RtlSymmetry">
+
             <RelativeLayout
                 android:id="@+id/usernameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12sp"
+                android:layout_marginBottom="20dp"
                 >
 
-                <TextView
-                    android:id="@+id/usernameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/username"
-                    android:layout_marginEnd="15sp"/>
                 <EditText
+                    android:hint="Username"
+                    android:background="@drawable/edit_text"
                     android:id="@+id/usernameTextBox"
-                    android:layout_width="110sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/usernameText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+
+
                     />
             </RelativeLayout>
 
@@ -61,18 +59,12 @@
                 android:layout_centerHorizontal="true"
                 >
 
-                <TextView
-                    android:id="@+id/passwordText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/password"
-                    android:layout_marginEnd="15sp"/>
                 <EditText
+                    android:hint="Password"
+                    android:background="@drawable/edit_text"
                     android:id="@+id/paswordTextBox"
-                    android:layout_width="110sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/passwordText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
                     android:inputType="textPassword"
                     />
             </RelativeLayout>
