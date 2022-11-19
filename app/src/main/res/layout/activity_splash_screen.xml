@@ -11,7 +11,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/top_go_logo"
+            android:src="@drawable/topgologo"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/logopicture" />

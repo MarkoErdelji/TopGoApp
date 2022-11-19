@@ -64,6 +64,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/textC"
                         android:text="@string/userPlaceholder"
                         android:textStyle="bold"
                         android:layout_centerVertical="true"

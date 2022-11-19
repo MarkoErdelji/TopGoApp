@@ -11,41 +11,43 @@
         android:layout_height="match_parent"
 >
 
-        <TextView
+        <ImageView
             android:id="@+id/logoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/topgologo"
             android:text="@string/topgo"
             android:textSize="50sp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop = "20sp"
-            android:layout_marginBottom="40sp"
+            android:layout_marginTop = "50sp"
+            android:layout_marginBottom="30sp"
             />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/logoText"
-            android:layout_centerHorizontal="true"
+            android:layout_margin="30sp"
             android:background="@drawable/round_edges_layout"
-            android:padding="20sp"
-            android:paddingEnd="40dp"
-            android:paddingStart="40dp"
             android:elevation="10dp"
+            android:padding="20sp"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
             tools:ignore="RtlSymmetry">
 
             <RelativeLayout
                 android:id="@+id/usernameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                >
+                android:layout_marginBottom="20dp">
 
                 <EditText
-                    android:hint="Username"
-                    android:background="@drawable/edit_text"
                     android:id="@+id/usernameTextBox"
                     android:layout_width="match_parent"
                     android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
+                    android:drawableEnd="@drawable/ic_action_mail"
+                    android:hint="Username"
 
 
                     />
@@ -56,53 +58,57 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/usernameLayout"
-                android:layout_centerHorizontal="true"
-                >
+                android:layout_centerHorizontal="true">
 
                 <EditText
-                    android:hint="Password"
-                    android:background="@drawable/edit_text"
                     android:id="@+id/paswordTextBox"
+                    android:drawableEnd="@drawable/ic_action_lock"
                     android:layout_width="match_parent"
                     android:layout_height="30sp"
-                    android:inputType="textPassword"
-                    />
+                    android:background="@drawable/edit_text"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/loginButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/passwordLayout"
-                android:layout_marginTop="20sp"
-                >
+                android:layout_marginTop="20sp">
+
                 <Button
                     android:id="@+id/loginButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20sp"
-                    android:text="@string/login"/>
-                <Button
-
-                    android:id="@+id/reserveLoginButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/loginButton"
-                    android:text="@string/rlogin"/>
+                    android:text="@string/login" />
             </RelativeLayout>
+
             <TextView
-                android:id="@+id/registerButton"
-                android:textColor="@color/black"
-                android:textStyle="italic"
-                android:layout_marginTop="20sp"
+                android:id="@+id/registerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/not_registered_create_accout"
                 android:layout_below="@id/loginButtonLayout"
-                />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="10sp"
+                android:text="@string/not_registered"
+                android:textColor="@color/black"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/registerButton"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/registerText"
+                android:layout_centerHorizontal="true"
+                android:text="@string/create_account_here"
+                android:textColor="@color/primaryC"
+                 />
 
         </RelativeLayout>
-
-
 
 
     </RelativeLayout>

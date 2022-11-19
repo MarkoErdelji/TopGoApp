@@ -20,7 +20,6 @@ public class UserLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button loginButton = findViewById(R.id.loginButton);
-        Button reserveLoginButton = findViewById(R.id.reserveLoginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,13 +28,6 @@ public class UserLoginActivity extends AppCompatActivity {
             }
         });
 
-        reserveLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserLoginActivity.this, PassengerMainActivity.class));
-                finish();
-            }
-        });
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) //ne znam koji je ovo vrag...
         TextView registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {

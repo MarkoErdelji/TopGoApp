@@ -50,7 +50,8 @@ public class DriverMainActivity extends AppCompatActivity {
         dvm = this;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("TopGo");
+        toolbar.setLogo(R.drawable.ic_topgo_logo);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         profileLayout = findViewById(R.id.profileBox);

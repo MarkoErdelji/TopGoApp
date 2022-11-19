@@ -27,4 +27,6 @@
     <string name="destination">Destination: </string>
     <string name="price">Price: </string>
     <string name="logout">logout</string>
+    <string name="create_account_here">Create account here</string>
+    <string name="not_registered">Not registered?</string>
 </resources>
