@@ -16,7 +16,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60sp"
             android:layout_marginBottom="40sp"
-            android:src="@drawable/profile_icon"
+            android:src="@drawable/tate"
             android:textSize="20sp" />
 
         <RelativeLayout

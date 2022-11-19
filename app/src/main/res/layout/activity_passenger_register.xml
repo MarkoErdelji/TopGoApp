@@ -8,7 +8,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/registerText"
@@ -18,40 +20,33 @@
             android:layout_marginTop="60sp"
             android:layout_marginBottom="40sp"
             android:text="@string/register"
-            android:textSize="50sp" />
+            android:textSize="43sp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/registerText"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/round_edges_layout"
             android:layout_marginTop="15sp"
+            android:background="@drawable/round_edges_layout"
+            android:layout_margin="20sp"
             android:padding="20sp"
             android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            tools:ignore="RtlSymmetry">
+            android:paddingEnd="40dp">
 
             <RelativeLayout
                 android:id="@+id/nameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
-
-                <TextView
-                    android:id="@+id/nameText"
-                    android:layout_width="97sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15sp"
-                    android:text="@string/first_name" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/nameTextBox"
-                    android:layout_width="150sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/nameText"
-                    />
+                    android:hint="@string/first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -59,44 +54,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nameLayout"
-                android:layout_centerHorizontal="true">
-
-                <TextView
-                    android:id="@+id/surnameText"
-                    android:layout_width="97sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15sp"
-                    android:text="@string/last_name" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/surnameTextBox"
-                    android:layout_width="150sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/surnameText"
-                    />
+                    android:layout_width="match_parent"
+                    android:hint="@string/last_name"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/usernameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/surnameLayout">
-
-                <TextView
-                    android:id="@+id/usernameText"
-                    android:layout_width="97sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15sp"
-                    android:text="@string/username" />
+                android:layout_below="@id/surnameLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/usernameTextBox"
-                    android:layout_width="150sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/usernameText"
-                    android:inputType="textEmailAddress"/>
+                    android:layout_width="match_parent"
+                    android:hint="@string/username"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
+                    android:inputType="textEmailAddress" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -104,21 +87,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/usernameLayout"
-                android:layout_marginTop="1dp">
-
-                <TextView
-                    android:id="@+id/passwordText"
-                    android:layout_width="97sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15sp"
-                    android:text="@string/password" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/paswordTextBox"
-                    android:layout_width="150sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/passwordText"
+                    android:layout_width="match_parent"
+                    android:hint="@string/password"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
                     android:inputType="textPassword" />
             </RelativeLayout>
 
@@ -127,21 +104,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passwordLayout"
-                android:layout_marginTop="1dp">
-
-                <TextView
-                    android:id="@+id/phoneNumberText"
-                    android:layout_width="97sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15sp"
-                    android:text="@string/phone_number" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/phoneNumberTextBox"
-                    android:layout_width="150sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/phoneNumberText"
+                    android:layout_width="match_parent"
+                    android:hint="@string/phone_number"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
                     android:inputType="phone" />
             </RelativeLayout>
 
@@ -156,7 +127,6 @@
                     android:id="@+id/registerButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20sp"
                     android:text="@string/submit" />
             </RelativeLayout>
 
