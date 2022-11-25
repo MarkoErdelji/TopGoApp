@@ -16,7 +16,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60sp"
             android:layout_marginBottom="40sp"
-            android:src="@drawable/profile_icon"
+            android:src="@drawable/tate"
             android:textSize="20sp" />
 
         <RelativeLayout
@@ -33,112 +33,156 @@
             <RelativeLayout
                 android:id="@+id/nameLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_centerHorizontal="true">
 
                 <TextView
                     android:id="@+id/nameText"
-                    android:layout_width="105sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8sp"
+                    android:layout_width="130sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10sp"
                     android:text="@string/first_name" />
 
-                <TextView
-                    android:id="@+id/nameValue"
+                <HorizontalScrollView
                     android:layout_width="180sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/nameText" />
+                    android:layout_toEndOf="@id/nameText"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30sp"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/nameValue"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent"
+                        android:scrollbars="horizontal" />
+                </HorizontalScrollView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/surnameLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_marginTop="20sp"
                 android:layout_below="@id/nameLayout"
                 android:layout_centerHorizontal="true">
 
                 <TextView
                     android:id="@+id/surnameText"
-                    android:layout_width="105sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8sp"
+                    android:layout_width="130sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10sp"
                     android:text="@string/last_name" />
 
-                <TextView
-                    android:id="@+id/surnameValue"
+                <HorizontalScrollView
                     android:layout_width="180sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/surnameText" />
+                    android:layout_toEndOf="@id/surnameText"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30sp"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/surnameValue"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:scrollbars="horizontal" />
+                </HorizontalScrollView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/usernameLayout"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="20sp"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_below="@id/surnameLayout">
 
                 <TextView
                     android:id="@+id/usernameText"
-                    android:layout_width="105sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8sp"
+                    android:layout_width="130sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10sp"
                     android:text="@string/username" />
 
-                <TextView
-                    android:id="@+id/usernameValue"
+                <HorizontalScrollView
                     android:layout_width="180sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/usernameText" />
+                    android:layout_toEndOf="@id/usernameText"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30sp"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/usernameValue"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+                </HorizontalScrollView>
             </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/phoneNumberLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_below="@id/usernameLayout"
                 android:layout_marginTop="20sp">
 
                 <TextView
                     android:id="@+id/phoneNumberText"
-                    android:layout_width="105sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8sp"
+                    android:layout_width="130sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10sp"
                     android:text="@string/phone_number" />
 
-                <TextView
-                    android:id="@+id/phoneNumberValue"
+                <HorizontalScrollView
                     android:layout_width="180sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/phoneNumberText"/>
+                    android:layout_toEndOf="@id/phoneNumberText"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30sp"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/phoneNumberValue"
+                        android:layout_width="wrap_content"
+                        android:singleLine="true"
+                        android:layout_height="match_parent"
+                        android:scrollbars="horizontal"
+                        android:gravity="center_vertical"
+                        />
+                </HorizontalScrollView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/dateLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_below="@id/phoneNumberLayout"
                 android:layout_marginTop="20sp">
 
                 <TextView
                     android:id="@+id/dateText"
-                    android:layout_width="105sp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8sp"
-                    android:text="Date of Birth:" />
+                    android:layout_width="130sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10sp"
+                    android:text="@string/date_of_birth" />
 
-                <TextView
-                    android:id="@+id/dateValue"
+                <HorizontalScrollView
                     android:layout_width="180sp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/dateText"/>
+                    android:layout_toEndOf="@id/dateText"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30sp"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/dateValue"
+                        android:layout_width="wrap_content"
+                        android:gravity="center_vertical"
+                        android:scrollbars="horizontal"
+                        android:layout_height="match_parent"/>
+                </HorizontalScrollView>
             </RelativeLayout>
 
 

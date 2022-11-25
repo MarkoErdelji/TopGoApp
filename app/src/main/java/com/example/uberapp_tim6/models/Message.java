@@ -5,34 +5,46 @@ import java.util.Date;
 
 public class Message {
       private int id;
-      private String title;
-      private String text;
+      private String messageType;
+      private String message;
       private LocalDateTime dateTime;
+      private User sender;
+      private User receiver;
       //private User
       //private User
 
 
-    public Message(int id, String title,String text, LocalDateTime dateTime) {
-        this.title = title;
+    public Message(int id, String messageType, String message, LocalDateTime dateTime, User sender, User receiver) {
         this.id = id;
-        this.text = text;
+        this.messageType = messageType;
+        this.message = message;
         this.dateTime = dateTime;
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
-    public String getText() {
-        return text;
+    public int getId() {
+        return id;
     }
 
-    public String getTitle() {
-        return title;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getMessageType() {
+        return messageType;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public LocalDateTime getDateTime() {
@@ -43,5 +55,19 @@ public class Message {
         this.dateTime = dateTime;
     }
 
+    public User getSender() {
+        return sender;
+    }
 
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
 }

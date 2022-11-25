@@ -19,9 +19,6 @@ import android.widget.RelativeLayout;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
-import com.example.uberapp_tim6.adapters.PassengerRideHistoryAdapter;
-import com.example.uberapp_tim6.driver.DriverMainActivity;
-import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.passenger.fragments.PassengerDriveHistoryFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
@@ -49,7 +46,8 @@ public class PassengerMainActivity extends AppCompatActivity {
         pvm = this;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("TopGo");
+        toolbar.setLogo(R.drawable.ic_topgo_logo);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         profileLayout = findViewById(R.id.profileBox);

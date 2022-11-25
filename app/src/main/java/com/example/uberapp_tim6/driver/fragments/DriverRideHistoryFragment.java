@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
+import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
 import com.example.uberapp_tim6.tools.Mokap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,9 +54,9 @@ public class DriverRideHistoryFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toast.makeText(getActivity(), "Istorija", Toast.LENGTH_SHORT).show();
-        List<RideHistory> rh = Mokap.getDriverRideHistory();
+        List<Ride> rh = Mokap.getAllRides();
 
-        DriverRideHistoryAdapter adapter = new DriverRideHistoryAdapter(getActivity(), Mokap.getDriverRideHistory());
+        DriverRideHistoryAdapter adapter = new DriverRideHistoryAdapter(getActivity(), Mokap.getAllRides());
         setListAdapter(adapter);
 
     }

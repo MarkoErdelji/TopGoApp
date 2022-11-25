@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,17 +18,16 @@ import android.widget.RelativeLayout;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
+import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
-import com.example.uberapp_tim6.driver.fragments.ProfileFragment;
 
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class DriverMainActivity extends AppCompatActivity {
 
@@ -50,7 +48,8 @@ public class DriverMainActivity extends AppCompatActivity {
         dvm = this;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("TopGo");
+        toolbar.setLogo(R.drawable.ic_topgo_logo);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
         profileLayout = findViewById(R.id.profileBox);
@@ -63,6 +62,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_action_mail));
         mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
+        mNavItems.add(new NavItem("Test", "Test", R.drawable.history_icon));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -144,6 +144,7 @@ public class DriverMainActivity extends AppCompatActivity {
             FragmentTransition.to(DriverRideHistoryFragment.newInstance(), this, false,R.id.mainContent);
 
         }else if(position == 2){
+            startActivity(new Intent(DriverMainActivity.this, MessageListActivity.class));
 
         }else if(position == 3){
 

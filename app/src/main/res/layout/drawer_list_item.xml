@@ -21,9 +21,8 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:gravity="center_vertical"
-        android:textColor="#000"
+        android:textColor="@color/gray"
         android:text="Placeholder"
-        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/icon" />
 

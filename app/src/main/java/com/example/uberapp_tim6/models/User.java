@@ -1,8 +1,9 @@
 package com.example.uberapp_tim6.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class User {
+public class User implements Serializable {
     private int id;
     private String firstName;
     private String lastName;
@@ -10,8 +11,10 @@ public class User {
     private String password;
     private String phoneNumber;
     private LocalDate dateOfBirth;
+    private String address;
+    private boolean isBlocked;
 
-    public User(int id, String firstName, String lastName, String email, String password, String phoneNumber, LocalDate dateOfBirth) {
+    public User(int id, String firstName, String lastName, String email, String password, String phoneNumber, LocalDate dateOfBirth,String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,6 +22,8 @@ public class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
+        this.address = address;
+        this.isBlocked = false;
     }
 
     public int getId() {
@@ -75,5 +80,21 @@ public class User {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 }

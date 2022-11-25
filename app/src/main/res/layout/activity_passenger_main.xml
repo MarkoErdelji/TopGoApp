@@ -58,14 +58,16 @@
                         android:id="@+id/profileIcon"
                         android:layout_width="50sp"
                         android:layout_height="50sp"
-                        android:src="@drawable/profile_icon"
+                        android:src="@drawable/tate"
                         />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/gray"
+                        android:layout_centerHorizontal="true"
                         android:text="@string/userPlaceholder2"
-                        android:textStyle="bold"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="20sp"
                         android:textSize="18sp"

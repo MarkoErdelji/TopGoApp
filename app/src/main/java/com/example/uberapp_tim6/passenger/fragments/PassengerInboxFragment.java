@@ -74,8 +74,8 @@ public class PassengerInboxFragment extends ListFragment {
       odgovarajucu putExtra metodu.*/
 
         Intent intent = new Intent(getActivity(), MessageDetailActivity.class);
-        intent.putExtra("title", message.getTitle());
-        intent.putExtra("text", message.getText());
+        intent.putExtra("Sender", message.getSender().getFirstName() + message.getSender().getLastName());
+        intent.putExtra("text", message.getDateTime().toString());
         startActivityForResult(intent, 0);
 
     }
