@@ -13,13 +13,15 @@ public class Mokap {
 
     public static List<Message> getMessages(){
         ArrayList<Message> messages = new ArrayList<Message>();
-        Message u1 = new Message(5, "Blabla!","Sve najgore ti zelim pozdrav loool xd", LocalDateTime.now());
-        Message u2 = new Message(3, "Alo bre","prebicu te skroz looool xd xd", LocalDateTime.now());
-        Message u3 = new Message(6, "Kasnis 100 godina","Narucio sam voznju pre 100 sati a tebe jos nema ovo nista nije dobro",LocalDateTime.now());
+        List<User> users = getUsers();
+        messages.add(new Message(1, "Panic","Ovo je poruka za passengera", LocalDateTime.now(),users.get(1),users.get(2)));
+        messages.add(new Message(2, "Message","Alo", LocalDateTime.now(),users.get(1),users.get(2)));
+        messages.add(new Message(3, "Message","Prebicu te!", LocalDateTime.now(),users.get(2),users.get(1)));
+        messages.add(new Message(4, "Message","Debilu", LocalDateTime.now(),users.get(3),users.get(2)));
+        messages.add(new Message(5, "Message","TESTTEST", LocalDateTime.now(),users.get(2),users.get(3)));
+        messages.add(new Message(6, "Message","Sram te bilo", LocalDateTime.now(),users.get(1),users.get(4)));
+        messages.add(new Message(7, "Message","Nista ne valja", LocalDateTime.now(),users.get(2),users.get(5)));
 
-        messages.add(u1);
-        messages.add(u2);
-        messages.add(u3);
 
         return messages;
     }
@@ -27,13 +29,19 @@ public class Mokap {
 
     public static List<Message> getPassengerMessages(){
         ArrayList<Message> messages = new ArrayList<Message>();
-        Message u1 = new Message(1, "Cao!","Ovo je poruka za passengera", LocalDateTime.now());
-        Message u2 = new Message(2, "TestTest","Druga poruka za passengera", LocalDateTime.now());
-        Message u3 = new Message(4, "Ovo je malo duzi naslov","Ovo treba da bude najduza poruka za passengera da bi videli izgled teksta kada se ispise",LocalDateTime.now());
+        List<User> users = getUsers();
+        messages.add(new Message(1, "Panic","Ovo je poruka za passengera", LocalDateTime.now(),users.get(1),users.get(2)));
+        messages.add(new Message(2, "Message","Alo", LocalDateTime.now(),users.get(1),users.get(2)));
+        messages.add(new Message(3, "Message","Prebicu te!", LocalDateTime.now(),users.get(2),users.get(1)));
+        messages.add(new Message(4, "Message","Debilu", LocalDateTime.now(),users.get(3),users.get(2)));
+        messages.add(new Message(5, "Message","TESTTEST", LocalDateTime.now(),users.get(2),users.get(3)));
+        messages.add(new Message(6, "Message","Sram te bilo", LocalDateTime.now(),users.get(1),users.get(4)));
+        messages.add(new Message(7, "Message","Nista ne valja", LocalDateTime.now(),users.get(2),users.get(5)));
 
-        messages.add(u1);
-        messages.add(u2);
-        messages.add(u3);
+
+
+
+
 
         return messages;
     }
@@ -50,7 +58,18 @@ public class Mokap {
     }
 
     public static User getPassengerProfile(){
-        return new User(1,"Marko","Markovic","markomarkovic@gmail.com","testtest","063221355", LocalDate.now());
+        return new User(1,"Marko","Markovic","markomarkovic@gmail.com","testtest","063221355", LocalDate.now(),"bla");
+    }
+
+    public static List<User> getUsers(){
+        List<User> users = new ArrayList<User>();
+        users.add(new User(1,"Marko","Markovic","markomarkovic@gmail.com","testtest","063221355", LocalDate.now(),"bla"));
+        users.add(new User(2,"Dejan","Govedo","deci@gmail.com","testtest","063222355", LocalDate.now(),"Bulevara Srdjana Gluponavica 5"));
+        users.add(new User(3,"Petar","Petrovic","tarpe50@gmail.com","testtest","063221355", LocalDate.now(),"bla"));
+        users.add(new User(4,"Dzoni","Sinic","dzonson@gmail.com","testtest","063221355", LocalDate.now(),"bla"));
+        users.add(new User(5,"Jozef","Titivoc","madjar12@gmail.com","testtest","063221355", LocalDate.now(),"bla"));
+        users.add(new User(6,"Kristijan","Golubovic","kikistar@gmail.com","testtest","063221355", LocalDate.now(),"bla"));
+        return  users;
     }
 
 }

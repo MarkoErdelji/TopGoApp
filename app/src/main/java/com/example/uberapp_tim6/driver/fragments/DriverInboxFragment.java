@@ -14,9 +14,14 @@ import android.widget.Toast;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.activities.MessageDetailActivity;
+import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.adapters.MessageAdapter;
 import com.example.uberapp_tim6.driver.models.Message;
+import com.example.uberapp_tim6.driver.models.User;
 import com.example.uberapp_tim6.tools.Mokap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +29,9 @@ import com.example.uberapp_tim6.tools.Mokap;
  * create an instance of this fragment.
  */
 public class DriverInboxFragment extends ListFragment {
+
+    User currentUser;
+
 
     public static DriverInboxFragment newInstance() {
         return new DriverInboxFragment();
@@ -38,8 +46,9 @@ public class DriverInboxFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
         Message message = Mokap.getMessages().get(position);
+
+
 
 
  /*     Ako nasoj aktivnosti zelimo da posaljemo nekakve podatke
@@ -49,20 +58,30 @@ public class DriverInboxFragment extends ListFragment {
      intent ce formirati Bundle za nas, ali mi treba da pozovemo
       odgovarajucu putExtra metodu.*/
 
-        Intent intent = new Intent(getActivity(), MessageDetailActivity.class);
-        intent.putExtra("title", message.getTitle());
-        intent.putExtra("text", message.getText());
+        Intent intent = new Intent(getActivity(), MessageListActivity.class);
+        intent.putExtra("Sender", message.getSender().getFirstName() + message.getSender().getLastName());
+        intent.putExtra("text", message.getDateTime().toString());
+        intent.putExtra("currentUser", currentUser);
         startActivityForResult(intent, 0);
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        currentUser = Mokap.getUsers().get(1);
         super.onCreate(savedInstanceState);
         Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
-
+        List<Message> currentUserMessager = new ArrayList<Message>();
         //Dodaje se adapter
-        MessageAdapter adapter = new MessageAdapter(getActivity(),Mokap.getMessages());
+        for (Message m:Mokap.getMessages())
+        {
+            if (m.getSender().getId() == currentUser.getId() || m.getReceiver().getId() == currentUser.getId())
+            {
+                currentUserMessager.add(m);
+            }
+
+        }
+        MessageAdapter adapter = new MessageAdapter(getActivity(),currentUserMessager);
         setListAdapter(adapter);
     }
 }

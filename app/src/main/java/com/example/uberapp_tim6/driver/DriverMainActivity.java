@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
+import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
@@ -61,6 +62,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
         mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_action_mail));
         mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
+        mNavItems.add(new NavItem("Test", "Test", R.drawable.history_icon));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -142,6 +144,7 @@ public class DriverMainActivity extends AppCompatActivity {
             FragmentTransition.to(DriverRideHistoryFragment.newInstance(), this, false,R.id.mainContent);
 
         }else if(position == 2){
+            startActivity(new Intent(DriverMainActivity.this, MessageListActivity.class));
 
         }else if(position == 3){
 

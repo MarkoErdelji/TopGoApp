@@ -77,9 +77,8 @@ public class MessageAdapter extends BaseAdapter{
         TextView title = (TextView)vi.findViewById(R.id.name);
         TextView date = (TextView)vi.findViewById(R.id.description);
 
-        title.setText(message.getTitle());
+        title.setText(message.getSender().getFirstName() +" "+ message.getSender().getLastName());
         date.setText(message.getDateTime().toString());
-
 
         return  vi;
     }
