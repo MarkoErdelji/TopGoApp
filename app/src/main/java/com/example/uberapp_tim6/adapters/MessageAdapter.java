@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.driver.models.Message;
+import com.example.uberapp_tim6.models.Message;
 
 import java.util.List;
 

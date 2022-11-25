@@ -24,7 +24,7 @@ import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 
-import com.example.uberapp_tim6.driver.models.NavItem;
+import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;

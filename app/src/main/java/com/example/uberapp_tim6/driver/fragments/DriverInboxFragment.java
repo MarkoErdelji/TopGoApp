@@ -16,8 +16,10 @@ import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.activities.MessageDetailActivity;
 import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.adapters.MessageAdapter;
-import com.example.uberapp_tim6.driver.models.Message;
-import com.example.uberapp_tim6.driver.models.User;
+
+import com.example.uberapp_tim6.models.Message;
+import com.example.uberapp_tim6.models.User;
+import com.example.uberapp_tim6.models.Message;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.util.ArrayList;

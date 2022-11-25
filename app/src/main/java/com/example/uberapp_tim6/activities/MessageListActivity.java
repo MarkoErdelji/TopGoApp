@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.MessageListAdapter;
-import com.example.uberapp_tim6.driver.models.Message;
-import com.example.uberapp_tim6.driver.models.User;
+import com.example.uberapp_tim6.models.Message;
+import com.example.uberapp_tim6.models.User;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.LocalDateTime;

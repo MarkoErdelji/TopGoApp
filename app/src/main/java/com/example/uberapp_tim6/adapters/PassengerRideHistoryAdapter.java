@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.driver.models.RideHistory;
+import com.example.uberapp_tim6.models.RideHistory;
 
 import java.util.List;
 

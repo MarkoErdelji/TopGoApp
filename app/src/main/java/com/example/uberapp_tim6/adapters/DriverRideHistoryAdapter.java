@@ -7,15 +7,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.driver.models.RideHistory;
+import com.example.uberapp_tim6.models.Ride;
+import com.example.uberapp_tim6.models.RideHistory;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
 public class DriverRideHistoryAdapter extends BaseAdapter {
     private Activity activity;
-    private List<RideHistory> rides;
+    private List<Ride> rides;
 
-    public DriverRideHistoryAdapter(Activity activity,List<RideHistory> rides) {
+    public DriverRideHistoryAdapter(Activity activity,List<Ride> rides) {
         this.activity = activity;
         this.rides = rides;
     }
@@ -60,17 +63,34 @@ public class DriverRideHistoryAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        RideHistory rideHistory = this.rides.get(position);
+        Ride rideHistory = this.rides.get(position);
 
         if(convertView==null)
-            vi = activity.getLayoutInflater().inflate(R.layout.message_list, null);
+            vi = activity.getLayoutInflater().inflate(R.layout.histoty_item_list, null);
 
-        TextView date = (TextView)vi.findViewById(R.id.name);
-        TextView info = (TextView)vi.findViewById(R.id.description);
-        String dateText  = "Date: " + rideHistory.getDate();
+        TextView date = (TextView)vi.findViewById(R.id.dateTextView);
+        TextView beggining = (TextView)vi.findViewById(R.id.begginingTextView);
+        TextView end = (TextView)vi.findViewById(R.id.endTextView);
+        TextView price = (TextView)vi.findViewById(R.id.priceTextView);
+        TextView rate = (TextView)vi.findViewById(R.id.ratingTextView);
+
+        String dateText = "Date: "  + rideHistory.getBeggining().toLocalDate();
         date.setText(dateText);
-        String infoText = "Destination: " + rideHistory.getDestination() + " Price: " + rideHistory.getPrice();
-        info.setText(infoText);
+
+        String begginingText = "Beggining: " + rideHistory.getRoute().getBegginingLocation().getLatitude() + " " + rideHistory.getRoute().getBegginingLocation().getLongitude();
+        beggining.setText(begginingText);
+
+        String endText = "End: " + rideHistory.getRoute().getDestination().getLatitude() + " " + rideHistory.getRoute().getDestination().getLongitude();
+        end.setText(endText);
+
+        String priceText = "Price: " + rideHistory.getPrice() + "$";
+        price.setText(priceText);
+
+        String rateText = "Rating: " + rideHistory.getReviews().get(0).getRating();
+        rate.setText(rateText);
+
+
+
 
 
         return  vi;

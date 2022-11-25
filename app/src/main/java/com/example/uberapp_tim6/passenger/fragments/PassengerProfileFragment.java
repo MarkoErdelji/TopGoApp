@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.driver.models.User;
+import com.example.uberapp_tim6.models.User;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.format.DateTimeFormatter;
