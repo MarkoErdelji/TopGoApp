@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +21,11 @@ import android.widget.RelativeLayout;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
+import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.passenger.fragments.PassengerDriveHistoryFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
+import com.example.uberapp_tim6.passenger.fragments.PassengerMainFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerProfileFragment;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
@@ -44,10 +48,29 @@ public class PassengerMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_passenger_main);
 
         pvm = this;
+        FragmentTransition.to(PassengerMainFragment.newInstance(), pvm, false,R.id.mainContent);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.ic_topgo_logo);
         toolbar.setTitle("");
+
+        View logoView = toolbar.getChildAt(0);
+
+        logoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragManager = pvm.getSupportFragmentManager();
+                int count = pvm.getSupportFragmentManager().getBackStackEntryCount();
+                Fragment frag = fragManager.getFragments().get(count>0?count-1:count);
+                if (frag.getClass().equals(PassengerMainFragment.class)){
+
+                }
+                else{
+                    FragmentTransition.to(PassengerMainFragment.newInstance(), pvm, false,R.id.mainContent);
+                }
+            }
+        });
         setSupportActionBar(toolbar);
 
         profileLayout = findViewById(R.id.profileBox);
