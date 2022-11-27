@@ -2,9 +2,10 @@ package com.example.uberapp_tim6.models;
 
 import com.example.uberapp_tim6.models.enumerations.PaymentType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Payment {
+public class Payment implements Serializable {
     private int id;
     private PaymentType paymentType;
     private LocalDateTime date;

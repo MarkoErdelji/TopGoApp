@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.models;
 
-public class Route {
+import java.io.Serializable;
+
+public class Route implements Serializable  {
    private int id;
    private Location begginingLocation;
    private Location destination;

@@ -1,8 +1,9 @@
 package com.example.uberapp_tim6.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class RideHistory {
+public class RideHistory implements Serializable  {
     private int id;
     private String date;
     private String destination;

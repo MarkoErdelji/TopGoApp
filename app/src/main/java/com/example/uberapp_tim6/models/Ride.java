@@ -3,10 +3,11 @@ package com.example.uberapp_tim6.models;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Ride {
+public class Ride implements Serializable {
     private int id;
     private Driver driver;
     private List<Passenger> passenger;

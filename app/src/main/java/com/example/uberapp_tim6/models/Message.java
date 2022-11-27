@@ -1,9 +1,10 @@
 package com.example.uberapp_tim6.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable  {
       private int id;
       private String messageType;
       private String message;

@@ -102,6 +102,7 @@ public class Mokap {
         List<Payment> payments = new ArrayList<Payment>();
         payments.add(payment);
         rides.get(0).setPayments(payments);
+        rides.get(0).setEnd(LocalDateTime.now().plusMinutes(30));
 
         Passenger passenger2 = new Passenger( 1,"Marko","Filipovic","markomarkovic@gmail.com","testtest","063221355", LocalDate.now(),"bla", null, null, null);
         passengers.clear();
@@ -111,14 +112,15 @@ public class Mokap {
         beggigning = new Location("100'' W", "250' E");
         end = new Location("250'' W", "100' E");
         route = new Route(2, beggigning, end, 100F, 500F, 5000);
-
-        rides.add(new Ride (2, driver, passengers, LocalDateTime.now(), 5000, Status.FINISHED,
+        Driver driver2 = new Driver(1,"Dejan","Kanta","dej@gmail.com","testtest","063221355", LocalDate.now(),"bla", "path", true, null);
+        rides.add(new Ride (2, driver2, passengers, LocalDateTime.now(), 1000, Status.FINISHED,
                 true, true, false, VehicleName.LUXURY, false, reviews2, null, null, route
         ));
         Payment payment2 = new Payment(1, PaymentType.PAYPAL, LocalDateTime.now(), 5000, rides.get(0));payments = rides.get(0).getPayments();
         List<Payment> payments2 = new ArrayList<Payment>();
         payments2.add(payment2);
         rides.get(1).setPayments(payments);
+        rides.get(1).setEnd(LocalDateTime.now().plusMinutes(45));
 
 
         return rides;

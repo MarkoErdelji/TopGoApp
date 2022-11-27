@@ -3,7 +3,9 @@ package com.example.uberapp_tim6.models;
 
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 
-public class VehicleType {
+import java.io.Serializable;
+
+public class VehicleType implements Serializable  {
     private int id;
     private VehicleName vehcleName;
     private float priceByKm;

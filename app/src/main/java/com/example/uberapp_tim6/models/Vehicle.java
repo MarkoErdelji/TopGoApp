@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.models;
 
-public class Vehicle {
+import java.io.Serializable;
+
+public class Vehicle implements Serializable  {
     private int id;
     private Driver driver;
     private String model;

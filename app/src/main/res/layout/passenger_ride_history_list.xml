@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_edges_layout"
+        android:layout_margin="5dp"
+
+
+        >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/driverPicture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/tate"
+        android:layout_marginRight="10sp"
+        android:layout_centerVertical="true"
+        app:civ_border_width="1dp"
+        />
+
+
+
+    <RelativeLayout
+        android:layout_toRightOf="@id/driverPicture"
+        android:id="@+id/textLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/driverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Pera Peric"
+            android:layout_marginRight="20sp"
+            android:layout_alignParentTop="true"
+            android:padding="1dp"/>
+
+        <TextView
+            android:id="@+id/startDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/gray"
+            android:text="bla"
+            android:layout_toRightOf="@id/driverName"
+            android:layout_alignParentTop="true"
+            android:padding="1dp"/>
+
+
+
+        <TextView android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testt"
+            android:layout_below="@id/startDate"
+            android:layout_marginRight="30sp"
+            android:padding="1dp"/>
+
+        <TextView android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testt"
+            android:layout_below="@id/date"
+            android:layout_marginRight="30sp"
+            android:padding="1dp"/>
+
+
+
+
+        <TextView android:id="@+id/route"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testt"
+            android:layout_below="@id/price"
+            android:padding="1dp"/>
+
+    </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

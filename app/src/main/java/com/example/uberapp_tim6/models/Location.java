@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.models;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable  {
     private String latitude;
     private String longitude;
 
