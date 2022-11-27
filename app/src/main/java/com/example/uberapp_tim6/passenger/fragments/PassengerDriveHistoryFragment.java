@@ -1,5 +1,6 @@
 package com.example.uberapp_tim6.passenger.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,10 +9,15 @@ import androidx.fragment.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.activities.MessageListActivity;
+import com.example.uberapp_tim6.activities.PassengerRideHistoryDetailActivity;
 import com.example.uberapp_tim6.adapters.PassengerRideHistoryAdapter;
+import com.example.uberapp_tim6.models.Message;
+import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
 import com.example.uberapp_tim6.tools.Mokap;
 
@@ -52,9 +58,8 @@ public class PassengerDriveHistoryFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toast.makeText(getActivity(), "Istorija", Toast.LENGTH_SHORT).show();
-        List<RideHistory> rh = Mokap.getDriverRideHistory();
 
-        PassengerRideHistoryAdapter adapter = new PassengerRideHistoryAdapter(getActivity(), Mokap.getDriverRideHistory());
+        PassengerRideHistoryAdapter adapter = new PassengerRideHistoryAdapter(getActivity(), Mokap.getAllRides());
         setListAdapter(adapter);
 
     }
@@ -65,4 +70,16 @@ public class PassengerDriveHistoryFragment extends ListFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passenger_drive_history, container, false);
     }
-}
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Ride ride = Mokap.getAllRides().get(position);
+
+        Intent intent = new Intent(getActivity(), PassengerRideHistoryDetailActivity.class);
+
+        intent.putExtra("ride", ride);
+        startActivityForResult(intent, 0);
+
+    }
+    }

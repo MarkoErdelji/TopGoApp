@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.models;
 
-public class Review {
+import java.io.Serializable;
+
+public class Review implements Serializable  {
     private int id;
     private float rating;
     private String comment;

@@ -54,6 +54,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".activities.PassengerRideHistoryDetailActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".passenger.PassengerMainActivity"
             android:exported="false">
             <meta-data

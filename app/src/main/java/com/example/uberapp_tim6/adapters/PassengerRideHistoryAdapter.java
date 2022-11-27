@@ -1,5 +1,6 @@
 package com.example.uberapp_tim6.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,15 +8,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.models.RideHistory;
+import com.example.uberapp_tim6.models.Ride;
 
 import java.util.List;
 
 public class PassengerRideHistoryAdapter extends BaseAdapter {
     private Activity activity;
-    private List<RideHistory> rides;
+    private List<Ride> rides;
 
-    public PassengerRideHistoryAdapter(Activity activity,List<RideHistory> rides) {
+    public PassengerRideHistoryAdapter(Activity activity,List<Ride> rides) {
         this.activity = activity;
         this.rides = rides;
     }
@@ -57,20 +58,28 @@ public class PassengerRideHistoryAdapter extends BaseAdapter {
      * popuniti view podacima i poslati listview da prikaze, i nastavice
      * sledecu iteraciju.
      * */
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        RideHistory rideHistory = this.rides.get(position);
+        Ride rideHistory = this.rides.get(position);
 
         if(convertView==null)
-            vi = activity.getLayoutInflater().inflate(R.layout.message_list, null);
+            vi = activity.getLayoutInflater().inflate(R.layout.passenger_ride_history_list, null);
 
-        TextView date = (TextView)vi.findViewById(R.id.name);
-        TextView info = (TextView)vi.findViewById(R.id.description);
-        String dateText  = "Date: " + rideHistory.getDate();
-        date.setText(dateText);
-        String infoText = "Destination: " + rideHistory.getDestination() + " Price: " + rideHistory.getPrice();
-        info.setText(infoText);
+        TextView startDate = (TextView)vi.findViewById(R.id.startDate);
+        TextView date = (TextView)vi.findViewById(R.id.date);
+        TextView name = (TextView)vi.findViewById(R.id.driverName);
+        TextView price = (TextView)vi.findViewById(R.id.price);
+        TextView route = (TextView)vi.findViewById(R.id.route);
+        name.setText(rideHistory.getDriver().getFirstName() + " " + rideHistory.getDriver().getLastName());
+        date.setText(rideHistory.getBeggining().getHour() + ":" + rideHistory.getBeggining().getMinute() + "-" +
+                rideHistory.getEnd().getHour() + ":" + rideHistory.getEnd().getMinute());
+        startDate.setText(rideHistory.getBeggining().toLocalDate().toString());
+        price.setText(Float.toString(rideHistory.getPrice()));
+        route.setText(rideHistory.getRoute().getBegginingLocation().getLatitude());
+        //String infoText = "Destination: " + rideHistory.getDestination() + " Price: " + rideHistory.getPrice();
+        //info.setText(infoText);
 
 
         return  vi;

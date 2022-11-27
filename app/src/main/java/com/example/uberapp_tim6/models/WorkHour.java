@@ -1,8 +1,9 @@
 package com.example.uberapp_tim6.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class WorkHour {
+public class WorkHour implements Serializable  {
     private int id;
     private LocalDateTime start;
     private LocalDateTime end;
