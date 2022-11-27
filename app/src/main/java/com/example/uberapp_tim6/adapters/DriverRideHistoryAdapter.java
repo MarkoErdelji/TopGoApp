@@ -74,7 +74,7 @@ public class DriverRideHistoryAdapter extends BaseAdapter {
         TextView price = (TextView)vi.findViewById(R.id.priceTextView);
         TextView rate = (TextView)vi.findViewById(R.id.ratingTextView);
 
-        String dateText = "Date: "  + rideHistory.getBeggining().toLocalDate();
+        String dateText = "" + rideHistory.getBeggining().toLocalDate();
         date.setText(dateText);
 
         String begginingText = "Beggining: " + rideHistory.getRoute().getBegginingLocation().getLatitude() + " " + rideHistory.getRoute().getBegginingLocation().getLongitude();
