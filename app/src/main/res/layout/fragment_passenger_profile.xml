@@ -42,7 +42,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginEnd="10sp"
-                    android:text="@string/first_name" />
+                    android:text="First Name:" />
 
                 <HorizontalScrollView
                     android:layout_width="180sp"
@@ -74,7 +74,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginEnd="10sp"
-                    android:text="@string/last_name" />
+                    android:text="Last Name:" />
 
                 <HorizontalScrollView
                     android:layout_width="180sp"
@@ -105,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginEnd="10sp"
-                    android:text="@string/username" />
+                    android:text="Username:" />
 
                 <HorizontalScrollView
                     android:layout_width="180sp"
@@ -136,7 +136,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginEnd="10sp"
-                    android:text="@string/phone_number" />
+                    android:text="Phone Number:" />
 
                 <HorizontalScrollView
                     android:layout_width="180sp"
@@ -178,6 +178,37 @@
                     android:fillViewport="true">
                     <TextView
                         android:id="@+id/dateValue"
+                        android:layout_width="wrap_content"
+                        android:gravity="center_vertical"
+                        android:scrollbars="horizontal"
+                        android:layout_height="match_parent"/>
+                </HorizontalScrollView>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/addressLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:layout_below="@id/dateLayout"
+                android:layout_marginTop="20sp">
+
+                <TextView
+                    android:id="@+id/addressTextBox"
+                    android:layout_width="130sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="10sp"
+                    android:text="Address:" />
+
+                <HorizontalScrollView
+                    android:layout_width="180sp"
+                    android:layout_toEndOf="@id/addressTextBox"
+                    android:layout_centerVertical="true"
+                    android:layout_height="30sp"
+                    android:fillViewport="true">
+                    <TextView
+                        android:id="@+id/addressValue"
                         android:layout_width="wrap_content"
                         android:gravity="center_vertical"
                         android:scrollbars="horizontal"

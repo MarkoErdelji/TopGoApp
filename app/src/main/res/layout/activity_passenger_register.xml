@@ -44,9 +44,11 @@
                 <EditText
                     android:id="@+id/nameTextBox"
                     android:hint="@string/first_name"
+                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="30sp"
-                    android:background="@drawable/edit_text" />
+                    android:background="@drawable/edit_text"
+                    android:inputType="text"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -61,7 +63,9 @@
                     android:id="@+id/surnameTextBox"
                     android:layout_width="match_parent"
                     android:hint="@string/last_name"
+                    android:maxLines="1"
                     android:layout_height="30sp"
+                    android:inputType="text"
                     android:background="@drawable/edit_text" />
             </RelativeLayout>
 
@@ -77,6 +81,7 @@
                     android:id="@+id/usernameTextBox"
                     android:layout_width="match_parent"
                     android:hint="@string/username"
+                    android:maxLines="1"
                     android:layout_height="30sp"
                     android:background="@drawable/edit_text"
                     android:inputType="textEmailAddress" />
@@ -95,6 +100,7 @@
                     android:layout_width="match_parent"
                     android:hint="@string/password"
                     android:layout_height="30sp"
+                    android:maxLines="1"
                     android:background="@drawable/edit_text"
                     android:inputType="textPassword" />
             </RelativeLayout>
@@ -110,6 +116,7 @@
                 <EditText
                     android:id="@+id/phoneNumberTextBox"
                     android:layout_width="match_parent"
+                    android:maxLines="1"
                     android:hint="@string/phone_number"
                     android:layout_height="30sp"
                     android:background="@drawable/edit_text"
@@ -117,9 +124,27 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/addressLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/phoneNumberLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
+
+                <EditText
+                    android:id="@+id/addressTextBox"
+                    android:layout_width="match_parent"
+                    android:maxLines="1"
+                    android:hint="@string/address"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
+                    android:inputType="textPostalAddress" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addressLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20sp">
 

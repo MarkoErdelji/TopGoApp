@@ -32,4 +32,5 @@
     <string name="begging">Begging</string>
     <string name="end">end</string>
     <string name="rating">Rating</string>
+    <string name="address">Address</string>
 </resources>

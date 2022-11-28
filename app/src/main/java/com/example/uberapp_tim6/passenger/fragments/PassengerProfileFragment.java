@@ -38,6 +38,7 @@ public class PassengerProfileFragment extends Fragment {
     private TextView email;
     private TextView phoneNumber;
     private TextView dateOfBirth;
+    private TextView address;
 
     public PassengerProfileFragment() {
         // Required empty public constructor
@@ -82,6 +83,7 @@ public class PassengerProfileFragment extends Fragment {
         email = getView().findViewById(R.id.usernameValue);
         phoneNumber = getView().findViewById(R.id.phoneNumberValue);
         dateOfBirth = getView().findViewById(R.id.dateValue);
+        address = getView().findViewById(R.id.addressValue);
 
         User passenger = Mokap.getPassengerProfile();
 
@@ -92,6 +94,7 @@ public class PassengerProfileFragment extends Fragment {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
         String formattedString = passenger.getDateOfBirth().format(formatter);
         dateOfBirth.setText(formattedString);
+        address.setText(passenger.getAddress());
 
     }
 }
