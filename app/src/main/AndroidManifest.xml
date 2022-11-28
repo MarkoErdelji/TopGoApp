@@ -13,7 +13,7 @@
         android:theme="@style/Theme.UberApp_Tim6"
         tools:targetApi="31">
         <activity
-            android:name=".CertainRideFromHistory"
+            android:name=".driver.CertainRideFromHistory"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

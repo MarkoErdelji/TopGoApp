@@ -5,34 +5,165 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".driver.CertainRideFromHistory">
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/closebar"
+                android:background="@drawable/close_bar_layout">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tripDetailsView"
+                    >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trip_details"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/tripDetailsView"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="180sp">
+                <ImageView
+                    android:id="@+id/closeIcon"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/close"
+                    />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/routeImageLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/closebar">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="250sp"
-                    android:src="@drawable/route"/>
+                    android:src="@drawable/route" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/routeImageLayout">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                android:id="@+id/tripDetailsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/routeImageLayout"
+                android:layout_marginStart="25sp"
+                android:layout_marginBottom="20sp">
 
-                    android:text="@string/date"/>
+                <TextView
+                    android:id="@+id/tripDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="50sp"
+                    android:text="@string/date" />
+
+                <TextView
+                    android:id="@+id/tripPriceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/tripDateTextView"
+                    android:textColor="@color/primaryC"
+                    android:text="@string/_100_0" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/fromLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tripDetailsLayout"
+                android:layout_marginStart="25sp"
+                android:layout_marginBottom="10sp">
+
+                <ImageView
+                    android:id="@+id/fromIcon"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/form_icon" />
+
+                <TextView
+                    android:id="@+id/fromTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/fromIcon"
+                    android:text="@string/from"
+                    android:textSize="11sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/toLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fromLayout"
+                android:layout_marginStart="25sp"
+                android:layout_marginBottom="20sp">
+
+                <ImageView
+                    android:id="@+id/toIcon"
+                    android:layout_width="15sp"
+                    android:layout_height="15sp"
+                    android:src="@drawable/to_icon" />
+
+                <TextView
+                    android:id="@+id/toTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/toIcon"
+                    android:text="@string/to"
+                    android:textSize="11sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toLayout"
+                android:layout_marginStart="25sp">
+
+                <RelativeLayout
+                    android:id="@+id/reviewTextViewLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reviews"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/reviewLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/reviewTextViewLayout">
+
+                    <ListView
+                        android:id="@+id/reviewListView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
 
-    </ScrollView>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

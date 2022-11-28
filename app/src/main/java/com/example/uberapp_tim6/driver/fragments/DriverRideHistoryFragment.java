@@ -1,22 +1,27 @@
 package com.example.uberapp_tim6.driver.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
+import com.example.uberapp_tim6.driver.CertainRideFromHistory;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
 import com.example.uberapp_tim6.tools.Mokap;
 
+import java.time.Clock;
 import java.util.List;
 
 /**
@@ -66,5 +71,18 @@ public class DriverRideHistoryFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_driver_ride_history, container, false);
+    }
+
+    @Override
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Ride ride = Mokap.getAllRides().get(position);
+
+
+        Intent intent = new Intent(getActivity(), CertainRideFromHistory.class);
+        intent.putExtra("ride", ride);
+        startActivityForResult(intent, 0);
+
+        System.out.println(ride.getId());
     }
 }

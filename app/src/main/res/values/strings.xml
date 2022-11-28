@@ -33,4 +33,11 @@
     <string name="end">end</string>
     <string name="rating">Rating</string>
     <string name="address">Address</string>
+    <string name="_100_0">$100.0</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="reviews">Reviews</string>
+    <string name="trip_details">Trip details</string>
+    <string name="nameLastName">Imeno Prezimic</string>
+    <string name="comment">Ovo je obican komentar</string>
 </resources>
