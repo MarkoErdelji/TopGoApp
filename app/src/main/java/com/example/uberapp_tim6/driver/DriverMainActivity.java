@@ -5,8 +5,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,10 +25,12 @@ import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverInboxFragment;
+import com.example.uberapp_tim6.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 
 import com.example.uberapp_tim6.models.NavItem;
+import com.example.uberapp_tim6.passenger.fragments.PassengerMainFragment;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
@@ -42,15 +48,40 @@ public class DriverMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+
+        Log.d("Cao majstore",userPrefs.getString("id","nema id"));
+        Log.d("Cao majstore",userPrefs.getString("email","nema id"));
+        Log.d("Cao majstore",userPrefs.getString("role","nema id"));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
         dvm = this;
+        FragmentTransition.to(DriverMainFragment.newInstance(), dvm, false,R.id.mainContent);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.ic_topgo_logo);
         toolbar.setTitle("");
+
         setSupportActionBar(toolbar);
+
+        View logoView = toolbar.getChildAt(0);
+
+        logoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragManager = dvm.getSupportFragmentManager();
+                int count = dvm.getSupportFragmentManager().getBackStackEntryCount();
+                Fragment frag = fragManager.getFragments().get(count>0?count-1:count);
+                if (frag.getClass().equals(DriverMainFragment.class)){
+
+                }
+                else{
+                    FragmentTransition.to(DriverMainFragment.newInstance(), dvm, false,R.id.mainContent);
+                }
+            }
+        });
 
         profileLayout = findViewById(R.id.profileBox);
 

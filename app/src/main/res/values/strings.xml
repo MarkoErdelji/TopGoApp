@@ -16,7 +16,7 @@
     <string name="topgo">TopGo</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="rlogin">RLogin</string>
     <string name="name">Name</string>
     <string name="text">Text</string>
@@ -26,7 +26,7 @@
     <string name="destination">Destination: </string>
     <string name="price">Price: </string>
     <string name="logout">logout</string>
-    <string name="create_account_here">Create account here</string>
+    <string name="create_account_here">CREATE ACCOUNT HERE!</string>
     <string name="not_registered">Not registered?</string>
     <string name="date_of_birth">Date of Birth:</string>
     <string name="begging">Begging</string>
@@ -40,4 +40,5 @@
     <string name="trip_details">Trip details</string>
     <string name="nameLastName">Imeno Prezimic</string>
     <string name="comment">Ovo je obican komentar</string>
+    <string name="sign_in">Sign in</string>
 </resources>
