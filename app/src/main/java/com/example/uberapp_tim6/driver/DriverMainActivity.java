@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -42,6 +44,11 @@ public class DriverMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+
+        Log.d("Cao majstore",userPrefs.getString("id","nema id"));
+        Log.d("Cao majstore",userPrefs.getString("email","nema id"));
+        Log.d("Cao majstore",userPrefs.getString("role","nema id"));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
