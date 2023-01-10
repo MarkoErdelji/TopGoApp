@@ -1,17 +1,26 @@
 package com.example.uberapp_tim6.passenger.fragments;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.uberapp_tim6.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +40,11 @@ public class PassengerMainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        Context ctx = this.getContext();
+        Configuration.getInstance().load(ctx, getDefaultSharedPreferences(ctx));
 
     }
 
@@ -39,6 +53,7 @@ public class PassengerMainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_passenger_main, container, false);
+
 
 
     }
@@ -78,5 +93,14 @@ public class PassengerMainFragment extends Fragment {
         });
 
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        MapView map = view.findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+        map.setMultiTouchControls(true);
+
+        GeoPoint startPoint = new GeoPoint(45.2517, 19.8369);
+
+        map.getController().setZoom(15.0);
+        map.getController().animateTo(startPoint);
     }
 }
