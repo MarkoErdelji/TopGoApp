@@ -11,15 +11,21 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.activities.MessageListActivity;
@@ -30,10 +36,14 @@ import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 
 import com.example.uberapp_tim6.models.NavItem;
-import com.example.uberapp_tim6.passenger.fragments.PassengerMainFragment;
+import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DriverMainActivity extends AppCompatActivity {
 
@@ -45,19 +55,42 @@ public class DriverMainActivity extends AppCompatActivity {
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private RelativeLayout profileLayout;
     private ListView mDrawerList;
+    private UserInfoDTO driver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dvm = this;
         SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
 
-        Log.d("Cao majstore",userPrefs.getString("id","nema id"));
-        Log.d("Cao majstore",userPrefs.getString("email","nema id"));
-        Log.d("Cao majstore",userPrefs.getString("role","nema id"));
+
+        Call<UserInfoDTO> driverInfoDTOCall = ServiceUtils.driverService.getDriverById(userPrefs.getString("id","nema id"));
+        driverInfoDTOCall.enqueue(new Callback<UserInfoDTO>() {
+            @Override
+            public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
+                driver = response.body();
+                Log.d("Cao majstore",driver.getName() + " " + driver.getSurname());
+
+                SetDriverInfo(driver);
+
+                FragmentTransition.to(DriverMainFragment.newInstance(driver), dvm, false,R.id.mainContent);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+
+            }
+        });
+
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_main);
 
-        dvm = this;
-        FragmentTransition.to(DriverMainFragment.newInstance(), dvm, false,R.id.mainContent);
+
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -78,12 +111,12 @@ public class DriverMainActivity extends AppCompatActivity {
 
                 }
                 else{
-                    FragmentTransition.to(DriverMainFragment.newInstance(), dvm, false,R.id.mainContent);
+                    FragmentTransition.to(DriverMainFragment.newInstance(driver), dvm, false,R.id.mainContent);
                 }
             }
         });
 
-        profileLayout = findViewById(R.id.profileBox);
+
 
         mTitle = getTitle();
         mDrawerLayout = findViewById(R.id.drawerLayout);
@@ -97,13 +130,6 @@ public class DriverMainActivity extends AppCompatActivity {
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        profileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransition.to(DriverProfileFragment.newInstance(), dvm, false,R.id.mainContent);
-                mDrawerLayout.closeDrawers();
-            }
-        });
 
         //mDrawerLayout.setDrawerShadow(androidx.constraintlayout.widget.R.drawable.abc_ic_star_black_48dp, GravityCompat.START);
 
@@ -137,6 +163,29 @@ public class DriverMainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void SetDriverInfo(UserInfoDTO driver) {
+
+        TextView driverInfo = findViewById(R.id.driverInfoTextView);
+        driverInfo.setText(driver.getName() + " " + driver.getSurname());
+
+        int index = driver.getProfilePicture().indexOf(",") + 1;
+        String base64 = driver.getProfilePicture().substring(index);
+        byte[] imageBytes = Base64.decode(base64, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        ImageView image = findViewById(R.id.profileIcon);
+        image.setImageBitmap(bitmap);
+
+        profileLayout = findViewById(R.id.profileBox);
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(DriverProfileFragment.newInstance(driver), dvm, false,R.id.mainContent);
+                mDrawerLayout.closeDrawers();
+            }
+        });
     }
 
     @Override
