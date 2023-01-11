@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="20sp">
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profileIcon"
                         android:layout_width="50sp"
                         android:layout_height="50sp"
@@ -62,11 +62,11 @@
                         />
 
                     <TextView
+                        android:id="@+id/driverInfoTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/textC"
                         android:singleLine="true"
-                        android:text="@string/userPlaceholder"
                         android:textStyle="bold"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="20sp"

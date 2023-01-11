@@ -1,11 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".driver.fragments.DriverMainFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <org.osmdroid.views.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-</LinearLayout>
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottom_navigation_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:minHeight="?attr/actionBarSize"
+            app:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/my_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal">
+
+                    <LinearLayout
+                        android:background="@color/primaryC"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_alignParentBottom="true">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:id="@+id/bottom_drawer_show_icon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ic_action_arrow_up" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="30dp"
+                android:paddingBottom="100dp">
+                <RelativeLayout
+                    android:id="@+id/routeInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/primaryC"
+                        android:layout_centerHorizontal="true"/>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/departureIcon"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/car_icon"/>
+                        <TextView
+                            android:layout_below="@id/departureIcon"
+                            android:id="@+id/departure_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="bla"
+                            android:layout_centerHorizontal="true"
+                            />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true">
+                    <ImageView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/destinationIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/car_icon" />
+                        <TextView
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/destination_text_view"
+                            android:layout_below="@id/destinationIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="asdasdasd"
+                            android:layout_centerHorizontal="true"
+                            />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/PassengersTextView"
+                     android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Passengers"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/routeInfo"
+                    />
+
+                <RelativeLayout
+
+                    android:id="@+id/passengerIcons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/PassengersTextView">
+
+
+                </RelativeLayout>
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/create_ride_button_layout"
+                    android:layout_width="match_parent"
+                    android:padding="10dp"
+                    android:gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/passengerIcons">
+
+
+
+
+                    <Button
+                        android:background="@drawable/edit_text"
+                        android:id="@+id/panic_button"
+                        android:layout_width="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:textAlignment="center"
+                        android:text="Panic"
+                        android:layout_height="45dp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
