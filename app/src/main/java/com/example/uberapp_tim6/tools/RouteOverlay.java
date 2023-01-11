@@ -24,12 +24,13 @@ public class RouteOverlay extends Overlay {
             this.routePoints = routePoints;
             this.routePolyline = new Polyline();
             this.routePolyline.setPoints(routePoints);
+            this.routePolyline.setColor(Color.RED);
         }
 
         @Override
         public void draw(Canvas canvas, MapView mapView, boolean shadow) {
             if (!shadow) {
-                this.routePolyline.draw(canvas, mapView, shadow);
+                this.routePolyline.draw(canvas, mapView,shadow);
             }
         }
     }
