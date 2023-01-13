@@ -8,6 +8,14 @@ public class GeoLocationDTO {
 
     private float longitude;
 
+    public GeoLocationDTO() {
+    }
+
+    public GeoLocationDTO(float v, float v1) {
+        setLatitude(v);
+        setLongitude(v1);
+    }
+
     public String getAddress() {
         return address;
     }

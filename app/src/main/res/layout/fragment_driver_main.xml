@@ -173,6 +173,18 @@
                     android:layout_below="@id/status_text">
 
 
+                    <Button
+                        android:background="@drawable/edit_text"
+                        android:id="@+id/start_button"
+                        android:layout_width="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:textAlignment="center"
+                        android:text="Start"
+                        android:layout_marginLeft="10px"
+                        android:layout_height="45dp"
+                        android:visibility="gone"
+                        />
 
 
                     <Button
@@ -184,7 +196,8 @@
                         android:textAlignment="center"
                         android:text="Panic"
                         android:layout_marginRight="10px"
-                        android:layout_height="45dp" />
+                        android:layout_height="45dp"
+                        android:visibility="gone"/>
 
                     <Button
                         android:background="@drawable/edit_text"
@@ -196,7 +209,8 @@
                         android:text="End"
                         android:layout_marginLeft="10px"
                         android:layout_toRightOf="@id/panic_button"
-                        android:layout_height="45dp" />
+                        android:layout_height="45dp"
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
             </RelativeLayout>
