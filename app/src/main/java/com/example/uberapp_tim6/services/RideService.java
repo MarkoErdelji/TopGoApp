@@ -4,6 +4,8 @@ import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,6 +23,9 @@ public interface RideService {
 
     @GET("ride/driver/{driverId}/accepted")
     Call<RideDTO> getDriverAcceptedRide(@Path("driverId") String driverId);
+
+    @GET("ride/driver/{driverId}/finished")
+    Call<List<RideDTO>> getDriverFinishedRides(@Path("driverId") String driverId);
 
     @PUT("ride/{rideId}/end")
     Call<RideDTO> endRide(@Path("rideId") String rideId);

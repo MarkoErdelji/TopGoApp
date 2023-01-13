@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.driver.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,17 +14,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.uberapp_tim6.DTOS.RideDTO;
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
 import com.example.uberapp_tim6.driver.CertainRideFromHistory;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
+import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.Clock;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +41,9 @@ import java.util.List;
  */
 public class DriverRideHistoryFragment extends ListFragment {
 
+    private static final String ARG_DRIVER = "arg_driver";
+    private DriverRideHistoryFragment fragmet;
+    private List<RideDTO> finishedRides;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,18 +64,39 @@ public class DriverRideHistoryFragment extends ListFragment {
      * @return A new instance of fragment DriverRideHistoryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DriverRideHistoryFragment newInstance() {
-        return new DriverRideHistoryFragment();
+    public static DriverRideHistoryFragment newInstance(UserInfoDTO d) {
+        DriverRideHistoryFragment fragment = new DriverRideHistoryFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_DRIVER, d);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getActivity(), "Istorija", Toast.LENGTH_SHORT).show();
-        List<Ride> rh = Mokap.getAllRides();
+        UserInfoDTO driver = (UserInfoDTO) getArguments().getSerializable(ARG_DRIVER);
 
-        DriverRideHistoryAdapter adapter = new DriverRideHistoryAdapter(getActivity(), Mokap.getAllRides());
-        setListAdapter(adapter);
+        Call<List<RideDTO>> call = ServiceUtils.rideService.getDriverFinishedRides(driver.getId().toString());
+        call.enqueue(new Callback<List<RideDTO>>() {
+            @Override
+            public void onResponse(Call<List<RideDTO>> call, Response<List<RideDTO>> response) {
+                if (response.body() != null) {
+                    finishedRides = response.body();
+                    DriverRideHistoryAdapter adapter = new DriverRideHistoryAdapter(getActivity(), finishedRides);
+                    setListAdapter(adapter);
+                } else {
+                    Toast.makeText(getContext(), "No rides", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<RideDTO>> call, Throwable t) {
+            }
+        });
+
 
     }
 
@@ -76,7 +110,11 @@ public class DriverRideHistoryFragment extends ListFragment {
     @Override
     public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Ride ride = Mokap.getAllRides().get(position);
+
+
+        System.out.println("##########################");
+        System.out.println(finishedRides.get(position).getId());
+        RideDTO ride = finishedRides.get(position);
 
 
         Intent intent = new Intent(getActivity(), CertainRideFromHistory.class);

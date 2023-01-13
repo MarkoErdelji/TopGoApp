@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class DriverRideHistoryAdapter extends BaseAdapter {
     private Activity activity;
-    private List<Ride> rides;
+    private List<RideDTO> rides;
 
-    public DriverRideHistoryAdapter(Activity activity,List<Ride> rides) {
+    public DriverRideHistoryAdapter(Activity activity,List<RideDTO> rides) {
         this.activity = activity;
         this.rides = rides;
     }
@@ -63,7 +64,7 @@ public class DriverRideHistoryAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        Ride rideHistory = this.rides.get(position);
+        RideDTO rideHistory = this.rides.get(position);
 
         if(convertView==null)
             vi = activity.getLayoutInflater().inflate(R.layout.histoty_item_list, null);
@@ -74,19 +75,19 @@ public class DriverRideHistoryAdapter extends BaseAdapter {
         TextView price = (TextView)vi.findViewById(R.id.priceTextView);
         TextView rate = (TextView)vi.findViewById(R.id.ratingTextView);
 
-        String dateText = "" + rideHistory.getBeggining().toLocalDate();
+        String dateText = "" + rideHistory.getStartTime().toLocalDate();
         date.setText(dateText);
 
-        String begginingText = "Beggining: " + rideHistory.getRoute().getBegginingLocation().getLatitude() + " " + rideHistory.getRoute().getBegginingLocation().getLongitude();
+        String begginingText = "Beggining: " + rideHistory.getLocations().get(0).getDeparture().getAddress();
         beggining.setText(begginingText);
 
-        String endText = "End: " + rideHistory.getRoute().getDestination().getLatitude() + " " + rideHistory.getRoute().getDestination().getLongitude();
+        String endText = "End: " + rideHistory.getLocations().get(0).getDestination().getAddress();
         end.setText(endText);
 
-        String priceText = "Price: " + rideHistory.getPrice() + "$";
+        String priceText = "Price: " + rideHistory.getTotalCost() + "RSD";
         price.setText(priceText);
 
-        String rateText = "Rating: " + rideHistory.getReviews().get(0).getRating();
+        String rateText = "Rating: 4.5";
         rate.setText(rateText);
 
 
