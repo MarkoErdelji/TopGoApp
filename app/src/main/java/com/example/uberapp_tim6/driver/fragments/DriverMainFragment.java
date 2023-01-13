@@ -32,6 +32,7 @@ import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.models.Vehicle;
 import com.example.uberapp_tim6.models.enumerations.Status;
+import com.example.uberapp_tim6.services.MapService;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.RouteOverlay;
 import com.google.android.material.appbar.AppBarLayout;
@@ -178,7 +179,7 @@ public class DriverMainFragment extends Fragment {
         map.setMultiTouchControls(true);
 
         center = new GeoLocationDTO(45.2396f,19.8227f);
-        ZoomTo(center,14.0);
+        MapService.ZoomTo(center,14.0,map);
 
 
 
@@ -191,8 +192,8 @@ public class DriverMainFragment extends Fragment {
                     public void onResponse(Call<PanicDTO> call, Response<PanicDTO> response) {
                         response.body().getRide().setStatus(Status.PANIC);
                         SetCurrentRide(response.body().getRide());
-                        DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon);
-                        ZoomTo(vehicle.getCurrentLocation(),20.0);
+                        MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
+                        MapService.ZoomTo(vehicle.getCurrentLocation(),20.0,map);
 
                     }
 
@@ -212,7 +213,7 @@ public class DriverMainFragment extends Fragment {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                         SetCurrentRide(response.body());
-                        DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon);
+                        MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
                     }
 
                     @Override
@@ -231,7 +232,7 @@ public class DriverMainFragment extends Fragment {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                         SetCurrentRide(response.body());
-                        ZoomTo(center,14.0);
+                        MapService.ZoomTo(center,14.0,map);
                     }
 
                     @Override
@@ -272,8 +273,8 @@ public class DriverMainFragment extends Fragment {
                             vehicle = response.body();
                             GeoLocationDTO departureLocation= response.body().getCurrentLocation();
                             GeoLocationDTO destinationLocation= activeRide.getLocations().get(0).getDeparture();
-                            getRoute(departureLocation,destinationLocation,R.drawable.car_icon,R.drawable.destination_marker);
-                            ZoomTo(response.body().currentLocation,16.0);
+                            MapService.getRoute(departureLocation,destinationLocation,R.drawable.car_icon,R.drawable.destination_marker,map,getContext());
+                            MapService.ZoomTo(response.body().currentLocation,16.0,map);
 
                         }
 
@@ -312,8 +313,8 @@ public class DriverMainFragment extends Fragment {
                     vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
                         @Override
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
-                            DrawMarker(response.body().currentLocation,R.drawable.car_icon);
-                            ZoomTo(response.body().currentLocation,16.0);
+                            MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map,getContext());
+                            MapService.ZoomTo(response.body().currentLocation,16.0,map);
                         }
 
                         @Override
@@ -354,7 +355,7 @@ public class DriverMainFragment extends Fragment {
         {
             map.getOverlays().clear();
             setButtonsVisibility(View.VISIBLE,View.VISIBLE,View.GONE);
-            getRoute(departureLocation,destinationLocation,R.drawable.destination_marker,R.drawable.destination_marker);
+            MapService.getRoute(departureLocation,destinationLocation,R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
         }
         if(activeRide.getStatus().toString().equals("ACCEPTED"))
         {
@@ -399,6 +400,7 @@ public class DriverMainFragment extends Fragment {
                     passengerIcon.setImageResource(R.drawable.tate);
                     layoutParams = (RelativeLayout.LayoutParams) passengerIcon.getLayoutParams();
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
                     passengerIcon.setLayoutParams(layoutParams);
                     passengerLayout.addView(passengerIcon);
                     // Create new passenger name TextView
@@ -424,104 +426,5 @@ public class DriverMainFragment extends Fragment {
         }
     }
 
-    private void getRoute(GeoLocationDTO departure, GeoLocationDTO destination,int iconDeparture,int iconDestination) {
 
-        String apiKey = "5b3ce3597851110001cf624865f18297bb26459a9f779c015d573b96";
-        String baseUrl = "https://api.openrouteservice.org/v2/directions/driving-car";
-        String start = departure.getLongitude() + "," + departure.getLatitude();
-        String end = destination.getLongitude() + "," + destination.getLatitude();
-
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("api.openrouteservice.org")
-                .addPathSegment("v2")
-                .addPathSegment("directions")
-                .addPathSegment("driving-car")
-                .addQueryParameter("api_key", apiKey)
-                .addQueryParameter("start", start)
-                .addQueryParameter("end", end)
-                .build();
-
-        // Send the API request and parse the response
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        OkHttpClient client = new OkHttpClient();
-        client.newCall(request).enqueue(new okhttp3.Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.d("REZ",e.getMessage());
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
-                Log.d("REZ", "okokoko");
-                if (response.isSuccessful()) {
-
-                    String responseString = response.body().string();
-                    Log.d("REZ", responseString);
-                    try {
-                        // Parse the JSON response
-
-                        JSONObject json = new JSONObject(responseString);
-                        JSONArray features = json.getJSONArray("features");
-                        JSONObject firstFeature = features.getJSONObject(0);
-                        JSONObject geometry = firstFeature.getJSONObject("geometry");
-                        JSONArray coordinates = geometry.getJSONArray("coordinates");
-                        List<GeoPoint> routePoints = new ArrayList<>();
-                        for (int i = 0; i < coordinates.length(); i++) {
-                            JSONArray coord = coordinates.getJSONArray(i);
-
-                            double lon = coord.getDouble(0);
-                            double lat = coord.getDouble(1);
-                            routePoints.add(new GeoPoint(lat, lon));
-                        }
-                        // Add the route overlay to the map
-                        DrawRoute(routePoints,departure,destination,iconDeparture,iconDestination);
-                    } catch (JSONException e) {
-                        Log.d("ERRROOOR", e.getMessage());
-                    }
-                } else {
-                    Log.d("REZ", "Request failed with code: " + response.code());
-                    Log.d("REZ", "Response message: " + response.message());
-                    String responseString = response.body().string();
-                    Log.d("REZ", "Response Body: " + responseString);
-                }
-            }
-        });
-    }
-
-
-    private void DrawMarker(GeoLocationDTO location,int icon)
-    {
-        Bitmap customIcon = BitmapFactory.decodeResource(getResources(),icon);
-        customIcon = Bitmap.createScaledBitmap(customIcon, 100, 100, false);
-        BitmapDrawable customIconDrawable = new BitmapDrawable(getResources(), customIcon);
-
-        Marker marker = new Marker(map);
-
-        marker.setPosition(new GeoPoint(location.getLatitude(), location.getLongitude()));
-        marker.setIcon(customIconDrawable);
-        marker.setAnchor(0.5f,1f);
-        if(icon == R.drawable.car_icon)marker.setAnchor(0.5f,0.5f);
-        map.getOverlays().add(marker);
-        map.invalidate();
-
-    }
-
-    private void DrawRoute(List<GeoPoint> routePoints, GeoLocationDTO departure, GeoLocationDTO destination,int iconDeparture,int iconDestination) {
-
-
-
-        map.getOverlays().add(new RouteOverlay(routePoints));
-        DrawMarker(departure,iconDeparture);
-        DrawMarker(destination,iconDestination);
-        map.invalidate();
-    }
-    private void ZoomTo(GeoLocationDTO location,double zoom)
-    {
-        GeoPoint startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-        map.getController().setZoom(zoom);
-        map.getController().animateTo(startPoint);
-    }
 }
