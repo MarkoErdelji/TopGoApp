@@ -41,4 +41,7 @@
     <string name="nameLastName">Imeno Prezimic</string>
     <string name="comment">Ovo je obican komentar</string>
     <string name="sign_in">Sign in</string>
+    <string name="ride_finished">Ride Finished!</string>
+    <string name="great">Great</string>
+    <string name="end_time">End Time:</string>
 </resources>

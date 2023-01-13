@@ -13,5 +13,6 @@
     <color name="textC">#FF000000</color>
     <color name="blackShadows">#FFE05D</color>
     <color name="silverSand">#E7E7E7</color>
+    <color name="yellow">#FFEB3B</color>
 
 </resources>
