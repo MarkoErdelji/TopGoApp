@@ -2,25 +2,26 @@ package com.example.uberapp_tim6.driver.fragments;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,31 +35,19 @@ import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserRef;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.models.Vehicle;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.MapService;
 import com.example.uberapp_tim6.services.ServiceUtils;
-import com.example.uberapp_tim6.tools.RouteOverlay;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Marker;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -191,22 +180,7 @@ public class DriverMainFragment extends Fragment {
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<PanicDTO> call = ServiceUtils.rideService.panicRide(new ReasonDTO("test"),activeRide.getId().toString());
-                call.enqueue(new Callback<PanicDTO>() {
-                    @Override
-                    public void onResponse(Call<PanicDTO> call, Response<PanicDTO> response) {
-                        response.body().getRide().setStatus(Status.PANIC);
-                        SetCurrentRide(response.body().getRide());
-                        MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
-                        MapService.ZoomTo(vehicle.getCurrentLocation(),20.0,map);
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<PanicDTO> call, Throwable t) {
-
-                    }
-                });
+                PanicDialog();
 
             }
         });
@@ -238,6 +212,7 @@ public class DriverMainFragment extends Fragment {
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                         SetCurrentRide(response.body());
                         MapService.ZoomTo(center,14.0,map);
+                        endRideDialog(response.body());
                     }
 
                     @Override
@@ -251,9 +226,10 @@ public class DriverMainFragment extends Fragment {
         });
     }
 
+
     private void showAcceptancePopUp(){
         Call<RideDTO> call = ServiceUtils.rideService.getDriverAcceptedRide(driver.getId().toString());
-        call.enqueue(new Callback<RideDTO>(){
+        call.enqueue(new Callback<RideDTO>() {
             @Override
             public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                 if (response.body() != null) {
@@ -286,9 +262,7 @@ public class DriverMainFragment extends Fragment {
                     // Create and show the dialog
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getContext(), "No rides", Toast.LENGTH_SHORT).show();
 
                 }
@@ -297,9 +271,84 @@ public class DriverMainFragment extends Fragment {
 
             @Override
             public void onFailure(Call<RideDTO> call, Throwable t) {
+            }
+        });
+    }
+    private void endRideDialog(RideDTO body) {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.end_dialog, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+
+        Button okButton = dialogView.findViewById(R.id.btn_ok);
+        TextView price = dialogView.findViewById(R.id.price_txt);
+        TextView endTime = dialogView.findViewById(R.id.end_time_txt);
+        price.setText("Price: " + (int) body.getTotalCost());
+        endTime.setText("End time: " + body.getEndTime().getHour() + ":" + body.getEndTime().getMinute());
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
 
             }
         });
+    }
+
+    private void PanicDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.panic_dialog, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+
+        Button okButton = dialogView.findViewById(R.id.btn_ok);
+        Button cancelButton = dialogView.findViewById(R.id.btn_cancel);
+        EditText reason = dialogView.findViewById(R.id.et_message);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<PanicDTO> call = ServiceUtils.rideService.panicRide(new ReasonDTO(reason.getText().toString()),activeRide.getId().toString());
+                call.enqueue(new Callback<PanicDTO>() {
+
+                    @Override
+                    public void onResponse(Call<PanicDTO> call, Response<PanicDTO> response) {
+
+                        response.body().getRide().setStatus(Status.PANIC);
+                        SetCurrentRide(response.body().getRide());
+                        MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
+                        MapService.ZoomTo(vehicle.getCurrentLocation(),20.0,map);
+
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<PanicDTO> call, Throwable t) {
+
+                    }
+                });
+                dialog.dismiss();
+
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+
+            }
+        });
+
 
 
     }

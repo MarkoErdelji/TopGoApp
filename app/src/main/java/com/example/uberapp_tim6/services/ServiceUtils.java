@@ -19,7 +19,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceUtils {
 
+
     public static final String SERVICE_API_PATH = "http://192.168.244.4:8000/api/";
+
 
     public static OkHttpClient test(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
