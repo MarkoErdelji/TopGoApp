@@ -6,12 +6,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
@@ -25,11 +23,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
+import com.example.uberapp_tim6.DTOS.PanicDTO;
+import com.example.uberapp_tim6.DTOS.ReasonDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserRef;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.models.Vehicle;
+import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.RouteOverlay;
 import com.google.android.material.appbar.AppBarLayout;
@@ -74,7 +76,13 @@ public class DriverMainFragment extends Fragment {
     private AppBarLayout appBarLayout;
     private Button panicButton;
     private Button endButton;
+    private Button startButton;
     private RideDTO activeRide;
+    private boolean validActive;
+    private boolean validAccepted;
+    private TextView status;
+    private VehicleInfoDTO vehicle;
+    private GeoLocationDTO center;
 
     public static DriverMainFragment newInstance(UserInfoDTO d) {
         DriverMainFragment fragment = new DriverMainFragment();
@@ -118,7 +126,9 @@ public class DriverMainFragment extends Fragment {
         this.view = view;
         panicButton = view.findViewById(R.id.panic_button);
         endButton = view.findViewById(R.id.end_button);
+        startButton = view.findViewById(R.id.start_button);
         appBarLayout = view.findViewById(R.id.app_bar);
+        status = view.findViewById(R.id.status_text);
         View v = view.findViewById(R.id.bottom_navigation_container);
         View appBar = view.findViewById(R.id.app_bar);
         ImageView arrow = view.findViewById(R.id.bottom_drawer_show_icon);
@@ -160,21 +170,56 @@ public class DriverMainFragment extends Fragment {
         });
 
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        checkForCurrentRide();
 
-        checkForActiveRide();
 
         map = view.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setMultiTouchControls(true);
 
-        GeoPoint startPoint = new GeoPoint(45.2517, 19.8369);
+        center = new GeoLocationDTO(45.2396f,19.8227f);
+        ZoomTo(center,14.0);
 
-        map.getController().setZoom(15.0);
-        map.getController().animateTo(startPoint);
+
 
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Call<PanicDTO> call = ServiceUtils.rideService.panicRide(new ReasonDTO("test"),activeRide.getId().toString());
+                call.enqueue(new Callback<PanicDTO>() {
+                    @Override
+                    public void onResponse(Call<PanicDTO> call, Response<PanicDTO> response) {
+                        response.body().getRide().setStatus(Status.PANIC);
+                        SetCurrentRide(response.body().getRide());
+                        DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon);
+                        ZoomTo(vehicle.getCurrentLocation(),20.0);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<PanicDTO> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<RideDTO> call = ServiceUtils.rideService.startRide(activeRide.getId().toString());
+                call.enqueue(new Callback<RideDTO>() {
+                    @Override
+                    public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                        SetCurrentRide(response.body());
+                        DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon);
+                    }
+
+                    @Override
+                    public void onFailure(Call<RideDTO> call, Throwable t) {
+
+                    }
+                });
 
             }
         });
@@ -185,7 +230,8 @@ public class DriverMainFragment extends Fragment {
                 call.enqueue(new Callback<RideDTO>() {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
-                        Log.d("Status: " ,response.body().getStatus().toString());
+                        SetCurrentRide(response.body());
+                        ZoomTo(center,14.0);
                     }
 
                     @Override
@@ -199,31 +245,75 @@ public class DriverMainFragment extends Fragment {
         });
     }
 
-    private void checkForActiveRide() {
+    private void setButtonsVisibility(int end, int panic, int start) {
+        endButton.setVisibility(end);
+        panicButton.setVisibility(panic);
+        startButton.setVisibility(start);
+    }
+
+    private void checkForCurrentRide() {
+        checkForActiveRide();
+
+    }
+    private boolean checkForAcceptedRide() {
+
+        Call<RideDTO> call = ServiceUtils.rideService.getDriverAcceptedRide(driver.getId().toString());
+        call.enqueue(new Callback<RideDTO>(){
+            @Override
+            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if (response.body() != null) {
+                    SetCurrentRide(response.body());
+
+
+                    Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
+                    vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
+                        @Override
+                        public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
+                            vehicle = response.body();
+                            GeoLocationDTO departureLocation= response.body().getCurrentLocation();
+                            GeoLocationDTO destinationLocation= activeRide.getLocations().get(0).getDeparture();
+                            getRoute(departureLocation,destinationLocation,R.drawable.car_icon,R.drawable.destination_marker);
+                            ZoomTo(response.body().currentLocation,16.0);
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
+
+                        }
+                    });
+
+
+                }
+                else
+                {
+                    appBarLayout.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RideDTO> call, Throwable t) {
+
+            }
+        });
+    return false;
+    }
+
+    private boolean checkForActiveRide() {
         Call<RideDTO> call = ServiceUtils.rideService.getDriverActiveRide(driver.getId().toString());
         call.enqueue(new Callback<RideDTO>() {
             @Override
             public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                 if (response.body() != null) {
-                    activeRide = response.body();
-                    ShowActiveRide(response.body());
-                    TextView destination = view.findViewById(R.id.destination_text_view);
-                    TextView departure = view.findViewById(R.id.departure_text_view);
-                    destination.setText(response.body().getLocations().get(0).getDestination().getAddress());
-                    departure.setText(response.body().getLocations().get(0).getDeparture().getAddress());
-                    GeoLocationDTO departureLocation= response.body().getLocations().get(0).getDeparture();
-                    GeoLocationDTO destinationLocation= response.body().getLocations().get(0).getDestination();
-                    getRoute(departureLocation,destinationLocation);
-                    Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
-                    TextView time = view.findViewById(R.id.start_time_text);
-                    time.setText("Starting Time: " + response.body().getStartTime().getHour()+":" + response.body().getStartTime().getMinute());
-                    TextView status = view.findViewById(R.id.status_text);
-                    status.setText(response.body().getStatus().toString());
+                    SetCurrentRide(response.body());
 
+                    Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
                     vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
                         @Override
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
                             DrawMarker(response.body().currentLocation,R.drawable.car_icon);
+                            ZoomTo(response.body().currentLocation,16.0);
                         }
 
                         @Override
@@ -234,20 +324,53 @@ public class DriverMainFragment extends Fragment {
                 }
                 else
                 {
-                    appBarLayout.setVisibility(View.GONE);
-                    Log.d("Cao majstore", "Driver has no active rides");
+                    checkForAcceptedRide();
                 }
 
             }
 
             @Override
             public void onFailure(Call<RideDTO> call, Throwable t) {
-                Log.d("Cao majstore",t.getMessage());
-
-
 
             }
         });
+        return false;
+    }
+
+    private void SetCurrentRide(RideDTO response) {
+        activeRide = response;
+        ShowActiveRide(activeRide);
+        TextView destination = view.findViewById(R.id.destination_text_view);
+        TextView departure = view.findViewById(R.id.departure_text_view);
+        destination.setText(activeRide.getLocations().get(0).getDestination().getAddress());
+        departure.setText(activeRide.getLocations().get(0).getDeparture().getAddress());
+        TextView time = view.findViewById(R.id.start_time_text);
+        time.setText("Starting Time: " + activeRide.getStartTime().getHour()+":" + activeRide.getStartTime().getMinute());
+        status.setText(activeRide.getStatus().toString());
+        GeoLocationDTO departureLocation= activeRide.getLocations().get(0).getDeparture();
+        GeoLocationDTO destinationLocation= activeRide.getLocations().get(0).getDestination();
+
+        if(activeRide.getStatus().toString().equals("ACTIVE"))
+        {
+            map.getOverlays().clear();
+            setButtonsVisibility(View.VISIBLE,View.VISIBLE,View.GONE);
+            getRoute(departureLocation,destinationLocation,R.drawable.destination_marker,R.drawable.destination_marker);
+        }
+        if(activeRide.getStatus().toString().equals("ACCEPTED"))
+        {
+            map.getOverlays().clear();
+            setButtonsVisibility(View.GONE,View.GONE,View.VISIBLE);
+        }
+        if(activeRide.getStatus().toString().equals("FINISHED"))
+        {
+            map.getOverlays().clear();
+            setButtonsVisibility(View.GONE,View.GONE,View.GONE);
+        }
+        if(activeRide.getStatus().toString().equals("PANIC"))
+        {
+            map.getOverlays().clear();
+            setButtonsVisibility(View.GONE,View.GONE,View.GONE);
+        }
     }
 
     private void ShowActiveRide(RideDTO body) {
@@ -301,7 +424,7 @@ public class DriverMainFragment extends Fragment {
         }
     }
 
-    private void getRoute(GeoLocationDTO departure, GeoLocationDTO destination) {
+    private void getRoute(GeoLocationDTO departure, GeoLocationDTO destination,int iconDeparture,int iconDestination) {
 
         String apiKey = "5b3ce3597851110001cf624865f18297bb26459a9f779c015d573b96";
         String baseUrl = "https://api.openrouteservice.org/v2/directions/driving-car";
@@ -354,7 +477,7 @@ public class DriverMainFragment extends Fragment {
                             routePoints.add(new GeoPoint(lat, lon));
                         }
                         // Add the route overlay to the map
-                        DrawRoute(routePoints,departure,destination);
+                        DrawRoute(routePoints,departure,destination,iconDeparture,iconDestination);
                     } catch (JSONException e) {
                         Log.d("ERRROOOR", e.getMessage());
                     }
@@ -380,18 +503,25 @@ public class DriverMainFragment extends Fragment {
         marker.setPosition(new GeoPoint(location.getLatitude(), location.getLongitude()));
         marker.setIcon(customIconDrawable);
         marker.setAnchor(0.5f,1f);
+        if(icon == R.drawable.car_icon)marker.setAnchor(0.5f,0.5f);
         map.getOverlays().add(marker);
         map.invalidate();
 
     }
 
-    private void DrawRoute(List<GeoPoint> routePoints, GeoLocationDTO departure, GeoLocationDTO destination) {
+    private void DrawRoute(List<GeoPoint> routePoints, GeoLocationDTO departure, GeoLocationDTO destination,int iconDeparture,int iconDestination) {
 
 
 
         map.getOverlays().add(new RouteOverlay(routePoints));
-        DrawMarker(departure,R.drawable.destination_marker);
-        DrawMarker(destination,R.drawable.destination_marker);
+        DrawMarker(departure,iconDeparture);
+        DrawMarker(destination,iconDestination);
         map.invalidate();
+    }
+    private void ZoomTo(GeoLocationDTO location,double zoom)
+    {
+        GeoPoint startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+        map.getController().setZoom(zoom);
+        map.getController().animateTo(startPoint);
     }
 }

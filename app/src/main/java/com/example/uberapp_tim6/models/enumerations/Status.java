@@ -6,4 +6,5 @@ public enum Status {
     REJECTED,
     ACTIVE,
     FINISHED,
+    PANIC
 }
