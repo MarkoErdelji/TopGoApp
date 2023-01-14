@@ -48,22 +48,62 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/routeImageLayout"
-                android:layout_width="wrap_content"
+                android:id="@+id/routeInfo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/closebar">
+                android:layout_below="@id/closebar"
+                android:padding="25dp">
 
-                <ImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250sp"
-                    android:src="@drawable/route" />
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/primaryC"
+                    android:layout_centerHorizontal="true"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/departureIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/car_icon"/>
+                    <TextView
+                        android:layout_below="@id/departureIcon"
+                        android:id="@+id/departure_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="bla"
+                        android:layout_centerHorizontal="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true">
+                    <ImageView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/destinationIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/car_icon" />
+                    <TextView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/destination_text_view"
+                        android:layout_below="@id/destinationIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="asdasdasd"
+                        android:layout_centerHorizontal="true"
+                        />
+                </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/tripDetailsLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/routeImageLayout"
+                android:layout_below="@id/routeInfo"
                 android:layout_marginStart="25sp"
                 android:layout_marginBottom="20sp">
 
@@ -71,7 +111,7 @@
                     android:id="@+id/tripDateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="50sp"
+                    android:layout_marginEnd="120sp"
                     android:text="@string/date" />
 
                 <TextView
@@ -82,59 +122,42 @@
                     android:textColor="@color/primaryC"
                     android:text="@string/_100_0" />
             </RelativeLayout>
-
             <RelativeLayout
-                android:id="@+id/fromLayout"
+                android:id="@+id/passengersLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tripDetailsLayout"
-                android:layout_marginStart="25sp"
-                android:layout_marginBottom="10sp">
-
-                <ImageView
-                    android:id="@+id/fromIcon"
-                    android:layout_width="15sp"
-                    android:layout_height="15sp"
-                    android:src="@drawable/form_icon" />
-
-                <TextView
-                    android:id="@+id/fromTextView"
+                android:layout_below="@id/tripDetailsLayout">
+                <RelativeLayout
+                    android:id="@+id/passengersTextViewLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/fromIcon"
-                    android:text="@string/from"
-                    android:textSize="11sp" />
+                    android:layout_marginStart="25sp">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/passengerTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/passengers"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
-            <RelativeLayout
-                android:id="@+id/toLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fromLayout"
-                android:layout_marginStart="25sp"
-                android:layout_marginBottom="20sp">
+                    <RelativeLayout
+                        android:id="@+id/passengerIcons"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/passengerTextView">
+                    </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/toIcon"
-                    android:layout_width="15sp"
-                    android:layout_height="15sp"
-                    android:src="@drawable/to_icon" />
-
-                <TextView
-                    android:id="@+id/toTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/toIcon"
-                    android:text="@string/to"
-                    android:textSize="11sp" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/toLayout"
-                android:layout_marginStart="25sp">
+                android:layout_marginStart="25sp"
+                android:layout_below="@id/passengersLayout"
+                >
 
                 <RelativeLayout
                     android:id="@+id/reviewTextViewLayout"

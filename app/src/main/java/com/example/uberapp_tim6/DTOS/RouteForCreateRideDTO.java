@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.DTOS;
 
-public class RouteForCreateRideDTO {
+import java.io.Serializable;
+
+public class RouteForCreateRideDTO implements Serializable {
 
 
     private GeoLocationDTO departure;
