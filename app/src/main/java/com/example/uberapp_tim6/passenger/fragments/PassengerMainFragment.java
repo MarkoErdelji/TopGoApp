@@ -70,12 +70,19 @@ public class PassengerMainFragment extends Fragment {
 
     private View step1;
     private View step2;
+    private View step3;
+    private View step4;
 
     private CheckBox babyCheckbox;
     private CheckBox petCheckbox;
     private EditText numOfSeatsInput;
 
-    private Button step2Order;
+    private Button step2Next;
+    private Button step3Next;
+    private Button step4Order;
+
+    private AppCompatButton step3Back;
+    private AppCompatButton step4Back;
     private AppCompatButton backBtn;
 
     public PassengerMainFragment() {
@@ -144,13 +151,19 @@ public class PassengerMainFragment extends Fragment {
         destinationEditText = view.findViewById(R.id.destination_edit_text);
         step1Order = view.findViewById(R.id.create_ride_button);
         step1 = view.findViewById(R.id.route_creation_layout);
-        step2 = view.findViewById(R.id.create_ride_option_select);
+        step2 = view.findViewById(R.id.create_ride_spinner);
+        step3 = view.findViewById(R.id.create_ride_referral);
+        step4 = view.findViewById(R.id.create_ride_option_select);
         spinnerVehicleType = view.findViewById(R.id.spinner_vehicle_type);
         babyCheckbox = view.findViewById(R.id.checkbox_babies);
         petCheckbox = view.findViewById(R.id.checkbox_pets);
         numOfSeatsInput = view.findViewById(R.id.sets_input);
-        step2Order = view.findViewById(R.id.order_ride_button);
+        step4Order = view.findViewById(R.id.order_ride_button);
         backBtn = view.findViewById(R.id.step2_back_button);
+        step3Back = view.findViewById(R.id.step3_back_button);
+        step4Back = view.findViewById(R.id.step4_back_button);
+        step2Next = view.findViewById(R.id.step2_button);
+        step3Next = view.findViewById(R.id.step4_button);
 
         ArrayAdapter ad
                 = ArrayAdapter.createFromResource(
@@ -193,6 +206,36 @@ public class PassengerMainFragment extends Fragment {
             }
         });
 
+        step2Next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                step2.setVisibility(View.GONE);
+                step3.setVisibility(View.VISIBLE);
+            }
+        });
+
+        step3Next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                step3.setVisibility(View.GONE);
+                step4.setVisibility(View.VISIBLE);
+            }
+        });
+
+        step3Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                step2.setVisibility(View.VISIBLE);
+                step3.setVisibility(View.GONE);
+            }
+        });
+        step4Back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                step3.setVisibility(View.VISIBLE);
+                step4.setVisibility(View.GONE);
+            }
+        });
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +245,7 @@ public class PassengerMainFragment extends Fragment {
         });
         SharedPreferences userPrefs = getContext().getSharedPreferences("userPrefs",Context.MODE_PRIVATE);
 
-        step2Order.setOnClickListener(new View.OnClickListener() {
+        step4Order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<RidePassengerDTO> ridePassengerDTOS = new ArrayList<>();

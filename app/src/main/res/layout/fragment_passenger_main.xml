@@ -150,6 +150,15 @@
                 </RelativeLayout>
                 </RelativeLayout>
                 <include
+                android:id="@+id/create_ride_spinner"
+                android:visibility="gone"
+                layout="@layout/create_ride_spinner"/>
+                <include
+                    android:id="@+id/create_ride_referral"
+                    android:visibility="gone"
+                    layout="@layout/create_ride_referral">
+                </include>
+                <include
                     android:id="@+id/create_ride_option_select"
                     android:visibility="gone"
                     layout="@layout/create_ride_option_selection"/>
