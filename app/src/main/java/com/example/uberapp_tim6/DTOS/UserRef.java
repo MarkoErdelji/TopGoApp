@@ -1,11 +1,19 @@
 package com.example.uberapp_tim6.DTOS;
 
-public class UserRef {
+import com.example.uberapp_tim6.models.Passenger;
+
+import java.io.Serializable;
+
+public class UserRef implements Serializable {
     Integer id;
 
     String email;
 
     public UserRef() {
+    }
+    public UserRef(Passenger passenger){
+        this.id = passenger.getId();
+        this.email = passenger.getEmail();
     }
 
     public Integer getId() {

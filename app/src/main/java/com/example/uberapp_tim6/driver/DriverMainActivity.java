@@ -221,7 +221,7 @@ public class DriverMainActivity extends AppCompatActivity {
         if(position == 0){
             FragmentTransition.to(DriverInboxFragment.newInstance(), this, false,R.id.mainContent);
         }else if(position == 1){
-            FragmentTransition.to(DriverRideHistoryFragment.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(DriverRideHistoryFragment.newInstance(driver), this, false,R.id.mainContent);
 
         }else if(position == 2){
             startActivity(new Intent(DriverMainActivity.this, MessageListActivity.class));
