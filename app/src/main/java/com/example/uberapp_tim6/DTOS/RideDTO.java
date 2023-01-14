@@ -3,11 +3,12 @@ package com.example.uberapp_tim6.DTOS;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RideDTO {
+public class RideDTO implements Serializable {
     public Integer id;
 
     public LocalDateTime startTime;
