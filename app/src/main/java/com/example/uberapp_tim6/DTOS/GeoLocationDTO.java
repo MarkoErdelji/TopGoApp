@@ -16,6 +16,15 @@ public class GeoLocationDTO {
         setLongitude(v1);
     }
 
+    @Override
+    public String toString() {
+        return "GeoLocationDTO{" +
+                "address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
+
     public String getAddress() {
         return address;
     }

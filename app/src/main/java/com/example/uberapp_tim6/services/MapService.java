@@ -34,8 +34,10 @@ import okhttp3.Request;
 
 public class MapService{
 
-
-    public static GeoLocationDTO getLocation(String locationName){
+    public interface GeoLocationCallback {
+        void onResponse(GeoLocationDTO geoLocationDTO);
+    }
+    public static GeoLocationDTO getLocation(String locationName,GeoLocationCallback callback){
         String apiKey = "5b3ce3597851110001cf624865f18297bb26459a9f779c015d573b96";
         String baseUrl = "https://api.openrouteservice.org/geocode/search";
 
@@ -80,6 +82,7 @@ public class MapService{
                         geoLocationDTO.setLongitude(Float.parseFloat(coordinates.get(0).toString()));
                         geoLocationDTO.setLatitude((Float.parseFloat(coordinates.get(1).toString())));
                         Log.d("REEEEZ",geoLocationDTO.toString());
+                        callback.onResponse(geoLocationDTO);
                     }catch (JSONException e) {
                         Log.d("ERRROOOR", e.getMessage());
                     }

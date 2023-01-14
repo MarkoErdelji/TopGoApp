@@ -1,5 +1,6 @@
 package com.example.uberapp_tim6.services;
 
+import com.example.uberapp_tim6.DTOS.CreateRideDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
@@ -8,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -30,5 +32,8 @@ public interface RideService {
 
     @PUT("ride/{rideId}/panic")
     Call<PanicDTO> panicRide(@Body ReasonDTO reason,@Path("rideId") String rideId);
+
+    @POST("ride")
+    Call<RideDTO> createRide(@Body CreateRideDTO createRideDto);
 }
 

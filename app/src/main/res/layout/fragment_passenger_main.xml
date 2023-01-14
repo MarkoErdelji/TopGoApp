@@ -93,6 +93,8 @@
                             android:background="@drawable/edit_text"
                             android:id="@+id/departure_edit_text"
                             android:layout_width="150dp"
+                            android:inputType="text"
+                            android:maxLines="1"
                             android:layout_height="30dp"
                             android:layout_toEndOf="@id/departure_text_view" />
 
@@ -118,6 +120,8 @@
                             android:background="@drawable/edit_text"
                             android:id="@+id/destination_edit_text"
                             android:layout_width="150dp"
+                            android:inputType="text"
+                            android:maxLines="1"
                             android:layout_height="30dp"
                             android:layout_toEndOf="@id/destination_text_view" />
 

@@ -157,6 +157,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         }
     }
 
+
     private void selectItemFromDrawer(int position) {
         if(position == 0){
             FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false,R.id.mainContent);

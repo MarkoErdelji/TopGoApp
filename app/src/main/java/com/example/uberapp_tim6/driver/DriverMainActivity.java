@@ -38,14 +38,21 @@ import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.FragmentTransition;
+import com.example.uberapp_tim6.tools.TokenHolder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class DriverMainActivity extends AppCompatActivity {
+
+    private WebSocketClient webSocketClient;
+
 
     private DriverMainActivity dvm;
     private CharSequence mTitle;
@@ -56,11 +63,12 @@ public class DriverMainActivity extends AppCompatActivity {
     private RelativeLayout profileLayout;
     private ListView mDrawerList;
     private UserInfoDTO driver;
+    SharedPreferences userPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dvm = this;
-        SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
 
 
         Call<UserInfoDTO> driverInfoDTOCall = ServiceUtils.driverService.getDriverById(userPrefs.getString("id","nema id"));
@@ -83,6 +91,7 @@ public class DriverMainActivity extends AppCompatActivity {
             }
         });
 
+        createDriverNotifSession();
 
 
 
@@ -186,6 +195,74 @@ public class DriverMainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawers();
             }
         });
+    }
+
+    private void createDriverNotifSession(){
+        URI uri;
+        try {
+            // Connect to local host
+            uri = new URI("ws://192.168.0.197:8000/websocket");
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        webSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen() {
+                Log.d("WebSocket", "Session is starting");
+                webSocketClient.send("Hello World!");
+            }
+
+            @Override
+            public void onTextReceived(String s) {
+                Log.d("WebSocket", "Message received");
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            TextView textView = findViewById(R.id.destination_text_view);
+                            textView.setText(message);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onBinaryReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPingReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPongReceived(byte[] data) {
+            }
+
+            @Override
+            public void onException(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            @Override
+            public void onCloseReceived() {
+                Log.i("WebSocket", "Closed ");
+                System.out.println("onCloseReceived");
+            }
+        };
+
+        webSocketClient.setConnectTimeout(10000);
+        webSocketClient.setReadTimeout(60000);
+        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
+        webSocketClient.addHeader("id",userPrefs.getString("id","0"));
+        webSocketClient.addHeader("role",userPrefs.getString("role","0"));
+        webSocketClient.connect();
     }
 
     @Override
