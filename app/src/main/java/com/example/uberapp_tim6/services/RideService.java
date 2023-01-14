@@ -1,5 +1,6 @@
 package com.example.uberapp_tim6.services;
 
+import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
@@ -26,6 +27,12 @@ public interface RideService {
 
     @GET("ride/driver/{driverId}/finished")
     Call<List<RideDTO>> getDriverFinishedRides(@Path("driverId") String driverId);
+
+    @GET("ride/{id}")
+    Call<RideDTO> getRide(@Path("id") String id);
+
+    @GET("review/ride/{id}")
+    Call<List<CreateReviewResponseDTO>> getAllRideReviews(@Path("id") String id);
 
     @PUT("ride/{rideId}/end")
     Call<RideDTO> endRide(@Path("rideId") String rideId);

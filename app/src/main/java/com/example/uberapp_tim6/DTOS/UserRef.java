@@ -1,5 +1,7 @@
 package com.example.uberapp_tim6.DTOS;
 
+import com.example.uberapp_tim6.models.Passenger;
+
 import java.io.Serializable;
 
 public class UserRef implements Serializable {
@@ -8,6 +10,10 @@ public class UserRef implements Serializable {
     String email;
 
     public UserRef() {
+    }
+    public UserRef(Passenger passenger){
+        this.id = passenger.getId();
+        this.email = passenger.getEmail();
     }
 
     public Integer getId() {

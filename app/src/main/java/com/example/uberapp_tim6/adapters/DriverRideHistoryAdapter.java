@@ -73,7 +73,6 @@ public class DriverRideHistoryAdapter extends BaseAdapter {
         TextView beggining = (TextView)vi.findViewById(R.id.begginingTextView);
         TextView end = (TextView)vi.findViewById(R.id.endTextView);
         TextView price = (TextView)vi.findViewById(R.id.priceTextView);
-        TextView rate = (TextView)vi.findViewById(R.id.ratingTextView);
 
         String dateText = "" + rideHistory.getStartTime().toLocalDate();
         date.setText(dateText);
@@ -86,12 +85,6 @@ public class DriverRideHistoryAdapter extends BaseAdapter {
 
         String priceText = "Price: " + rideHistory.getTotalCost() + "RSD";
         price.setText(priceText);
-
-        String rateText = "Rating: 4.5";
-        rate.setText(rateText);
-
-
-
 
 
         return  vi;

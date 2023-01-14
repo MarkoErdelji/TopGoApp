@@ -118,7 +118,7 @@ public class DriverRideHistoryFragment extends ListFragment {
 
 
         Intent intent = new Intent(getActivity(), CertainRideFromHistory.class);
-        intent.putExtra("ride", ride);
+        intent.putExtra("rideId", finishedRides.get(position).getId());
         startActivityForResult(intent, 0);
 
         System.out.println(ride.getId());

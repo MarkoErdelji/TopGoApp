@@ -44,4 +44,5 @@
     <string name="ride_finished">Ride Finished!</string>
     <string name="great">Great</string>
     <string name="end_time">End Time:</string>
+    <string name="passengers">Passengers</string>
 </resources>
