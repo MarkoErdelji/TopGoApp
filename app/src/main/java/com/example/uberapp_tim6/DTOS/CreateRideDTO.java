@@ -16,7 +16,18 @@ public class CreateRideDTO {
 
         private boolean petTransport;
 
-        public List<RouteForCreateRideDTO> getLocations() {
+    @Override
+    public String toString() {
+        return "CreateRideDTO{" +
+                "locations=" + locations +
+                ", passengers=" + passengers +
+                ", vehicleType=" + vehicleType +
+                ", babyTransport=" + babyTransport +
+                ", petTransport=" + petTransport +
+                '}';
+    }
+
+    public List<RouteForCreateRideDTO> getLocations() {
             return locations;
         }
 

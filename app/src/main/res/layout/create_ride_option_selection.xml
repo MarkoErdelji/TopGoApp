@@ -10,45 +10,37 @@
         android:padding="30dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="50sp"
-            android:id="@+id/type_seats_holder">
-            <Spinner
-            android:id="@+id/spinner_vehicle_type"
-            android:layout_width="150sp"
-            android:layout_height="wrap_content"
-                android:gravity="left"
-            android:spinnerMode="dropdown"/>
-            <RelativeLayout
-                android:id="@+id/layout_seats_input"
-                android:layout_width="150sp"
-                android:layout_height="70sp"
-                android:layout_below="@id/spinner_vehicle_type">
-                <TextView
-                    android:id="@+id/sets_input_title"
-                    android:layout_width="110sp"
-                    android:layout_marginLeft="8sp"
-                    android:layout_centerVertical="true"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:text="@string/num_of_seats"/>
-                <EditText
-                    android:textColor="@color/black"
-                    android:id="@+id/sets_input"
-                    android:maxLength="1"
-                    android:gravity="center"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/sets_input_title"
-                    android:layout_width="20sp"
-                    android:layout_height="40sp"
-                    android:inputType="number" />
-            </RelativeLayout>
+            android:id="@+id/layout_seats_input"
+            android:layout_width="200sp"
+            android:layout_height="70sp"
+            android:paddingLeft="30sp"
+            >
+            <TextView
+                android:id="@+id/sets_input_title"
+                android:layout_width="110sp"
+                android:layout_marginLeft="8sp"
+                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:text="@string/num_of_seats"/>
+            <EditText
+                android:textColor="@color/black"
+                android:id="@+id/sets_input"
+                android:maxLength="1"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/sets_input_title"
+                android:layout_width="20sp"
+                android:layout_height="40sp"
+                android:inputType="number" />
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_toRightOf="@id/type_seats_holder"
+            android:id="@+id/checkbox_layout"
+            android:layout_width="match_parent"
+            android:paddingRight="30sp"
+            android:gravity="right"
+            android:layout_toRightOf="@id/layout_seats_input"
             android:layout_height="wrap_content">
 
             <CheckBox
@@ -70,14 +62,14 @@
             android:id="@+id/create_ride_button_layout"
             android:layout_width="match_parent"
             android:padding="10dp"
-            android:layout_below="@id/type_seats_holder"
+            android:layout_below="@id/checkbox_layout"
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:background="@drawable/back_button"
-                android:id="@+id/step2_back_button"
+                android:id="@+id/step4_back_button"
                 android:layout_width="100dp"
                 android:textColor="@color/black"
                 android:textAlignment="center"

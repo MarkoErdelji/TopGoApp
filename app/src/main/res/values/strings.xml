@@ -42,6 +42,8 @@
     <string name="comment">Ovo je obican komentar</string>
     <string name="sign_in">Sign in</string>
     <string name="num_of_seats">Num of seats:</string>
+    <string name="back">Back</string>
+    <string name="order">Order</string>
     <string-array name="vehicle_type">
         <item>STANDARD</item>
         <item>LUXURY</item>
