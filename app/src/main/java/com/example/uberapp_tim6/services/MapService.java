@@ -35,6 +35,65 @@ import okhttp3.Request;
 public class MapService{
 
 
+    public static GeoLocationDTO getLocation(String locationName){
+        String apiKey = "5b3ce3597851110001cf624865f18297bb26459a9f779c015d573b96";
+        String baseUrl = "https://api.openrouteservice.org/geocode/search";
+
+        GeoLocationDTO geoLocationDTO = new GeoLocationDTO();
+
+        geoLocationDTO.setAddress(locationName);
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("https")
+                .host("api.openrouteservice.org")
+                .addPathSegment("geocode")
+                .addPathSegment("search")
+                .addQueryParameter("api_key", apiKey)
+                .addQueryParameter("text", locationName)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.d("REZ",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                Log.d("REZ", "okokoko");
+                if (response.isSuccessful()) {
+
+                    String responseString = response.body().string();
+                    Log.d("REZ", responseString);
+                    try {
+                        // Parse the JSON response
+
+                        JSONObject json = new JSONObject(responseString);
+                        JSONArray features = json.getJSONArray("features");
+                        JSONObject firstFeature = features.getJSONObject(0);
+                        JSONObject geometry = firstFeature.getJSONObject("geometry");
+                        JSONArray coordinates = geometry.getJSONArray("coordinates");
+                        List<GeoPoint> routePoints = new ArrayList<>();
+                        geoLocationDTO.setLongitude(Float.parseFloat(coordinates.get(0).toString()));
+                        geoLocationDTO.setLatitude((Float.parseFloat(coordinates.get(1).toString())));
+                        Log.d("REEEEZ",geoLocationDTO.toString());
+                    }catch (JSONException e) {
+                        Log.d("ERRROOOR", e.getMessage());
+                    }
+
+                } else {
+                    Log.d("REZ", "Request failed with code: " + response.code());
+                    Log.d("REZ", "Response message: " + response.message());
+                    String responseString = response.body().string();
+                    Log.d("REZ", "Response Body: " + responseString);
+                }
+            }
+        });
+        return geoLocationDTO;
+    }
     public static void getRoute(GeoLocationDTO departure, GeoLocationDTO destination, int iconDeparture, int iconDestination, MapView mapView, Context ctxt) {
         String apiKey = "5b3ce3597851110001cf624865f18297bb26459a9f779c015d573b96";
         String baseUrl = "https://api.openrouteservice.org/v2/directions/driving-car";
