@@ -1,5 +1,7 @@
 package com.example.uberapp_tim6.adapters;
 
+import static java.security.AccessController.getContext;
+
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserMessagesDTO;
 import com.example.uberapp_tim6.DTOS.UserMessagesListDTO;
@@ -79,7 +82,8 @@ public class MessageAdapter extends BaseAdapter{
         TextView title = vi.findViewById(R.id.name);
         ImageView pfp = vi.findViewById(R.id.profilePicture);
         title.setText(message.getName() + " " + message.getSurname());
-        pfp.setImageResource(R.drawable.tate);
+        Glide.with(activity.getApplicationContext()).load(message.getProfilePicture()).into(pfp);
+
 
 
 

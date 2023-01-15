@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
@@ -401,6 +402,7 @@ public class DriverMainFragment extends Fragment {
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
                             carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map,getContext());
                             MapService.ZoomTo(response.body().currentLocation,16.0,map);
+                            vehicle = response.body();
 
 
                         }
@@ -486,7 +488,7 @@ public class DriverMainFragment extends Fragment {
                     CircleImageView passengerIcon = new CircleImageView(fragment.getContext());
                     passengerIcon.setId(View.generateViewId());
                     passengerIcon.setLayoutParams(new RelativeLayout.LayoutParams(100, 100));
-                    passengerIcon.setImageResource(R.drawable.tate);
+                    Glide.with(getContext()).load(user.getProfilePicture()).into(passengerIcon);
                     layoutParams = (RelativeLayout.LayoutParams) passengerIcon.getLayoutParams();
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
