@@ -54,4 +54,8 @@
     <string name="end_time">End Time:</string>
     <string name="passengers">Passengers</string>
     <string name="cancel">Cancel</string>
+    <string name="driver">Driver</string>
+    <string name="imenko_prezimic">Imenko Prezimic</string>
+    <string name="panic">panic</string>
+    <string name="chat">chat</string>
 </resources>

@@ -162,6 +162,10 @@
                     android:id="@+id/create_ride_option_select"
                     android:visibility="gone"
                     layout="@layout/create_ride_option_selection"/>
+                <include
+                    android:id="@+id/passengerCurrentRide"
+                    android:visibility="gone"
+                    layout="@layout/passenger_current_ride"/>
             </RelativeLayout>
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>

@@ -42,6 +42,7 @@ import com.example.uberapp_tim6.DTOS.TimeAndDistanceDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 import com.example.uberapp_tim6.services.MapService;
@@ -57,6 +58,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URI;
@@ -99,6 +101,8 @@ public class PassengerMainFragment extends Fragment {
     private View step3;
     private View step4;
 
+    private View latestActiveView;
+    private View currentRideView;
     private CheckBox babyCheckbox;
     private CheckBox petCheckbox;
     private EditText numOfSeatsInput;
@@ -155,7 +159,7 @@ public class PassengerMainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         createPassengerNotifSession();
-
+        currentRideView = view.findViewById(R.id.passengerCurrentRide);
         map = view.findViewById(R.id.map);
 
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -175,6 +179,7 @@ public class PassengerMainFragment extends Fragment {
         destinationEditText = view.findViewById(R.id.destination_edit_text);
         step1Order = view.findViewById(R.id.create_ride_button);
         step1 = view.findViewById(R.id.route_creation_layout);
+        latestActiveView = step1;
         step2 = view.findViewById(R.id.create_ride_spinner);
         step3 = view.findViewById(R.id.create_ride_referral);
         step4 = view.findViewById(R.id.create_ride_option_select);
@@ -227,6 +232,7 @@ public class PassengerMainFragment extends Fragment {
                 });
                 step1.setVisibility(View.GONE);
                 step2.setVisibility(View.VISIBLE);
+                latestActiveView = step2;
             }
         });
 
@@ -235,6 +241,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step2.setVisibility(View.GONE);
                 step3.setVisibility(View.VISIBLE);
+                latestActiveView = step3;
             }
         });
 
@@ -243,6 +250,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step3.setVisibility(View.GONE);
                 step4.setVisibility(View.VISIBLE);
+                latestActiveView = step4;
             }
         });
 
@@ -251,6 +259,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step2.setVisibility(View.VISIBLE);
                 step3.setVisibility(View.GONE);
+                latestActiveView = step2;
             }
         });
         step4Back.setOnClickListener(new View.OnClickListener() {
@@ -258,6 +267,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step3.setVisibility(View.VISIBLE);
                 step4.setVisibility(View.GONE);
+                latestActiveView = step3;
             }
         });
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -265,6 +275,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step1.setVisibility(View.VISIBLE);
                 step2.setVisibility(View.GONE);
+                latestActiveView = step1;
             }
         });
 
@@ -345,6 +356,53 @@ public class PassengerMainFragment extends Fragment {
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
+    private void checkForActiveRide(int passengerId){
+        ServiceUtils.rideService.getPassengerActiveRide(Integer.toString(passengerId)).enqueue(
+                new Callback<RideDTO>() {
+                    @Override
+                    public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                        if (response.isSuccessful()) {
+                            changeToCurrentRide();
+                    }
+
+                }
+
+                    @Override
+                    public void onFailure(Call<RideDTO> call, Throwable t) {
+
+                    }
+        });
+    }
+    private void changeToCurrentRide(){
+        latestActiveView.setVisibility(View.GONE);
+        currentRideView.setVisibility(View.VISIBLE);
+    }
+    private void setCurrentRideData(RideDTO rideDTO){
+        TextView departureTextView = currentRideView.findViewById(R.id.departure_text_view);
+        departureTextView.setText(rideDTO.getLocations().get(0).getDeparture().getAddress());
+
+        TextView destinationTextView = currentRideView.findViewById(R.id.destination_text_view);
+        destinationTextView.setText(rideDTO.getLocations().get(0).getDestination().getAddress());
+
+        TextView driverNameAndLastName = currentRideView.findViewById(R.id.driverNameAndLastName);
+        ServiceUtils.driverService.getDriverById(Integer.toString(rideDTO.getDriver().getId())).enqueue(
+                new Callback<UserInfoDTO>() {
+                    @Override
+                    public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
+                        if (response.isSuccessful()) {
+                            String nameAndLastName = response.body().getName() + " " + response.body().getSurname();
+                            driverNameAndLastName.setText(nameAndLastName);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+
     private void populateDialogAndShow(View dialogView, AlertDialog dialog, RideDTO ride) {
         TextView emailView = dialogView.findViewById(R.id.emailInfo);
         TextView nameSurname = dialogView.findViewById(R.id.name_surname);
@@ -421,7 +479,7 @@ public class PassengerMainFragment extends Fragment {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.0.197:8000/websocket");
+            uri = new URI("ws://192.168.100.4:8000/websocket");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -459,6 +517,16 @@ public class PassengerMainFragment extends Fragment {
                             if (rideDTO.getStatus() == Status.PENDING) {
                                 dialog.dismiss();
                                 populateDialogAndShow(dialogView, dialog, rideDTO);
+                            }
+                            if (rideDTO.getStatus() == Status.ACTIVE){
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("Your driver has arrived, ride is about to start.");
+                                builder1.setCancelable(true);
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                                changeToCurrentRide();
+                                setCurrentRideData(rideDTO);
+
                             }
                         }
                         catch (Exception e){

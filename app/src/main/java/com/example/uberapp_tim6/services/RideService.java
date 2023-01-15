@@ -35,6 +35,9 @@ public interface RideService {
     @GET("ride/{id}")
     Call<RideDTO> getRide(@Path("id") String id);
 
+    @GET("ride/passenger/{passengerId}/activee")
+    Call<RideDTO> getPassengerActiveRide(@Path("passengerId") String passengerId);
+
     @GET("review/ride/{id}")
     Call<List<CreateReviewResponseDTO>> getAllRideReviews(@Path("id") String id);
 
@@ -46,8 +49,12 @@ public interface RideService {
 
     @PUT("ride/{rideId}/accept")
     Call<RideDTO> acceptRide(@Path("rideId") String rideId);
+
     @PUT("ride/{rideId}/cancel")
     Call<RideDTO> cancelRide(@Path("rideId") String rideId, @Body RejectionTextDTO rejectionTextDTO);
+
+    @PUT("ride/{rideId}/decline")
+    Call<RideDTO> declineRide(@Path("rideId") String rideId, @Body RejectionTextDTO rejectionTextDTO);
 
     @PUT("ride/{rideId}/panic")
     Call<PanicDTO> panicRide(@Body ReasonDTO reason,@Path("rideId") String rideId);
