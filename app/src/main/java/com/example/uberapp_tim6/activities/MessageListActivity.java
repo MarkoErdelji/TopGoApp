@@ -49,7 +49,7 @@ public class MessageListActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserMessagesListDTO> call, Response<UserMessagesListDTO> response) {
                 UserMessagesListDTO messages = response.body();
-                Call<UserInfoDTO> call2 = ServiceUtils.passengerService.getPassengerById(getIntent().getStringExtra("Sender"));
+                Call<UserInfoDTO> call2 = ServiceUtils.userService.getUserById(getIntent().getStringExtra("Sender"));
                 call2.enqueue(new Callback<UserInfoDTO>() {
                     @Override
                     public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {

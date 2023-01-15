@@ -1,5 +1,7 @@
 package com.example.uberapp_tim6.driver;
 
+import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -222,7 +224,7 @@ public class DriverMainActivity extends AppCompatActivity {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.0.197:8000/websocket");
+            uri = new URI("ws://"+LOCALHOST+"/websocket");
         }
         catch (URISyntaxException e) {
             e.printStackTrace();

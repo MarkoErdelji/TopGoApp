@@ -2,6 +2,8 @@ package com.example.uberapp_tim6.driver.fragments;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
+import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -356,8 +358,6 @@ public class DriverMainFragment extends Fragment {
                             MapService.getRoute(departureLocation,destinationLocation,R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
                             carMarker = MapService.DrawMarker(response1.body().currentLocation,R.drawable.car_icon,map,getContext());
                             MapService.ZoomTo(response1.body().currentLocation,16.0,map);
-                            simulate(response.body());
-
                         }
 
                         @Override
@@ -519,7 +519,7 @@ public class DriverMainFragment extends Fragment {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.0.197:8000/simulation");
+            uri = new URI("ws://"+LOCALHOST+"/simulation");
         }
         catch (URISyntaxException e) {
             e.printStackTrace();
@@ -575,9 +575,6 @@ public class DriverMainFragment extends Fragment {
                 System.out.println("onCloseReceived");
             }
         };
-
-        webSocketClient.setConnectTimeout(10000);
-        webSocketClient.setReadTimeout(60000);
         webSocketClient.enableAutomaticReconnection(5000);
         webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
         webSocketClient.addHeader("id",userPrefs.getString("id","0"));

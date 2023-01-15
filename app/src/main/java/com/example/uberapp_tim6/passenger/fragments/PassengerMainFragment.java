@@ -2,6 +2,8 @@ package com.example.uberapp_tim6.passenger.fragments;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
+import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -411,7 +413,7 @@ public class PassengerMainFragment extends Fragment {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.0.197:8000/websocket");
+            uri = new URI("ws://"+LOCALHOST+"/websocket");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
