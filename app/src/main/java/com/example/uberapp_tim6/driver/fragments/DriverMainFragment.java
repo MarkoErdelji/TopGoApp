@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,20 +39,33 @@ import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.MapService;
+import com.example.uberapp_tim6.services.RideService;
 import com.example.uberapp_tim6.services.ServiceUtils;
+import com.example.uberapp_tim6.tools.DateTimeDeserializer;
+import com.example.uberapp_tim6.tools.DateTimeSerializer;
+import com.example.uberapp_tim6.tools.TokenHolder;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tech.gusavila92.websocketclient.WebSocketClient;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,9 +75,11 @@ import retrofit2.Response;
 public class DriverMainFragment extends Fragment {
 
     private static final String ARG_DRIVER = "arg_driver";
-
+    private WebSocketClient webSocketClient;
 
     private View view;
+
+    private Marker carMarker;
 
     private UserInfoDTO driver;
     private DriverMainFragment fragment;
@@ -78,6 +95,8 @@ public class DriverMainFragment extends Fragment {
     private VehicleInfoDTO vehicle;
     private GeoLocationDTO center;
 
+    SharedPreferences userPrefs;
+
     public static DriverMainFragment newInstance(UserInfoDTO d) {
         DriverMainFragment fragment = new DriverMainFragment();
         Bundle bundle = new Bundle();
@@ -85,6 +104,7 @@ public class DriverMainFragment extends Fragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+
 
     public DriverMainFragment() {
         // Required empty public constructor
@@ -98,6 +118,8 @@ public class DriverMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         driver = (UserInfoDTO) getArguments().getSerializable(ARG_DRIVER);
         fragment = this;
+        userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        createDriverVehicleLocationNotifSession();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -190,7 +212,8 @@ public class DriverMainFragment extends Fragment {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                         SetCurrentRide(response.body());
-                        MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
+                        carMarker = MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
+                        simulate(response.body());
                     }
 
                     @Override
@@ -273,7 +296,7 @@ public class DriverMainFragment extends Fragment {
 
                         response.body().getRide().setStatus(Status.PANIC);
                         SetCurrentRide(response.body().getRide());
-                        MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
+                        carMarker = MapService.DrawMarker(vehicle.getCurrentLocation(),R.drawable.car_icon,map,getContext());
                         MapService.ZoomTo(vehicle.getCurrentLocation(),20.0,map);
 
 
@@ -326,12 +349,14 @@ public class DriverMainFragment extends Fragment {
                     Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
                     vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
                         @Override
-                        public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
-                            vehicle = response.body();
-                            GeoLocationDTO departureLocation= response.body().getCurrentLocation();
+                        public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response1) {
+                            vehicle = response1.body();
+                            GeoLocationDTO departureLocation= response1.body().getCurrentLocation();
                             GeoLocationDTO destinationLocation= activeRide.getLocations().get(0).getDeparture();
-                            MapService.getRoute(departureLocation,destinationLocation,R.drawable.car_icon,R.drawable.destination_marker,map,getContext());
-                            MapService.ZoomTo(response.body().currentLocation,16.0,map);
+                            MapService.getRoute(departureLocation,destinationLocation,R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
+                            carMarker = MapService.DrawMarker(response1.body().currentLocation,R.drawable.car_icon,map,getContext());
+                            MapService.ZoomTo(response1.body().currentLocation,16.0,map);
+                            simulate(response.body());
 
                         }
 
@@ -340,6 +365,7 @@ public class DriverMainFragment extends Fragment {
 
                         }
                     });
+
 
 
                 }
@@ -373,8 +399,9 @@ public class DriverMainFragment extends Fragment {
                     vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
                         @Override
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
-                            MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map,getContext());
+                            carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map,getContext());
                             MapService.ZoomTo(response.body().currentLocation,16.0,map);
+
 
                         }
                         @Override
@@ -383,6 +410,7 @@ public class DriverMainFragment extends Fragment {
                         }
 
                     });
+
 
                 }
                 else
@@ -485,5 +513,91 @@ public class DriverMainFragment extends Fragment {
             });
 
         }
+    }
+
+    private void createDriverVehicleLocationNotifSession(){
+        URI uri;
+        try {
+            // Connect to local host
+            uri = new URI("ws://192.168.0.197:8000/simulation");
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        webSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen() {
+                Log.d("WebSocket", "Session is starting");
+                webSocketClient.send("Hello World!");
+            }
+
+            @Override
+            public void onTextReceived(String s) {
+                Log.d("WebSocket", "Message received");
+                final String message = s;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer());
+                        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeSerializer());
+                        Gson gson = gsonBuilder.create();
+                        GeoLocationDTO geoLocationDTO = gson.fromJson(message, GeoLocationDTO.class);
+                        if(carMarker != null) {
+                            carMarker.remove(map);
+                            carMarker = MapService.DrawMarker(geoLocationDTO,R.drawable.car_icon,map,getContext());
+                        }}
+                });
+            }
+
+            @Override
+            public void onBinaryReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPingReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPongReceived(byte[] data) {
+            }
+
+            @Override
+            public void onException(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            @Override
+            public void onCloseReceived() {
+                Log.i("WebSocket", "Closed ");
+                System.out.println("onCloseReceived");
+            }
+        };
+
+        webSocketClient.setConnectTimeout(10000);
+        webSocketClient.setReadTimeout(60000);
+        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
+        webSocketClient.addHeader("id",userPrefs.getString("id","0"));
+        webSocketClient.addHeader("role",userPrefs.getString("role","0"));
+        webSocketClient.connect();
+    }
+
+    public void simulate(RideDTO rideDTO){
+        ServiceUtils.rideService.simulate(Integer.toString(rideDTO.getId())).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.d("RESPONSE",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 }

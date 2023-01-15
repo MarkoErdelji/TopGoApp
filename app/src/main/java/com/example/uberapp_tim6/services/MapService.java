@@ -1,17 +1,11 @@
 package com.example.uberapp_tim6.services;
 
 
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.IBinder;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
 import com.example.uberapp_tim6.DTOS.MatrixAPIDTO;
@@ -255,7 +249,7 @@ public class MapService{
         });
         return timeAndDistanceDTO;
     }
-    public static void DrawMarker(GeoLocationDTO location,int icon,MapView mapView,Context ctxt)
+    public static Marker DrawMarker(GeoLocationDTO location, int icon, MapView mapView, Context ctxt)
     {
         Bitmap customIcon = BitmapFactory.decodeResource(ctxt.getResources(),icon);
         customIcon = Bitmap.createScaledBitmap(customIcon, 100, 100, false);
@@ -269,6 +263,7 @@ public class MapService{
         if(icon == R.drawable.car_icon)marker.setAnchor(0.5f,0.5f);
         mapView.getOverlays().add(marker);
         mapView.invalidate();
+        return marker;
 
     }
 

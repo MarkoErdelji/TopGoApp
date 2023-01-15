@@ -10,6 +10,7 @@ import com.example.uberapp_tim6.DTOS.RideDTO;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -51,6 +52,9 @@ public interface RideService {
 
     @PUT("ride/{rideId}/panic")
     Call<PanicDTO> panicRide(@Body ReasonDTO reason,@Path("rideId") String rideId);
+
+    @PUT("ride/simulate/{rideId}")
+    Call<ResponseBody> simulate(@Path("rideId") String rideId);
 
     @POST("ride")
     Call<RideDTO> createRide(@Body CreateRideDTO createRideDto);
