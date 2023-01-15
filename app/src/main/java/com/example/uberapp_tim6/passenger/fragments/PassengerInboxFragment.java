@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.activities.MessageDetailActivity;
 import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.adapters.MessageAdapter;
 import com.example.uberapp_tim6.models.Message;
@@ -91,7 +90,7 @@ public class PassengerInboxFragment extends ListFragment {
             }
 
         }
-        MessageAdapter adapter = new MessageAdapter(getActivity(),currentUserMessager);
+        MessageAdapter adapter = new MessageAdapter(getActivity(),null, null);
         setListAdapter(adapter);
     }
 }

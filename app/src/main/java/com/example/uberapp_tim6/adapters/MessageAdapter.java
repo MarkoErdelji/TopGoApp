@@ -1,15 +1,25 @@
 package com.example.uberapp_tim6.adapters;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
+import com.example.uberapp_tim6.DTOS.UserMessagesDTO;
+import com.example.uberapp_tim6.DTOS.UserMessagesListDTO;
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.models.Message;
+import com.example.uberapp_tim6.services.ServiceUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /*
@@ -22,11 +32,16 @@ import java.util.List;
  * */
 public class MessageAdapter extends BaseAdapter{
     private Activity activity;
-    private List<Message> messages;
+    private List<UserInfoDTO> messages;
+    private UserInfoDTO driver;
+    private List<String> senders;
+    private View vi;
 
-    public MessageAdapter(Activity activity,List<Message> messages) {
+    public MessageAdapter(Activity activity, List<UserInfoDTO> messages, UserInfoDTO driver) {
         this.activity = activity;
         this.messages = messages;
+        this.driver  = driver;
+        this.senders = new ArrayList<>();
     }
 
     /*
@@ -46,39 +61,31 @@ public class MessageAdapter extends BaseAdapter{
     }
 
 
-    /*
-     * Ova metoda vraca jedinstveni identifikator, za adaptere koji prikazuju
-     * listu ili niz, pozicija je dovoljno dobra. Naravno mozemo iskoristiti i
-     * jedinstveni identifikator objekta, ako on postoji.
-     * */
+
     @Override
     public long getItemId(int position) {
         return position;
     }
 
-    /*
-     * Ova metoda popunjava pojedinacan element ListView-a podacima.
-     * Ako adapter cuva listu od n elemenata, adapter ce u petlji ici
-     * onoliko puta koliko getCount() vrati. Prilikom svake iteracije
-     * uzece java objekat sa odredjene poziciuje (model) koji cuva podatke,
-     * i layout koji treba da prikaze te podatke (view) npr R.layout.cinema_list.
-     * Kada adapter ima model i view, prosto ce uzeti podatke iz modela,
-     * popuniti view podacima i poslati listview da prikaze, i nastavice
-     * sledecu iteraciju.
-     * */
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View vi=convertView;
-        Message message = this.messages.get(position);
+        vi=convertView;
+        UserInfoDTO message = this.messages.get(position);
+        Log.d("position", String.valueOf(position));
 
         if(convertView==null)
             vi = activity.getLayoutInflater().inflate(R.layout.message_list, null);
+        TextView title = vi.findViewById(R.id.name);
+        ImageView pfp = vi.findViewById(R.id.profilePicture);
+        title.setText(message.getName() + " " + message.getSurname());
+        pfp.setImageResource(R.drawable.tate);
 
-        TextView title = (TextView)vi.findViewById(R.id.name);
-        TextView date = (TextView)vi.findViewById(R.id.description);
 
-        title.setText(message.getSender().getFirstName() +" "+ message.getSender().getLastName());
-        date.setText(message.getDateTime().toString());
+
+
+
+
 
         return  vi;
     }

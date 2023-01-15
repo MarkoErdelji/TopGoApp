@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
+import com.example.uberapp_tim6.DTOS.UserMessagesDTO;
+import com.example.uberapp_tim6.DTOS.UserMessagesListDTO;
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.models.Message;
-import com.example.uberapp_tim6.models.User;
 
 import java.util.List;
 
@@ -21,13 +21,15 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
     private Context mContext;
-    private List<Message> mMessageList;
-    private User currentUser;
+    private List<UserMessagesDTO> mMessageList;
+    private UserInfoDTO currentUser;
+    private UserInfoDTO sender;
 
-    public MessageListAdapter(Context context, List<Message> messageList,User currentUser) {
+    public MessageListAdapter(Context context, UserMessagesListDTO messageList, UserInfoDTO currentUser, UserInfoDTO body) {
         mContext = context;
         this.currentUser = currentUser;
-        mMessageList = messageList;
+        mMessageList = messageList.getResults();
+        this.sender = body;
     }
 
     @Override
@@ -38,9 +40,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     // Determines the appropriate ViewType according to the sender of the message.
     @Override
     public int getItemViewType(int position) {
-        Message message = (Message) mMessageList.get(position);
+        UserMessagesDTO message = (UserMessagesDTO) mMessageList.get(position);
 
-        if (currentUser.getId() == message.getSender().getId()) {
+        if (currentUser.getId().equals(message.getSenderId())) {
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
@@ -70,7 +72,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     // Passes the message object to a ViewHolder so that the contents can be bound to UI.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Message message = (Message) mMessageList.get(position);
+        UserMessagesDTO message = (UserMessagesDTO) mMessageList.get(position);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
@@ -91,11 +93,11 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             timeText = (TextView) itemView.findViewById(R.id.text_gchat_timestamp_me);
         }
 
-        void bind(Message message) {
+        void bind(UserMessagesDTO message) {
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(message.getDateTime().toString());
+            timeText.setText(message.getTimeOfSending().toString());
         }
     }
 
@@ -111,12 +113,12 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             profileImage = (ImageView) itemView.findViewById(R.id.image_gchat_profile_other);
         }
 
-        void bind(Message message) {
+        void bind(UserMessagesDTO message) {
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(message.getDateTime().toString());
-            nameText.setText(message.getReceiver().getFirstName() +" "+  message.getReceiver().getLastName());
+            timeText.setText(message.getTimeOfSending().toString());
+            nameText.setText(sender.getName() + " " + sender.getSurname());
 
             // Insert the profile image from the URL into the ImageView
         }
