@@ -211,7 +211,7 @@ public class PassengerMainActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if (position == 0) {
-            FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false, R.id.mainContent);
+            FragmentTransition.to(PassengerInboxFragment.newInstance(passenger), this, false, R.id.mainContent);
         } else if (position == 1) {
             FragmentTransition.to(PassengerDriveHistoryFragment.newInstance(), this, false, R.id.mainContent);
         } else if (position == 2) {

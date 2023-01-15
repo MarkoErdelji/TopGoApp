@@ -1,18 +1,17 @@
 package com.example.uberapp_tim6.driver.fragments;
 
 import android.app.AlertDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,13 +23,12 @@ import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DriverDocumentDialogAdapter;
-import com.example.uberapp_tim6.models.Document;
+import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.models.User;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 import com.example.uberapp_tim6.tools.Mokap;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +60,8 @@ public class DriverProfileFragment extends Fragment {
     private ImageView image;
     private View iconDocument;
     private View iconVehicle;
+
+    private Button editProfile;
 
     private AlertDialog vehicleDialog;
     private View documentDialogView;
@@ -125,6 +125,14 @@ public class DriverProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createVehicleDialogAndShow(vehicleDialogView,vehicleDialog,driver.getId());
+            }
+        });
+        DriverMainActivity DriverMainActivity = (com.example.uberapp_tim6.driver.DriverMainActivity) this.getActivity();
+        editProfile = view.findViewById(R.id.edit_profile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(new DriverEditProfileFragment(),DriverMainActivity,false,R.id.mainContent);
             }
         });
         image = getView().findViewById(R.id.profileIcon);

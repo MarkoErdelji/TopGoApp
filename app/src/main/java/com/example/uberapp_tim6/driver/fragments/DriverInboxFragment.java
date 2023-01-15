@@ -85,40 +85,37 @@ public class DriverInboxFragment extends ListFragment {
         call.enqueue(new Callback<UserMessagesListDTO>() {
             @Override
             public void onResponse(Call<UserMessagesListDTO> call, Response<UserMessagesListDTO> response) {
-                messages = response.body().getResults();
-                Log.d("TEST",response.body().getResults().get(0).message);
-                UserMessagesListDTO messages = new UserMessagesListDTO();
-                for (UserMessagesDTO msg:response.body().getResults())
-                {
-                    String id = "";
-                    if (msg.getSenderId() != driver.getId())
-                    {
-                        id = msg.getSenderId().toString();
-                    }
-                    if (msg.getSenderId() == driver.getId())
-                    {
-                        id = msg.getReceiverId().toString();
-                    }
+                if(response.isSuccessful()) {
+                    messages = response.body().getResults();
+                    UserMessagesListDTO messages = new UserMessagesListDTO();
+                    for (UserMessagesDTO msg : response.body().getResults()) {
+                        String id = "";
+                        if (msg.getSenderId() != driver.getId()) {
+                            id = msg.getSenderId().toString();
+                        }
+                        if (msg.getSenderId() == driver.getId()) {
+                            id = msg.getReceiverId().toString();
+                        }
 
-                    if(!ids.contains(id))
-                    {
-                        messages.getResults().add(msg);
-                        ids.add(id);
-                    }
+                        if (!ids.contains(id)) {
+                            messages.getResults().add(msg);
+                            ids.add(id);
+                        }
 
+                    }
+                    getChatters(ids);
+
+
+                    MessageAdapter adapter = null;
+                    try {
+                        adapter = new MessageAdapter(getActivity(), getChatters(ids).get(), driver);
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setListAdapter(adapter);
                 }
-                getChatters(ids);
-
-
-                MessageAdapter adapter = null;
-                try {
-                    adapter = new MessageAdapter(getActivity(),getChatters(ids).get(),driver);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                setListAdapter(adapter);
 
             }
 
@@ -136,7 +133,7 @@ public class DriverInboxFragment extends ListFragment {
         for (String id : ids) {
             CompletableFuture<UserInfoDTO> future = CompletableFuture.supplyAsync(() -> {
                 try {
-                    return ServiceUtils.passengerService.getPassengerById(id).execute().body();
+                    return ServiceUtils.userService.getUserById(id).execute().body();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
