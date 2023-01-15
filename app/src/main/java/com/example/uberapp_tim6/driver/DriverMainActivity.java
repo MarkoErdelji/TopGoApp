@@ -65,6 +65,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -400,6 +401,19 @@ public class DriverMainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                             if(response.body() != null) {
+                                ServiceUtils.rideService.simulate(Integer.toString(rideDTO.getId())).enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if(response.isSuccessful()){
+                                            Log.d("RESPONSE",response.toString());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                    }
+                                });
                                 FragmentTransition.to(DriverMainFragment.newInstance(driver), dvm, false,R.id.mainContent);
                             }
                         }
