@@ -164,8 +164,6 @@ public class DriverMainFragment extends Fragment {
         });
 
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        showAcceptancePopUp();
-
         checkForCurrentRide();
 
         map = view.findViewById(R.id.map);
@@ -226,54 +224,6 @@ public class DriverMainFragment extends Fragment {
         });
     }
 
-
-    private void showAcceptancePopUp(){
-        Call<RideDTO> call = ServiceUtils.rideService.getDriverAcceptedRide(driver.getId().toString());
-        call.enqueue(new Callback<RideDTO>() {
-            @Override
-            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
-                if (response.body() != null) {
-                    activeRide = response.body();
-                    // Create an AlertDialog.Builder object
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    LayoutInflater inflater = getLayoutInflater();
-                    View dialogLayout = inflater.inflate(R.layout.custom_dialog_acceptance_of_ride, null);
-                    builder.setView(dialogLayout);
-
-                    TextView destination = dialogLayout.findViewById(R.id.destination_text_view);
-                    TextView departure = dialogLayout.findViewById(R.id.departure_text_view);
-                    destination.setText(activeRide.getLocations().get(0).getDestination().getAddress());
-                    departure.setText(activeRide.getLocations().get(0).getDeparture().getAddress());
-                    showPassengers(activeRide, dialogLayout);
-
-                    // Add a "OK" button to the dialog
-                    builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Do something when the "OK" button is clicked
-                        }
-                    });
-                    builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-
-                    // Create and show the dialog
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {
-                    Toast.makeText(getContext(), "No rides", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<RideDTO> call, Throwable t) {
-            }
-        });
-    }
     private void endRideDialog(RideDTO body) {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.end_dialog, null);
@@ -536,57 +486,4 @@ public class DriverMainFragment extends Fragment {
 
         }
     }
-    public void showPassengers(RideDTO body, View dialogView) {
-        RelativeLayout passengerIcons = dialogView.findViewById(R.id.passengerIcons);
-        List<UserRef> passengers = body.getPassengers();
-        final int[] previousId = {0};
-        for (int i = 0; i < passengers.size(); i++) {
-            UserRef passenger = passengers.get(i);
-            Call<UserInfoDTO> call = ServiceUtils.passengerService.getPassengerById(passenger.getId().toString());
-            call.enqueue(new Callback<UserInfoDTO>() {
-                @Override
-                public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
-                    UserInfoDTO user = response.body();
-                    RelativeLayout passengerLayout = new RelativeLayout(dialogView.getContext());
-                    passengerLayout.setId(View.generateViewId());
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    if (previousId[0] != 0) {
-                        layoutParams.addRule(RelativeLayout.RIGHT_OF, previousId[0]);
-                    }
-                    layoutParams.setMargins(10, 10, 10, 10);
-                    passengerLayout.setLayoutParams(layoutParams);
-                    // Create new passenger icon
-                    CircleImageView passengerIcon = new CircleImageView(fragment.getContext());
-                    passengerIcon.setId(View.generateViewId());
-                    passengerIcon.setLayoutParams(new RelativeLayout.LayoutParams(100, 100));
-                    passengerIcon.setImageResource(R.drawable.tate);
-                    layoutParams = (RelativeLayout.LayoutParams) passengerIcon.getLayoutParams();
-                    layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-
-                    passengerIcon.setLayoutParams(layoutParams);
-                    passengerLayout.addView(passengerIcon);
-                    // Create new passenger name TextView
-                    TextView passengerName = new TextView(fragment.getContext());
-                    passengerName.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                    passengerName.setText(user.getName() + " " + user.getSurname());
-                    layoutParams = (RelativeLayout.LayoutParams) passengerName.getLayoutParams();
-                    layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                    layoutParams.addRule(RelativeLayout.BELOW, passengerIcon.getId());
-                    passengerName.setLayoutParams(layoutParams);
-                    passengerLayout.addView(passengerName);
-                    passengerIcons.addView(passengerLayout);
-                    previousId[0] = passengerLayout.getId();
-
-                }
-
-                @Override
-                public void onFailure(Call<UserInfoDTO> call, Throwable t) {
-
-                }
-            });
-
-        }
-    }
-
-
 }

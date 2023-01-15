@@ -93,14 +93,20 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/car_icon"/>
-                        <TextView
+                        <ScrollView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
                             android:layout_below="@id/departureIcon"
-                            android:id="@+id/departure_text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="bla"
                             android:layout_centerHorizontal="true"
-                            />
+                            android:scrollbars="vertical">
+                            <TextView
+                                android:id="@+id/departure_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="bla"
+
+                                />
+                        </ScrollView>
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -112,15 +118,21 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/car_icon" />
-                        <TextView
+                        <ScrollView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
                             android:layout_alignParentRight="true"
-                            android:id="@+id/destination_text_view"
-                            android:layout_below="@id/destinationIcon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="asdasdasd"
                             android:layout_centerHorizontal="true"
-                            />
+                            android:layout_below="@id/destinationIcon"
+                            android:scrollbars="vertical">
+                            <TextView
+                                android:id="@+id/destination_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="asdasdasd"
+
+                                />
+                        </ScrollView>
                     </RelativeLayout>
                 </RelativeLayout>
 

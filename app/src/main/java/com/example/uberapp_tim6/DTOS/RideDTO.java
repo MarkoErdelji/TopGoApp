@@ -141,4 +141,23 @@ public class RideDTO implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "RideDTO{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", totalCost=" + totalCost +
+                ", driver=" + driver +
+                ", passengers=" + passengers +
+                ", estimatedTimeInMinutes=" + estimatedTimeInMinutes +
+                ", vehicleType=" + vehicleType +
+                ", babyTransport=" + babyTransport +
+                ", petTransport=" + petTransport +
+                ", rejection=" + rejection +
+                ", locations=" + locations +
+                ", status=" + status +
+                '}';
+    }
 }
