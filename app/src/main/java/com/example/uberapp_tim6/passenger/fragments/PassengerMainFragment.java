@@ -3,13 +3,8 @@ package com.example.uberapp_tim6.passenger.fragments;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +13,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +24,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
-import com.example.uberapp_tim6.DTOS.JWTTokenDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.RidePassengerDTO;
 import com.example.uberapp_tim6.DTOS.RouteForCreateRideDTO;
@@ -64,10 +56,8 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.ResponseBody;
 import pl.droidsonroids.gif.GifDrawable;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -119,7 +109,7 @@ public class PassengerMainFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PassengerMainFragment newInstance() {
+    public static PassengerMainFragment newInstance(UserInfoDTO passenger) {
         return new PassengerMainFragment();
     }
 

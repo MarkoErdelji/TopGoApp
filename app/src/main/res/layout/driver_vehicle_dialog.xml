@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dialogColor">
+
+    <RelativeLayout
+        android:paddingLeft="30sp"
+        android:paddingRight="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:src="@drawable/ic_baseline_directions_car_24"
+            android:id="@+id/carIcon"
+            android:layout_marginTop="5sp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_centerHorizontal="true">
+
+        </ImageView>
+        <RelativeLayout
+            android:layout_below="@id/carIcon"
+            android:id="@+id/carModelLayout"
+            android:padding="10sp"
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/model"
+                android:id="@+id/carModelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:id="@+id/carModelValue"
+                android:gravity="end"
+                android:layout_alignParentEnd="true"
+                android:layout_width="150sp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@id/carModelLayout"
+            android:id="@+id/licensePlateLayout"
+            android:layout_width="wrap_content"
+            android:padding="10sp"
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/license_plate"
+                android:id="@+id/licensePlateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:id="@+id/licensePlateValue"
+                android:gravity="end"
+                android:layout_alignParentEnd="true"
+                android:layout_width="150sp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@id/licensePlateLayout"
+            android:id="@+id/numOfSeatsLayout"
+            android:layout_width="wrap_content"
+            android:padding="10sp"
+
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/number_of_seats"
+                android:id="@+id/numOfSeatsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:id="@+id/numOfSeatsValue"
+                android:gravity="end"
+                android:layout_alignParentEnd="true"
+                android:layout_width="150sp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/typeLayout"
+            android:layout_below="@id/numOfSeatsLayout"
+            android:layout_width="wrap_content"
+            android:padding="10sp"
+
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/type"
+                android:id="@+id/typeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:id="@+id/typeValue"
+                android:gravity="end"
+                android:layout_alignParentEnd="true"
+                android:layout_width="150sp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@id/typeLayout"
+            android:id="@+id/checkBoxLayout"
+            android:padding="5sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/petCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/pets">
+            </CheckBox>
+            <CheckBox
+                android:id="@+id/babyCheckbox"
+                android:text="@string/baby"
+                android:gravity="center"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </CheckBox>
+        </RelativeLayout>
+=
+
+    </RelativeLayout>
+</RelativeLayout>

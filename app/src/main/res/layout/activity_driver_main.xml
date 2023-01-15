@@ -45,7 +45,7 @@
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:background="@color/blackShadows"
+                android:background="@color/silverSand"
                 android:id="@+id/profileBox"
                 android:layout_height="100sp">
                 <RelativeLayout

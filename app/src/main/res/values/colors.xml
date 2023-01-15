@@ -15,5 +15,7 @@
     <color name="blackShadows">#FFE05D</color>
     <color name="silverSand">#E7E7E7</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="iconColor">#CACACA</color>
+    <color name="dialogColor">#F4F4F4</color>
 
 </resources>
