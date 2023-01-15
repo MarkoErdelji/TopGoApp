@@ -21,7 +21,7 @@ public class ServiceUtils {
 
 
 
-    public static final String SERVICE_API_PATH = "http://172.21.240.1:8000/api/";
+    public static final String SERVICE_API_PATH = "http://192.168.0.197:8000/api/";
 
 
 

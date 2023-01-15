@@ -111,6 +111,7 @@ public class PassengerMainFragment extends Fragment {
     private AppCompatButton step4Back;
     AlertDialog dialog;
     private AppCompatButton backBtn;
+    private View dialogView;
 
     private SharedPreferences userPrefs;
 
@@ -270,7 +271,7 @@ public class PassengerMainFragment extends Fragment {
         SharedPreferences userPrefs = getContext().getSharedPreferences("userPrefs",Context.MODE_PRIVATE);
 
         LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.wait_for_driver, null);
+        dialogView = inflater.inflate(R.layout.wait_for_driver, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         builder.setView(dialogView);
         dialog = builder.create();
@@ -420,7 +421,7 @@ public class PassengerMainFragment extends Fragment {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://172.21.240.1:8000/websocket");
+            uri = new URI("ws://192.168.0.197:8000/websocket");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -445,21 +446,27 @@ public class PassengerMainFragment extends Fragment {
                         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer());
                         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeSerializer());
                         Gson gson = gsonBuilder.create();
-                        RideDTO rideDTO = gson.fromJson(message, RideDTO.class);
-                        if(rideDTO.getStatus() == Status.ACCEPTED){
-                            dialog.dismiss();
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                            builder1.setMessage("Your ride was accepted!");
-                            builder1.setCancelable(true);
-                            AlertDialog alert11 = builder1.create();
-                            alert11.show();
+                        try {
+                            RideDTO rideDTO = gson.fromJson(message, RideDTO.class);
+                            if (rideDTO.getStatus() == Status.ACCEPTED) {
+                                dialog.dismiss();
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("Your ride was accepted!");
+                                builder1.setCancelable(true);
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                            }
+                            if (rideDTO.getStatus() == Status.PENDING) {
+                                dialog.dismiss();
+                                populateDialogAndShow(dialogView, dialog, rideDTO);
+                            }
                         }
-                        if(rideDTO.getStatus() == Status.REJECTED){
-                            dialog.dismiss();
+                        catch (Exception e){
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                            builder1.setMessage("Your ride was rejected!");
+                            builder1.setMessage("No drivers left for your ride!");
                             builder1.setCancelable(true);
                             AlertDialog alert11 = builder1.create();
+                            dialog.dismiss();
                             alert11.show();
                         }
                     }
