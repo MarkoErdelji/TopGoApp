@@ -34,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
+
             <TextView
                 android:id="@+id/begginingTextView"
                 android:text="@string/begging"
@@ -54,14 +55,6 @@
                 android:id="@+id/priceTextView"
                 android:text="@string/price"
                 android:layout_below="@id/endTextView"
-                android:textSize="11sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5sp"/>
-            <TextView
-                android:id="@+id/ratingTextView"
-                android:text="@string/rating"
-                android:layout_below="@id/priceTextView"
                 android:textSize="11sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

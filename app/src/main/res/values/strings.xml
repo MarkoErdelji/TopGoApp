@@ -41,7 +41,25 @@
     <string name="nameLastName">Imeno Prezimic</string>
     <string name="comment">Ovo je obican komentar</string>
     <string name="sign_in">Sign in</string>
+    <string name="num_of_seats">Num of seats:</string>
+    <string name="back">Back</string>
+    <string name="order">Order</string>
+    <string-array name="vehicle_type">
+        <item>STANDARD</item>
+        <item>LUXURY</item>
+        <item>VAN</item>
+    </string-array>
     <string name="ride_finished">Ride Finished!</string>
     <string name="great">Great</string>
     <string name="end_time">End Time:</string>
+    <string name="passengers">Passengers</string>
+    <string name="cancel">Cancel</string>
+    <string name="vehicle_details">Vehicle details:</string>
+    <string name="documents">Documents:</string>
+    <string name="pets">Pets</string>
+    <string name="baby">Baby</string>
+    <string name="type">Type:</string>
+    <string name="number_of_seats">Number of seats:</string>
+    <string name="license_plate">License plate:</string>
+    <string name="model">Model:</string>
 </resources>

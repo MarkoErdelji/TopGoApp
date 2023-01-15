@@ -8,30 +8,43 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
-import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.passenger.fragments.PassengerDriveHistoryFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerMainFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerProfileFragment;
+import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.FragmentTransition;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class PassengerMainActivity extends AppCompatActivity {
+
 
     private PassengerMainActivity pvm;
     private CharSequence mTitle;
@@ -40,15 +53,37 @@ public class PassengerMainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private RelativeLayout profileLayout;
+    private UserInfoDTO passenger;
+    SharedPreferences userPrefs;
+
     private ListView mDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
+        userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+
+        Call<UserInfoDTO> driverInfoDTOCall = ServiceUtils.passengerService.getPassengerById(userPrefs.getString("id","nema id"));
+        driverInfoDTOCall.enqueue(new Callback<UserInfoDTO>() {
+            @Override
+            public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
+                passenger = response.body();
+                setPassengerInfo(passenger);
+
+                FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false,R.id.mainContent);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+
+            }
+        });
 
         pvm = this;
-        FragmentTransition.to(PassengerMainFragment.newInstance(), pvm, false,R.id.mainContent);
+        FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false, R.id.mainContent);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -57,17 +92,17 @@ public class PassengerMainActivity extends AppCompatActivity {
 
         View logoView = toolbar.getChildAt(0);
 
+
         logoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragManager = pvm.getSupportFragmentManager();
                 int count = pvm.getSupportFragmentManager().getBackStackEntryCount();
-                Fragment frag = fragManager.getFragments().get(count>0?count-1:count);
-                if (frag.getClass().equals(PassengerMainFragment.class)){
+                Fragment frag = fragManager.getFragments().get(count > 0 ? count - 1 : count);
+                if (frag.getClass().equals(PassengerMainFragment.class)) {
 
-                }
-                else{
-                    FragmentTransition.to(PassengerMainFragment.newInstance(), pvm, false,R.id.mainContent);
+                } else {
+                    FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false, R.id.mainContent);
                 }
             }
         });
@@ -82,17 +117,10 @@ public class PassengerMainActivity extends AppCompatActivity {
         mDrawerPane = findViewById(R.id.drawerPane);
 
         mNavItems.add(new NavItem("Inbox", "This is your inbox", R.drawable.ic_action_mail));
-        mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
+        mNavItems.add(new NavItem("History", "Ride history", R.drawable.ic_action_history));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        profileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransition.to(PassengerProfileFragment.newInstance(), pvm, false,R.id.mainContent);
-                mDrawerLayout.closeDrawers();
-            }
-        });
 
         //mDrawerLayout.setDrawerShadow(androidx.constraintlayout.widget.R.drawable.abc_ic_star_black_48dp, GravityCompat.START);
 
@@ -124,9 +152,32 @@ public class PassengerMainActivity extends AppCompatActivity {
         };
 
 
-
-
     }
+
+
+    private void setPassengerInfo(UserInfoDTO passenger) {
+
+        TextView driverInfo = findViewById(R.id.passengerInfoTextView);
+        driverInfo.setText(passenger.getName() + " " + passenger.getSurname());
+
+        int index = passenger.getProfilePicture().indexOf(",") + 1;
+        String base64 = passenger.getProfilePicture().substring(index);
+        byte[] imageBytes = Base64.decode(base64, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        ImageView image = findViewById(R.id.profileIcon);
+        image.setImageBitmap(bitmap);
+
+        profileLayout = findViewById(R.id.profileBox);
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(PassengerProfileFragment.newInstance(passenger), pvm, false,R.id.mainContent);
+                mDrawerLayout.closeDrawers();
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -157,28 +208,32 @@ public class PassengerMainActivity extends AppCompatActivity {
         }
     }
 
+
     private void selectItemFromDrawer(int position) {
-        if(position == 0){
-            FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false,R.id.mainContent);
-        }else if(position == 1){
-            FragmentTransition.to(PassengerDriveHistoryFragment.newInstance(), this, false,R.id.mainContent);
-        }else if(position == 2){
+        if (position == 0) {
+            FragmentTransition.to(PassengerInboxFragment.newInstance(), this, false, R.id.mainContent);
+        } else if (position == 1) {
+            FragmentTransition.to(PassengerDriveHistoryFragment.newInstance(), this, false, R.id.mainContent);
+        } else if (position == 2) {
             //..
-        }else if(position == 3){
+        } else if (position == 3) {
             //..
-        }else if(position == 4){
+        } else if (position == 4) {
             //..
-        }else if(position == 5){
+        } else if (position == 5) {
             //...
-        }else{
+        } else {
             Log.e("DRAWER", "Nesto van opsega!");
         }
 
         mDrawerList.setItemChecked(position, true);
-        if(position != 5) // za sve osim za sync
+        if (position != 5) // za sve osim za sync
         {
             setTitle(mNavItems.get(position).getmTitle());
         }
         mDrawerLayout.closeDrawer(mDrawerPane);
     }
-}
+
+
+
+    }

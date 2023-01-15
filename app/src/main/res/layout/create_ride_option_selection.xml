@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:padding="30dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_seats_input"
+            android:layout_width="200sp"
+            android:layout_height="70sp"
+            android:paddingLeft="30sp"
+            >
+            <TextView
+                android:id="@+id/sets_input_title"
+                android:layout_width="110sp"
+                android:layout_marginLeft="8sp"
+                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:text="@string/num_of_seats"/>
+            <EditText
+                android:textColor="@color/black"
+                android:id="@+id/sets_input"
+                android:maxLength="1"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/sets_input_title"
+                android:layout_width="20sp"
+                android:layout_height="40sp"
+                android:inputType="number" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/checkbox_layout"
+            android:layout_width="match_parent"
+            android:paddingRight="30sp"
+            android:gravity="right"
+            android:layout_toRightOf="@id/layout_seats_input"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:gravity="top"
+                android:id="@+id/checkbox_babies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="For babies" />
+
+            <CheckBox android:id="@+id/checkbox_pets"
+                android:gravity="top"
+                android:layout_below="@id/checkbox_babies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="For pets" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/create_ride_button_layout"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_below="@id/checkbox_layout"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:background="@drawable/back_button"
+                android:id="@+id/step4_back_button"
+                android:layout_width="100dp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginRight="25dp"
+                android:text="Back"
+                android:layout_height="45dp" />
+
+            <Button
+                android:background="@drawable/edit_text"
+                android:id="@+id/order_ride_button"
+                android:layout_width="100dp"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textAlignment="center"
+                android:text="Order"
+                android:layout_height="45dp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,49 +12,76 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <TextView
-            android:id="@+id/registerText"
+        <ImageView
+            android:id="@+id/logoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/topgologo"
+            android:text="@string/topgo"
+            android:textSize="50sp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="60sp"
-            android:layout_marginBottom="40sp"
-            android:text="@string/register"
-            android:textSize="43sp" />
-
+            android:layout_marginTop = "50sp"
+            android:layout_marginBottom="20sp"
+            />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/registerText"
+            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginTop="30sp"
+            android:layout_below="@id/logoText"
+            android:layout_marginEnd="20sp"
+            android:layout_marginBottom="20sp"
+            android:paddingBottom="20sp"
             android:background="@drawable/round_edges_layout"
-            android:layout_margin="20sp"
-            android:padding="20sp"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp">
+            >
+
+            <RelativeLayout
+                android:background="@drawable/top_round_edges_layout"
+                android:id="@+id/headerOrange"
+                android:layout_width="match_parent"
+                android:layout_height="35sp"
+                android:layout_marginBottom="20sp"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35sp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/register"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/nameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/headerOrange"
                 android:layout_centerHorizontal="true"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/nameTextBox"
-                    android:hint="@string/first_name"
-                    android:maxLines="1"
                     android:layout_width="match_parent"
                     android:layout_height="30sp"
                     android:background="@drawable/edit_text"
-                    android:inputType="text"/>
+                    android:hint="@string/first_name"
+                    android:inputType="text"
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/surnameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:layout_below="@id/nameLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp">
@@ -62,16 +89,18 @@
                 <EditText
                     android:id="@+id/surnameTextBox"
                     android:layout_width="match_parent"
-                    android:hint="@string/last_name"
-                    android:maxLines="1"
                     android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
+                    android:hint="@string/last_name"
                     android:inputType="text"
-                    android:background="@drawable/edit_text" />
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/usernameLayout"
                 android:layout_width="wrap_content"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/surnameLayout"
                 android:layout_centerHorizontal="true"
@@ -80,17 +109,19 @@
                 <EditText
                     android:id="@+id/usernameTextBox"
                     android:layout_width="match_parent"
-                    android:hint="@string/username"
-                    android:maxLines="1"
                     android:layout_height="30sp"
                     android:background="@drawable/edit_text"
-                    android:inputType="textEmailAddress" />
+                    android:hint="@string/username"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/passwordLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:layout_below="@id/usernameLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp">
@@ -98,11 +129,11 @@
                 <EditText
                     android:id="@+id/paswordTextBox"
                     android:layout_width="match_parent"
-                    android:hint="@string/password"
                     android:layout_height="30sp"
-                    android:maxLines="1"
                     android:background="@drawable/edit_text"
-                    android:inputType="textPassword" />
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -110,23 +141,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passwordLayout"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/phoneNumberTextBox"
                     android:layout_width="match_parent"
-                    android:maxLines="1"
-                    android:hint="@string/phone_number"
                     android:layout_height="30sp"
                     android:background="@drawable/edit_text"
-                    android:inputType="phone" />
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/addressLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
                 android:layout_below="@id/phoneNumberLayout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp">
@@ -134,25 +169,45 @@
                 <EditText
                     android:id="@+id/addressTextBox"
                     android:layout_width="match_parent"
-                    android:maxLines="1"
-                    android:hint="@string/address"
                     android:layout_height="30sp"
                     android:background="@drawable/edit_text"
-                    android:inputType="textPostalAddress" />
+                    android:hint="@string/address"
+                    android:inputType="textPostalAddress"
+                    android:maxLines="1" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/loginButtonLayout"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="45sp"
                 android:layout_below="@id/addressLayout"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20sp">
 
                 <Button
                     android:id="@+id/registerButton"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:paddingBottom="0sp"
+                    android:background="@drawable/round_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/submit" />
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    android:layout_height="45dp"
+                    android:text="Sign up" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:background="@drawable/back_button"
+                    android:id="@+id/registerBack"
+                    android:layout_width="100dp"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:layout_marginEnd="25dp"
+                    android:layout_toLeftOf="@id/registerButton"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/back"
+                    android:layout_height="45dp" />
             </RelativeLayout>
 
         </RelativeLayout>

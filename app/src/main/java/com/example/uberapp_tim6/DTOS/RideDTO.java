@@ -3,11 +3,12 @@ package com.example.uberapp_tim6.DTOS;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RideDTO {
+public class RideDTO implements Serializable {
     public Integer id;
 
     public LocalDateTime startTime;
@@ -139,5 +140,24 @@ public class RideDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "RideDTO{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", totalCost=" + totalCost +
+                ", driver=" + driver +
+                ", passengers=" + passengers +
+                ", estimatedTimeInMinutes=" + estimatedTimeInMinutes +
+                ", vehicleType=" + vehicleType +
+                ", babyTransport=" + babyTransport +
+                ", petTransport=" + petTransport +
+                ", rejection=" + rejection +
+                ", locations=" + locations +
+                ", status=" + status +
+                '}';
     }
 }

@@ -9,9 +9,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.models.User;
 import com.example.uberapp_tim6.tools.Mokap;
 
@@ -29,6 +33,7 @@ public class PassengerProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String ARG_PASSENGER = "arg_passenger";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -39,6 +44,10 @@ public class PassengerProfileFragment extends Fragment {
     private TextView phoneNumber;
     private TextView dateOfBirth;
     private TextView address;
+    private UserInfoDTO passenger;
+
+    private ImageView image;
+
 
     public PassengerProfileFragment() {
         // Required empty public constructor
@@ -53,14 +62,19 @@ public class PassengerProfileFragment extends Fragment {
      * @return A new instance of fragment PassengerProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PassengerProfileFragment newInstance() {
-        return new PassengerProfileFragment();
+    public static PassengerProfileFragment newInstance(UserInfoDTO p) {
+        PassengerProfileFragment fragment = new PassengerProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_PASSENGER, p);
+        fragment.setArguments(bundle);
+        return fragment;
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        passenger = (UserInfoDTO) getArguments().getSerializable(ARG_PASSENGER);
 
 
     }
@@ -77,23 +91,20 @@ public class PassengerProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ImageView image = getView().findViewById(R.id.profileIcon);
+        Glide.with(getContext()).load(passenger.getProfilePicture()).into(image);
 
         firstName = getView().findViewById(R.id.nameValue);
         lastName = getView().findViewById(R.id.surnameValue);
         email = getView().findViewById(R.id.usernameValue);
         phoneNumber = getView().findViewById(R.id.phoneNumberValue);
-        dateOfBirth = getView().findViewById(R.id.dateValue);
         address = getView().findViewById(R.id.addressValue);
 
-        User passenger = Mokap.getPassengerProfile();
 
-        firstName.setText(passenger.getFirstName());
-        lastName.setText(passenger.getLastName());
+        firstName.setText(passenger.getName());
+        lastName.setText(passenger.getSurname());
         email.setText(passenger.getEmail());
-        phoneNumber.setText(passenger.getPhoneNumber());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
-        String formattedString = passenger.getDateOfBirth().format(formatter);
-        dateOfBirth.setText(formattedString);
+        phoneNumber.setText(passenger.getTelephoneNumber());
         address.setText(passenger.getAddress());
 
     }
