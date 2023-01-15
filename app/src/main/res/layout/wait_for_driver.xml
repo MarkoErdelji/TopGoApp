@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="30dp"
+            android:paddingBottom="100dp">
+            <RelativeLayout
+                android:id="@+id/routeInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:id="@+id/orange_bar"
+                    android:layout_centerVertical="true"
+                    android:background="@color/primaryC"
+                    android:layout_centerHorizontal="true" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/departureIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/car_icon"/>
+                    <ScrollView
+                        android:layout_width="140dp"
+                        android:layout_below="@id/departureIcon"
+                        android:scrollbars="vertical"
+                        android:layout_height="50dp">
+                    <TextView
+                        android:id="@+id/departureValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
+                    <ImageView
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/destinationIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/destination_marker" />
+                    <ScrollView
+
+                        android:layout_width="140dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@id/destinationIcon"
+                        android:scrollbars="vertical"
+                        android:layout_marginTop="10sp"
+                        android:layout_alignParentEnd="true">
+                        <TextView
+                            android:id="@+id/destinationValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                    </ScrollView>
+                </RelativeLayout>
+            </RelativeLayout>
+            <RelativeLayout
+
+                android:id="@+id/driverMainInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/routeInfo">
+                <RelativeLayout
+                    android:layout_width="100sp"
+                    android:id="@+id/driverImageHolder"
+                    android:layout_height="110sp"
+                    android:gravity="center"
+                    android:layout_marginRight="10sp">
+                    <de.hdodenhof.circleimageview.CircleImageView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                    android:id="@+id/driverImageValue"
+
+                        android:src="@drawable/tate"
+                        android:scaleType="centerCrop">
+                    </de.hdodenhof.circleimageview.CircleImageView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@id/driverImageHolder"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/name_surname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kristijan Bubasvaba"
+                        android:padding="5sp"
+                        />
+                    <TextView
+                        android:id="@+id/phoneNumberinfo"
+                        android:layout_below="@id/name_surname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0531124532"
+                        android:padding="5sp"
+
+                        />
+                    <TextView
+                        android:id="@+id/emailInfo"
+                        android:layout_below="@id/phoneNumberinfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5sp"
+                        android:text="kristijan@buba.com"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5sp"
+                android:id="@+id/orange_bar_thin"
+                android:layout_below="@id/driverMainInfo"
+                android:layout_centerVertical="true"
+                android:background="@color/primaryC"
+                android:layout_centerHorizontal="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rideContent"
+                android:layout_marginTop="5sp"
+                android:layout_below="@id/orange_bar_thin"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" >
+                <RelativeLayout
+                    android:id="@+id/carNameLayout"
+                    android:layout_width="170sp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/carNameIcon"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/car_icon"
+                        android:layout_centerVertical="true"
+                        >
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:scrollbars="horizontal"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginRight="5sp"
+                        android:layout_toRightOf="@id/carNameIcon"
+
+                        >
+                    <TextView
+                        android:layout_marginLeft="3sp"
+                        android:id="@+id/carNameValue"
+                        android:layout_width="140sp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        >
+
+                    </TextView>
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/carTypeLayout"
+                    android:layout_below="@id/carNameLayout"
+                    android:layout_width="170sp"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/carTypeIcon"
+                        android:layout_centerVertical="true"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/car_icon">
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:scrollbars="horizontal"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginRight="5sp"
+                        android:layout_toRightOf="@id/carTypeIcon"
+                        >
+                        <TextView
+
+                            android:id="@+id/carTypeValue"
+                            android:layout_width="140sp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            >
+
+                        </TextView>
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/isForPetsLayout"
+                    android:layout_below="@id/carTypeLayout"
+                    android:layout_width="170sp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/isForPetsIcon"
+                        android:layout_centerVertical="true"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/ic_action_pet"
+                        >
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:scrollbars="horizontal"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_toRightOf="@id/isForPetsIcon"
+                        >
+                        <TextView
+                            android:id="@+id/isForPetsValue"
+                            android:layout_width="140sp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            >
+
+                        </TextView>
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/isForBabiesLayout"
+                    android:layout_width="170sp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/isForPetsLayout">
+                    <ImageView
+                        android:id="@+id/isForBabiesIcon"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/ic_action_baby"
+                        android:layout_centerVertical="true"
+                        >
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:scrollbars="horizontal"
+                        android:layout_marginLeft="3sp"
+                        android:layout_toRightOf="@id/isForBabiesIcon"
+                        >
+                        <TextView
+                            android:id="@+id/isForBabiesValue"
+                            android:layout_width="140sp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            >
+
+                        </TextView>
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/distanceLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/carNameLayout">
+                    <ImageView
+                        android:id="@+id/distanceImage"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/ic_action_distance"
+                        android:layout_centerVertical="true"
+                        >
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:scrollbars="horizontal"
+                        android:layout_marginLeft="3sp"
+                        android:layout_toRightOf="@id/distanceImage"
+                        >
+                    <TextView
+                        android:id="@+id/distanceValue"
+                        android:layout_width="150sp"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/timeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@id/distanceLayout"
+                    android:layout_toRightOf="@id/carTypeLayout"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/timeIcon"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/ic_action_time"
+                        android:layout_centerVertical="true"
+                        >
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:scrollbars="horizontal"
+                        android:layout_marginLeft="3sp"
+                        android:layout_toRightOf="@id/timeIcon"
+                        >
+                        <TextView
+                            android:id="@+id/timeValue"
+                            android:layout_width="150sp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            >
+
+                        </TextView>
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/moneyLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@id/timeLayout"
+                    android:layout_toRightOf="@id/isForPetsLayout"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/moneyIcon"
+                        android:layout_width="20sp"
+                        android:layout_height="20sp"
+                        android:background="@drawable/ic_action_money"
+                        android:layout_centerVertical="true"
+                        >
+
+                    </ImageView>
+                    <ScrollView
+                        android:layout_width="150sp"
+                        android:layout_height="25sp"
+                        android:layout_marginLeft="3sp"
+
+                        android:scrollbars="horizontal"
+                        android:layout_toRightOf="@id/moneyIcon"
+                        >
+                        <TextView
+                            android:id="@+id/moneyValue"
+                            android:layout_width="150sp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            />
+                    </ScrollView>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_below="@id/rideContent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/loadingGif"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="70sp"
+                    android:layout_height="70sp">
+
+                </ImageView>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

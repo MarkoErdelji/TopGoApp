@@ -64,15 +64,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:textColor="@color/gray"
-                        android:layout_centerHorizontal="true"
                         android:text="@string/userPlaceholder2"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="20sp"
-                        android:textSize="18sp"
-                        android:layout_toEndOf="@id/profileIcon"
-                        >
-                    </TextView>
+                        android:textColor="@color/gray"
+                        android:textSize="18sp"></TextView>
                 </RelativeLayout>
             </RelativeLayout>
 
