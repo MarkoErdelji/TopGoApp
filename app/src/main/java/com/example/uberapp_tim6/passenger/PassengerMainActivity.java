@@ -8,13 +8,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,41 +25,23 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.uberapp_tim6.DTOS.RideDTO;
-import com.example.uberapp_tim6.DTOS.TimeAndDistanceDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
-import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.UserLoginActivity;
 import com.example.uberapp_tim6.adapters.DrawerListAdapter;
-import com.example.uberapp_tim6.driver.DriverMainActivity;
 import com.example.uberapp_tim6.models.NavItem;
 import com.example.uberapp_tim6.passenger.fragments.PassengerDriveHistoryFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerInboxFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerMainFragment;
 import com.example.uberapp_tim6.passenger.fragments.PassengerProfileFragment;
-import com.example.uberapp_tim6.services.MapService;
 import com.example.uberapp_tim6.services.ServiceUtils;
-import com.example.uberapp_tim6.tools.DateTimeDeserializer;
-import com.example.uberapp_tim6.tools.DateTimeSerializer;
 import com.example.uberapp_tim6.tools.FragmentTransition;
-import com.example.uberapp_tim6.tools.TokenHolder;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import pl.droidsonroids.gif.GifDrawable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class PassengerMainActivity extends AppCompatActivity {
 
@@ -70,6 +53,7 @@ public class PassengerMainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private RelativeLayout profileLayout;
+    private UserInfoDTO passenger;
     SharedPreferences userPrefs;
 
     private ListView mDrawerList;
@@ -80,9 +64,26 @@ public class PassengerMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_passenger_main);
         userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
 
+        Call<UserInfoDTO> driverInfoDTOCall = ServiceUtils.passengerService.getPassengerById(userPrefs.getString("id","nema id"));
+        driverInfoDTOCall.enqueue(new Callback<UserInfoDTO>() {
+            @Override
+            public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
+                passenger = response.body();
+                setPassengerInfo(passenger);
+
+                FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false,R.id.mainContent);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+
+            }
+        });
 
         pvm = this;
-        FragmentTransition.to(PassengerMainFragment.newInstance(), pvm, false, R.id.mainContent);
+        FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false, R.id.mainContent);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -101,7 +102,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                 if (frag.getClass().equals(PassengerMainFragment.class)) {
 
                 } else {
-                    FragmentTransition.to(PassengerMainFragment.newInstance(), pvm, false, R.id.mainContent);
+                    FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false, R.id.mainContent);
                 }
             }
         });
@@ -116,17 +117,10 @@ public class PassengerMainActivity extends AppCompatActivity {
         mDrawerPane = findViewById(R.id.drawerPane);
 
         mNavItems.add(new NavItem("Inbox", "This is your inbox", R.drawable.ic_action_mail));
-        mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
+        mNavItems.add(new NavItem("History", "Ride history", R.drawable.ic_action_history));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        profileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransition.to(PassengerProfileFragment.newInstance(), pvm, false, R.id.mainContent);
-                mDrawerLayout.closeDrawers();
-            }
-        });
 
         //mDrawerLayout.setDrawerShadow(androidx.constraintlayout.widget.R.drawable.abc_ic_star_black_48dp, GravityCompat.START);
 
@@ -158,6 +152,30 @@ public class PassengerMainActivity extends AppCompatActivity {
         };
 
 
+    }
+
+
+    private void setPassengerInfo(UserInfoDTO passenger) {
+
+        TextView driverInfo = findViewById(R.id.passengerInfoTextView);
+        driverInfo.setText(passenger.getName() + " " + passenger.getSurname());
+
+        int index = passenger.getProfilePicture().indexOf(",") + 1;
+        String base64 = passenger.getProfilePicture().substring(index);
+        byte[] imageBytes = Base64.decode(base64, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        ImageView image = findViewById(R.id.profileIcon);
+        image.setImageBitmap(bitmap);
+
+        profileLayout = findViewById(R.id.profileBox);
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(PassengerProfileFragment.newInstance(passenger), pvm, false,R.id.mainContent);
+                mDrawerLayout.closeDrawers();
+            }
+        });
     }
 
     @Override

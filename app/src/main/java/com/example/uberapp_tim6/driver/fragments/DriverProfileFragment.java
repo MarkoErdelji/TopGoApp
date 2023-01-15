@@ -1,5 +1,6 @@
 package com.example.uberapp_tim6.driver.fragments;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,15 +13,30 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.uberapp_tim6.DTOS.DocumentInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
+import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.adapters.DriverDocumentDialogAdapter;
+import com.example.uberapp_tim6.models.Document;
 import com.example.uberapp_tim6.models.User;
+import com.example.uberapp_tim6.services.ServiceUtils;
+import com.example.uberapp_tim6.tools.FragmentTransition;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,9 +57,17 @@ public class DriverProfileFragment extends Fragment {
     private TextView lastName;
     private TextView email;
     private TextView phoneNumber;
-    private TextView dateOfBirth;
+    private TextView adress;
     private UserInfoDTO driver;
     private ImageView image;
+    private View iconDocument;
+    private View iconVehicle;
+
+    private AlertDialog vehicleDialog;
+    private View documentDialogView;
+
+    private AlertDialog documentDialog;
+    private View vehicleDialogView;
 
 
     // TODO: Rename and change types and number of parameters
@@ -78,12 +102,37 @@ public class DriverProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        LayoutInflater inflater = getLayoutInflater();
+        vehicleDialogView = inflater.inflate(R.layout.driver_vehicle_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setView(vehicleDialogView);
+        vehicleDialog = builder.create();
+
+        documentDialogView = inflater.inflate(R.layout.driver_document_dialog, null);
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this.getContext());
+        builder2.setView(documentDialogView);
+        documentDialog = builder2.create();
+
+        iconDocument = getView().findViewById(R.id.imageDocumentLayout);
+        iconVehicle = getView().findViewById(R.id.imageVehicleLayout);
+        iconDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createDocumentDialogAndShow(documentDialogView,documentDialog,driver.getId());
+            }
+        });
+        iconVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createVehicleDialogAndShow(vehicleDialogView,vehicleDialog,driver.getId());
+            }
+        });
         image = getView().findViewById(R.id.profileIcon);
         firstName = getView().findViewById(R.id.nameValue);
         lastName = getView().findViewById(R.id.surnameValue);
         email = getView().findViewById(R.id.usernameValue);
         phoneNumber = getView().findViewById(R.id.phoneNumberValue);
-        dateOfBirth = getView().findViewById(R.id.dateValue);
+        adress = getView().findViewById(R.id.addressValue);
 
         User passenger = Mokap.getPassengerProfile();
 
@@ -91,15 +140,69 @@ public class DriverProfileFragment extends Fragment {
         lastName.setText(driver.getSurname());
         email.setText(driver.getEmail());
         phoneNumber.setText(driver.getTelephoneNumber());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
-        String formattedString = passenger.getDateOfBirth().format(formatter);
-        dateOfBirth.setText(formattedString);
+        adress.setText(driver.getAddress());
 
-        int index = driver.getProfilePicture().indexOf(",") + 1;
-        String base64 = driver.getProfilePicture().substring(index);
-        byte[] imageBytes = Base64.decode(base64, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        image.setImageBitmap(bitmap);
+        Glide.with(getContext()).load(driver.getProfilePicture()).into(image);
+
+
+
+
+    }
+
+    private void createVehicleDialogAndShow(View vehicleDialogView, AlertDialog vehicleDialog, Integer driverId) {
+        TextView carModelValue = vehicleDialogView.findViewById(R.id.carModelValue);
+        TextView carLicenseValue = vehicleDialogView.findViewById(R.id.licensePlateValue);
+        TextView numOfSeatsValue = vehicleDialogView.findViewById(R.id.numOfSeatsValue);
+        TextView typeValue = vehicleDialogView.findViewById(R.id.typeValue);
+        CheckBox petsCheckbox = vehicleDialogView.findViewById(R.id.petCheckbox);
+        CheckBox babyCheckbox = vehicleDialogView.findViewById(R.id.babyCheckbox);
+
+        ServiceUtils.driverService.getDriverVehicle(String.valueOf(driverId)).enqueue(new Callback<VehicleInfoDTO>() {
+            @Override
+            public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
+                if(response.isSuccessful()) {
+                    carModelValue.setText(response.body().getModel());
+                    carLicenseValue.setText(response.body().getLicenseNumber());
+                    numOfSeatsValue.setText(String.valueOf(response.body().getPassengerSeats()));
+                    typeValue.setText(response.body().getVehicleType());
+                    petsCheckbox.setChecked(response.body().petTransport);
+                    babyCheckbox.setChecked(response.body().babyTransport);
+                    petsCheckbox.setClickable(false);
+                    babyCheckbox.setClickable(false);
+                    vehicleDialog.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    private void createDocumentDialogAndShow(View documentDialogView, AlertDialog documentDialog, Integer driverId) {
+
+
+        ServiceUtils.driverService.getDriverDocuments(String.valueOf(driverId)).enqueue(new Callback<List<DocumentInfoDTO>>() {
+            @Override
+            public void onResponse(Call<List<DocumentInfoDTO>> call, Response<List<DocumentInfoDTO>> response) {
+                if(response.isSuccessful()){
+                    ListView listView = documentDialogView.findViewById(R.id.documentList);
+                    DriverDocumentDialogAdapter adapter = new DriverDocumentDialogAdapter(getContext(), (ArrayList<DocumentInfoDTO>) response.body());
+                    listView.setAdapter(adapter);
+                    documentDialog.show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DocumentInfoDTO>> call, Throwable t) {
+
+            }
+        });
 
 
     }

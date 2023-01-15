@@ -45,7 +45,7 @@
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:background="@color/blackShadows"
+                android:background="@color/silverSand"
                 android:id="@+id/profileBox"
                 android:layout_height="100sp">
                 <RelativeLayout
@@ -54,19 +54,25 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="20sp">
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profileIcon"
                         android:layout_width="50sp"
                         android:layout_height="50sp"
+                        android:src="@drawable/tate"
                         />
 
                     <TextView
+                        android:id="@+id/passengerInfoTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/textC"
                         android:singleLine="true"
-                        android:text="@string/userPlaceholder2"
-                        android:textColor="@color/gray"
-                        android:textSize="18sp"></TextView>
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20sp"
+                        android:textSize="18sp"
+                        android:layout_toEndOf="@id/profileIcon"
+                        />
                 </RelativeLayout>
             </RelativeLayout>
 

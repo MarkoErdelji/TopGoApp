@@ -155,8 +155,7 @@ public class DriverMainActivity extends AppCompatActivity {
         mDrawerPane = findViewById(R.id.drawerPane);
 
         mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_action_mail));
-        mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
-        mNavItems.add(new NavItem("Test", "Test", R.drawable.history_icon));
+        mNavItems.add(new NavItem("History", "Ride history", R.drawable.ic_action_history));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
