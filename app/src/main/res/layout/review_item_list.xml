@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
         android:padding="10sp"
         tools:ignore="MissingConstraints">
         <RelativeLayout
@@ -13,11 +13,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             >
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/tate"
-                /></RelativeLayout>
+                android:src="@drawable/tate"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rideInfoLayout"
@@ -44,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5sp"/>
             <RatingBar
-
                 android:id="@+id/simpleRatingBar"
+                android:
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"

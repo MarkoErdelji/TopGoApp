@@ -5,6 +5,7 @@ import com.example.uberapp_tim6.DTOS.CreateRideDTO;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
+import com.example.uberapp_tim6.DTOS.RejectionTextDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 
 import java.util.List;
@@ -42,6 +43,11 @@ public interface RideService {
 
     @PUT("ride/{rideId}/start")
     Call<RideDTO> startRide(@Path("rideId") String rideId);
+
+    @PUT("ride/{rideId}/accept")
+    Call<RideDTO> acceptRide(@Path("rideId") String rideId);
+    @PUT("ride/{rideId}/cancel")
+    Call<RideDTO> cancelRide(@Path("rideId") String rideId, @Body RejectionTextDTO rejectionTextDTO);
 
     @PUT("ride/{rideId}/panic")
     Call<PanicDTO> panicRide(@Body ReasonDTO reason,@Path("rideId") String rideId);
