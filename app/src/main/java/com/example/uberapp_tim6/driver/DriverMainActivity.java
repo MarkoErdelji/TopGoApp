@@ -349,6 +349,8 @@ public class DriverMainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.custom_dialog_rejection_of_ride, null);
         builder.setView(dialogLayout);
+        builder.setCancelable(false);
+        builder.setTitle("Enter a reason for rejecting ride");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // Do something when the "OK" button is clicked
@@ -371,12 +373,6 @@ public class DriverMainActivity extends AppCompatActivity {
                 });
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
         AlertDialog dialog = builder.create();
         dialog.show();
 
@@ -389,7 +385,7 @@ public class DriverMainActivity extends AppCompatActivity {
             LayoutInflater inflater = getLayoutInflater();
             View dialogLayout = inflater.inflate(R.layout.custom_dialog_acceptance_of_ride, null);
             builder.setView(dialogLayout);
-
+            builder.setCancelable(false);
             TextView destination = dialogLayout.findViewById(R.id.destination_text_view);
             TextView departure = dialogLayout.findViewById(R.id.departure_text_view);
             destination.setText(rideDTO.getLocations().get(0).getDestination().getAddress());
