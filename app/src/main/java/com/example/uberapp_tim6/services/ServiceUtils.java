@@ -21,7 +21,7 @@ public class ServiceUtils {
 
 
 
-    public static final String SERVICE_API_PATH = "http://192.168.0.197:8000/api/";
+    public static final String SERVICE_API_PATH = "http://192.168.72.45:8000/api/";
 
 
 
@@ -60,6 +60,7 @@ public class ServiceUtils {
     public static DriverService driverService = retrofit.create(DriverService.class);
     public static RideService rideService = retrofit.create(RideService.class);
     public static PassengerService passengerService = retrofit.create(PassengerService.class);
+    public static UserService userService = retrofit.create(UserService.class);
 
 
 

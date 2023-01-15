@@ -318,7 +318,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if(position == 0){
-            FragmentTransition.to(DriverInboxFragment.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(DriverInboxFragment.newInstance(driver), this, false,R.id.mainContent);
         }else if(position == 1){
             FragmentTransition.to(DriverRideHistoryFragment.newInstance(driver), this, false,R.id.mainContent);
 
