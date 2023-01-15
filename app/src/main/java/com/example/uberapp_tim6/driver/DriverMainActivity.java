@@ -222,7 +222,7 @@ public class DriverMainActivity extends AppCompatActivity {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.100.4:8000/websocket");
+            uri = new URI("ws://172.21.240.1:8000/websocket");
         }
         catch (URISyntaxException e) {
             e.printStackTrace();
