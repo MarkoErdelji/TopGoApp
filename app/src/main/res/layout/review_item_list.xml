@@ -45,7 +45,6 @@
                 android:layout_marginBottom="5sp"/>
             <RatingBar
                 android:id="@+id/simpleRatingBar"
-                android:
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
