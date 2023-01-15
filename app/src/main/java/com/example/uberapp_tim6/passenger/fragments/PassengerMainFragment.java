@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
@@ -41,10 +42,16 @@ import com.example.uberapp_tim6.DTOS.TimeAndDistanceDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 import com.example.uberapp_tim6.services.MapService;
 import com.example.uberapp_tim6.services.ServiceUtils;
+import com.example.uberapp_tim6.tools.DateTimeDeserializer;
+import com.example.uberapp_tim6.tools.DateTimeSerializer;
+import com.example.uberapp_tim6.tools.TokenHolder;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -54,8 +61,10 @@ import org.osmdroid.views.MapView;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
@@ -63,6 +72,7 @@ import pl.droidsonroids.gif.GifDrawable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tech.gusavila92.websocketclient.WebSocketClient;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +80,9 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class PassengerMainFragment extends Fragment {
+
+    private WebSocketClient webSocketClient;
+
 
     private EditText departureEditText;
 
@@ -96,7 +109,10 @@ public class PassengerMainFragment extends Fragment {
 
     private AppCompatButton step3Back;
     private AppCompatButton step4Back;
+    AlertDialog dialog;
     private AppCompatButton backBtn;
+
+    private SharedPreferences userPrefs;
 
     public PassengerMainFragment() {
         // Required empty public constructor
@@ -111,15 +127,6 @@ public class PassengerMainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        URI uri;
-        try {
-            // Connect to local host
-            uri = new URI("ws://192.168.0.197:8000/websocket");
-        }
-        catch (URISyntaxException e) {
-            e.printStackTrace();
-            return;
-        }
 
         Context ctx = this.getContext();
         Configuration.getInstance().load(ctx, getDefaultSharedPreferences(ctx));
@@ -145,6 +152,8 @@ public class PassengerMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        createPassengerNotifSession();
 
         map = view.findViewById(R.id.map);
 
@@ -264,7 +273,7 @@ public class PassengerMainFragment extends Fragment {
         View dialogView = inflater.inflate(R.layout.wait_for_driver, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         step4Order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -335,7 +344,7 @@ public class PassengerMainFragment extends Fragment {
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
-    private void populateDialogAndShow(View dialogView, AlertDialog dialog,RideDTO ride) {
+    private void populateDialogAndShow(View dialogView, AlertDialog dialog, RideDTO ride) {
         TextView emailView = dialogView.findViewById(R.id.emailInfo);
         TextView nameSurname = dialogView.findViewById(R.id.name_surname);
         TextView phoneNumber = dialogView.findViewById(R.id.phoneNumberinfo);
@@ -355,7 +364,7 @@ public class PassengerMainFragment extends Fragment {
                 new Callback<UserInfoDTO>() {
                     @Override
                     public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
-                        if(response.isSuccessful()) {
+                        if (response.isSuccessful()) {
                             ServiceUtils.driverService.getDriverVehicle(ride.getDriver().getId().toString()).enqueue(new Callback<VehicleInfoDTO>() {
                                 @Override
                                 public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response2) {
@@ -369,13 +378,13 @@ public class PassengerMainFragment extends Fragment {
                                     isForPetsView.setText(String.valueOf(ride.isPetTransport()));
                                     departureView.setText(ride.getLocations().get(0).getDeparture().getAddress());
                                     destinationView.setText(ride.getLocations().get(0).getDestination().getAddress());
-                                    MapService.getDistance(ride.getLocations().get(0).getDeparture(),ride.getLocations().get(0).getDestination(),callback->{
+                                    MapService.getDistance(ride.getLocations().get(0).getDeparture(), ride.getLocations().get(0).getDestination(), callback -> {
                                         TimeAndDistanceDTO timeAndDistanceDTO = callback;
                                         distanceView.setText(String.valueOf(timeAndDistanceDTO.getDistanceInKm() + " KM"));
-                                        timeView.setText(String.valueOf(timeAndDistanceDTO.getTimeInMinutes()+ " MIN"));
+                                        timeView.setText(String.valueOf(timeAndDistanceDTO.getTimeInMinutes() + " MIN"));
                                     });
 
-                                    moneyView.setText(String.valueOf(ride.getTotalCost())+" RSD");
+                                    moneyView.setText(String.valueOf(ride.getTotalCost()) + " RSD");
                                     Glide.with(getContext()).load(response.body().getProfilePicture()).into(profilePic);
 
                                     GifDrawable gifDrawable = null;
@@ -404,10 +413,90 @@ public class PassengerMainFragment extends Fragment {
                     }
                 }
         );
+    };
 
 
+    private void createPassengerNotifSession() {
+        URI uri;
+        try {
+            // Connect to local host
+            uri = new URI("ws://172.21.240.1:8000/websocket");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
 
+        webSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen() {
+                Log.d("WebSocket", "Session is starting");
+                webSocketClient.send("Hello World!");
+            }
 
+            @Override
+            public void onTextReceived(String s) {
+                Log.d("WebSocket", "Message received");
+                final String message = s;
+                Log.d("message", message);
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer());
+                        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeSerializer());
+                        Gson gson = gsonBuilder.create();
+                        RideDTO rideDTO = gson.fromJson(message, RideDTO.class);
+                        if(rideDTO.getStatus() == Status.ACCEPTED){
+                            dialog.dismiss();
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                            builder1.setMessage("Your ride was accepted!");
+                            builder1.setCancelable(true);
+                            AlertDialog alert11 = builder1.create();
+                            alert11.show();
+                        }
+                        if(rideDTO.getStatus() == Status.REJECTED){
+                            dialog.dismiss();
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                            builder1.setMessage("Your ride was rejected!");
+                            builder1.setCancelable(true);
+                            AlertDialog alert11 = builder1.create();
+                            alert11.show();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onBinaryReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPingReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPongReceived(byte[] data) {
+            }
+
+            @Override
+            public void onException(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            @Override
+            public void onCloseReceived() {
+                Log.i("WebSocket", "Closed ");
+                System.out.println("onCloseReceived");
+            }
+        };
+
+        webSocketClient.setConnectTimeout(10000);
+        webSocketClient.setReadTimeout(60000);
+        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
+        webSocketClient.addHeader("id", userPrefs.getString("id", "0"));
+        webSocketClient.addHeader("role", userPrefs.getString("role", "0"));
+        webSocketClient.connect();
     }
 
 

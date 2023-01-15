@@ -70,11 +70,11 @@
                 android:layout_height="230dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id = "@+id/route_creation_layout"
                     android:background="@color/white"
                     android:padding="30dp"
-                    android:paddingBottom="100dp">
+                    >
                     <RelativeLayout
                         android:id="@+id/departure_layout"
                         android:layout_width="match_parent"
