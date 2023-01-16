@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="300sp"
+    android:background="@color/white"
     android:padding="10dp">
     <RelativeLayout
         android:id="@+id/routeInfo"
@@ -64,59 +65,59 @@
             </ScrollView>
         </RelativeLayout>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/driverTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/routeInfo"
+        android:textSize="20sp"
+        android:text="@string/driver"/>
+    <RelativeLayout
+        android:id="@+id/driverLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/driverTextView"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/driverProfilePicture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/tate"/>
         <TextView
-            android:id="@+id/driverTextView"
+            android:id="@+id/driverNameAndLastName"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/routeInfo"
-            android:textSize="20sp"
-            android:text="@string/driver"/>
-        <RelativeLayout
-            android:id="@+id/driverLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/driverTextView"
-            >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/driverProfilePicture"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/tate"/>
-            <TextView
-                android:id="@+id/driverNameAndLastName"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/driverProfilePicture"
-                android:text="@string/imenko_prezimic"
-                android:layout_centerVertical="true"
-                />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/driverLayout"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true">
-            <Button
-                android:background="@drawable/edit_text"
-                android:id="@+id/panicBtn"
-                android:layout_width="100dp"
-                android:layout_marginStart="15dp"
-                android:layout_toEndOf="@id/chatBtn"
-                android:textColor="@color/white"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textAlignment="center"
-                android:text="@string/panic"
-                android:layout_height="45dp" />
-            <androidx.appcompat.widget.AppCompatButton
-                android:background="@drawable/back_button"
-                android:id="@+id/chatBtn"
-                android:layout_width="100dp"
-                android:textColor="@color/black"
-                android:textAlignment="center"
-                android:text="@string/chat"
-                android:layout_height="45dp" />
-        </RelativeLayout>
+            android:layout_toEndOf="@id/driverProfilePicture"
+            android:text="@string/imenko_prezimic"
+            android:layout_centerVertical="true"
+            />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/driverLayout"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:background="@drawable/edit_text"
+            android:id="@+id/panicBtn"
+            android:layout_width="100dp"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@id/chatBtn"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="@string/panic"
+            android:layout_height="45dp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/back_button"
+            android:id="@+id/chatBtn"
+            android:layout_width="100dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="@string/chat"
+            android:layout_height="45dp" />
+    </RelativeLayout>
+</RelativeLayout>

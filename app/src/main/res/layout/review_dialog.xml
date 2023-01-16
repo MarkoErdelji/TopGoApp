@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/vehicleComment"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/vehicle_comment"/>
+    <RelativeLayout
+        android:id="@+id/vehicleRatingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vehicleComment"
+        android:layout_centerHorizontal="true">
+    <TextView
+        android:id="@+id/vehicleRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/vehicle_rating"/>
+    <RatingBar
+        android:id="@+id/vehicleRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/vehicleRating"
+        />
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/driverComment"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vehicleRatingLayout"
+        android:hint="@string/comment_for_driver"
+        android:layout_centerHorizontal="true"
+        />
+    <RelativeLayout
+        android:id="@+id/drivereRatingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/driverComment"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/driverRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/driver_rating"/>
+        <RatingBar
+            android:id="@+id/driverRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/driverRating" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -58,4 +58,10 @@
     <string name="imenko_prezimic">Imenko Prezimic</string>
     <string name="panic">panic</string>
     <string name="chat">chat</string>
+    <string name="would_you_like_to_rate_our_driver">Would you like to rate our driver?</string>
+    <string name="wouldyou_like_to_rate_our_driver">Would you like to rate our driver?</string>
+    <string name="vehicle_comment">Vehicle comment</string>
+    <string name="vehicle_rating">Vehicle rating</string>
+    <string name="comment_for_driver">Comment for driver</string>
+    <string name="driver_rating">Driver rating</string>
 </resources>

@@ -35,7 +35,7 @@ public interface RideService {
     @GET("ride/{id}")
     Call<RideDTO> getRide(@Path("id") String id);
 
-    @GET("ride/passenger/{passengerId}/activee")
+    @GET("ride/passenger/{passengerId}/active")
     Call<RideDTO> getPassengerActiveRide(@Path("passengerId") String passengerId);
 
     @GET("review/ride/{id}")
