@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.DriverReviewListDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
@@ -139,6 +140,7 @@ public class CertainRideFromHistory extends AppCompatActivity {
                     passengerIcon.setId(View.generateViewId());
                     passengerIcon.setLayoutParams(new RelativeLayout.LayoutParams(100, 100));
                     passengerIcon.setImageResource(R.drawable.tate);
+                    Glide.with(getApplicationContext()).load(response.body().getProfilePicture()).into(passengerIcon);
                     layoutParams = (RelativeLayout.LayoutParams) passengerIcon.getLayoutParams();
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 

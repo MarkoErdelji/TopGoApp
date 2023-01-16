@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.DriverReviewListDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
@@ -64,6 +66,9 @@ public class ReviewAdapter extends BaseAdapter {
 
                     String nameText = response.body().getName() + response.body().getSurname();
                     name.setText(nameText);
+                    ImageView image = vi.findViewById(R.id.profilePicture);
+                    Glide.with(activity.getApplicationContext()).load(response.body().getProfilePicture()).into(image);
+
                     comment.setText(review.getComment());
                     ratingBar.setRating(review.getRating());
                 }
@@ -78,6 +83,8 @@ public class ReviewAdapter extends BaseAdapter {
 
         return vi;
     }
+
+
 
 
 }

@@ -34,6 +34,7 @@ import com.example.uberapp_tim6.DTOS.CreateReviewDTO;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
 
+import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
 import com.example.uberapp_tim6.DTOS.JWTTokenDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
@@ -62,6 +63,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -118,6 +120,8 @@ public class PassengerMainFragment extends Fragment {
     AlertDialog dialog;
     private AppCompatButton backBtn;
     private View dialogView;
+    private Marker carMarker;
+
 
     private SharedPreferences userPrefs;
 
@@ -160,6 +164,7 @@ public class PassengerMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+        createDriverVehicleLocationNotifSession();
         createPassengerNotifSession();
         currentRideView = view.findViewById(R.id.passengerCurrentRide);
         map = view.findViewById(R.id.map);
@@ -223,12 +228,10 @@ public class PassengerMainFragment extends Fragment {
                 RouteForCreateRideDTO routeForCreateRideDTO = new RouteForCreateRideDTO();
                 MapService.getLocation(String.valueOf(departureEditText.getText()), geolocationDto ->{
                     MapService.getLocation(String.valueOf(destinationEditText.getText()),geolocationDto2->{
-                        routeForCreateRideDTO.setDeparture(geolocationDto2);
-                        routeForCreateRideDTO.setDestination(geolocationDto);
+                        routeForCreateRideDTO.setDeparture(geolocationDto);
+                        routeForCreateRideDTO.setDestination(geolocationDto2);
                         routeForCreateRideDTOS.add(routeForCreateRideDTO);
                         createRideDTO.setLocations(routeForCreateRideDTOS);
-                        Log.d("HHH",routeForCreateRideDTO.getDeparture().toString());
-                        Log.d("HHH",routeForCreateRideDTO.getDestination().toString());
                         MapService.getRoute(routeForCreateRideDTO.getDeparture(),routeForCreateRideDTO.getDestination(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
                     });
                 });
@@ -431,6 +434,16 @@ public class PassengerMainFragment extends Fragment {
                                 public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response2) {
                                     emailView.setText(ride.getDriver().getEmail());
                                     assert response.body() != null;
+                                    MapService.getDistance(ride.getLocations().get(0).getDeparture(), ride.getLocations().get(0).getDestination(), callback -> {
+                                        TimeAndDistanceDTO timeAndDistanceDTO = callback;
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                distanceView.setText(String.valueOf(timeAndDistanceDTO.getDistanceInKm() + " KM"));
+                                                timeView.setText(String.valueOf(timeAndDistanceDTO.getTimeInMinutes() + " MIN"));
+                                            }
+                                        });
+                                    });
                                     nameSurname.setText(String.format("%s %s", response.body().getName(), response.body().getSurname()));
                                     phoneNumber.setText(response.body().getTelephoneNumber());
                                     carNameView.setText(response2.body().getModel());
@@ -439,11 +452,7 @@ public class PassengerMainFragment extends Fragment {
                                     isForPetsView.setText(String.valueOf(ride.isPetTransport()));
                                     departureView.setText(ride.getLocations().get(0).getDeparture().getAddress());
                                     destinationView.setText(ride.getLocations().get(0).getDestination().getAddress());
-                                    MapService.getDistance(ride.getLocations().get(0).getDeparture(), ride.getLocations().get(0).getDestination(), callback -> {
-                                        TimeAndDistanceDTO timeAndDistanceDTO = callback;
-                                        distanceView.setText(String.valueOf(timeAndDistanceDTO.getDistanceInKm() + " KM"));
-                                        timeView.setText(String.valueOf(timeAndDistanceDTO.getTimeInMinutes() + " MIN"));
-                                    });
+
 
                                     moneyView.setText(String.valueOf(ride.getTotalCost()) + " RSD");
                                     Glide.with(getContext()).load(response.body().getProfilePicture()).into(profilePic);
@@ -457,6 +466,7 @@ public class PassengerMainFragment extends Fragment {
                                     gifLoading.setImageDrawable(gifDrawable);
                                     dialog.setCancelable(false);
                                     dialog.show();
+
 
                                 }
 
@@ -552,6 +562,21 @@ public class PassengerMainFragment extends Fragment {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                                 builder1.setMessage("Your ride was accepted!");
                                 builder1.setCancelable(true);
+                                ServiceUtils.driverService.getDriverVehicle(String.valueOf(rideDTO.getDriver().getId())).enqueue(new Callback<VehicleInfoDTO>() {
+                                    @Override
+                                    public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
+                                        map.getOverlays().clear();
+                                        MapService.getRoute(response.body().currentLocation, rideDTO.getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
+                                        carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map,getContext());
+                                        MapService.ZoomTo(response.body().currentLocation,16.0,map);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
+
+                                    }
+                                });
+
                                 AlertDialog alert11 = builder1.create();
                                 alert11.show();
                             }
@@ -563,6 +588,10 @@ public class PassengerMainFragment extends Fragment {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                                 builder1.setMessage("Your driver has arrived, ride is about to start.");
                                 builder1.setCancelable(true);
+                                map.getOverlays().clear();
+                                MapService.getRoute(rideDTO.getLocations().get(0).getDeparture(), rideDTO.getLocations().get(0).getDestination(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
+                                carMarker = MapService.DrawMarker(rideDTO.getLocations().get(0).getDeparture(),R.drawable.car_icon,map,getContext());
+                                MapService.ZoomTo(rideDTO.getLocations().get(0).getDeparture(),16.0,map);
                                 AlertDialog alert11 = builder1.create();
                                 alert11.show();
                                 changeToCurrentRide();
@@ -582,7 +611,6 @@ public class PassengerMainFragment extends Fragment {
                                 builder1.setView(dialogLayout);
                                 builder1.setCancelable(true);
                                 builder1.setTitle("You arrived at your destination!");
-
                                 TextView dateTextView = dialogLayout.findViewById(R.id.datetime);
                                 dateTextView.setText(rideDTO.getEndTime().toString());
 
@@ -646,12 +674,77 @@ public class PassengerMainFragment extends Fragment {
             }
         };
 
-        webSocketClient.setConnectTimeout(10000);
-        webSocketClient.setReadTimeout(60000);
-        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.enableAutomaticReconnection(1000);
         webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
         webSocketClient.addHeader("id", userPrefs.getString("id", "0"));
         webSocketClient.addHeader("role", userPrefs.getString("role", "0"));
+        webSocketClient.connect();
+    }
+
+    private void createDriverVehicleLocationNotifSession(){
+        URI uri;
+        try {
+            // Connect to local host
+            uri = new URI("ws://"+LOCALHOST+"/simulation");
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        webSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen() {
+                Log.d("WebSocket", "Session is starting");
+                webSocketClient.send("Hello World!");
+            }
+
+            @Override
+            public void onTextReceived(String s) {
+                Log.d("WebSocket", "Message received");
+                final String message = s;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GsonBuilder gsonBuilder = new GsonBuilder();
+                        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeDeserializer());
+                        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeSerializer());
+                        Gson gson = gsonBuilder.create();
+                        GeoLocationDTO geoLocationDTO = gson.fromJson(message, GeoLocationDTO.class);
+                        if(carMarker != null) {
+                            carMarker.remove(map);
+                            carMarker = MapService.DrawMarker(geoLocationDTO,R.drawable.car_icon,map,getContext());
+                        }}
+                });
+            }
+
+            @Override
+            public void onBinaryReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPingReceived(byte[] data) {
+            }
+
+            @Override
+            public void onPongReceived(byte[] data) {
+            }
+
+            @Override
+            public void onException(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            @Override
+            public void onCloseReceived() {
+                Log.i("WebSocket", "Closed ");
+                System.out.println("onCloseReceived");
+            }
+        };
+        webSocketClient.enableAutomaticReconnection(1000);
+        webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
+        webSocketClient.addHeader("id",userPrefs.getString("id","0"));
+        webSocketClient.addHeader("role",userPrefs.getString("role","0"));
         webSocketClient.connect();
     }
 

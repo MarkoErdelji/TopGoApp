@@ -236,7 +236,7 @@ public class DriverMainActivity extends AppCompatActivity {
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
-                Log.d("WebSocket", "Session is starting");
+                Log.d("WebSocket", "Session is starting on websocket");
                 webSocketClient.send("Hello World!");
             }
 
@@ -283,9 +283,7 @@ public class DriverMainActivity extends AppCompatActivity {
             }
         };
 
-        webSocketClient.setConnectTimeout(10000);
-        webSocketClient.setReadTimeout(60000);
-        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.enableAutomaticReconnection(1000);
         webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
         webSocketClient.addHeader("id",userPrefs.getString("id","0"));
         webSocketClient.addHeader("role",userPrefs.getString("role","0"));
