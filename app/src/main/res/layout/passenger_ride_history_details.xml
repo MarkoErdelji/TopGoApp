@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,109 +22,243 @@
                 />
 
         </com.google.android.material.appbar.AppBarLayout>
-
-
+        
         <RelativeLayout
-            android:id="@+id/imgLayout"
+            android:id="@+id/route_layout"
             android:layout_below="@id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="300sp"
-            android:layout_marginStart="20sp"
-            android:layout_marginTop="20sp"
-            android:layout_marginEnd="20sp"
-            android:layout_marginBottom="20sp"
-            android:background="@color/black">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/map_placeholder"
-                android:scaleType="fitXY"
-                android:padding="1sp">
-
-
-
-            </ImageView>
-
-
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/imgLayout"
-
-            android:layout_marginStart="20sp"
-            android:layout_marginTop="20sp"
-            android:layout_marginEnd="20sp"
-            android:layout_marginBottom="20sp">
-
-            <TextView
-                android:id="@+id/driverName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:padding="1dp"
-                android:text="Driver: Pera Peric"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:gravity="right"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/driverName"
-                android:layout_marginRight="30sp"
-                android:padding="1dp"
-                android:text="01-01-2001"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/driverName"
-                android:layout_marginRight="30sp"
-                android:padding="1dp"
-                android:text="Time: 22:15-22:30"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/time"
-                android:layout_marginRight="30sp"
-                android:padding="1dp"
-                android:text="Price: 1000rsd"
-                android:textStyle="bold"
-                android:textColor="@color/primaryC"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/price"
-                android:layout_marginRight="30sp"
-                android:padding="1dp"
-                android:text="Type: LUXURY"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:layout_width="100sp"
-                android:layout_height="wrap_content"
-                android:gravity="bottom">
+                android:id="@+id/routeInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/primaryC"
+                    android:layout_centerHorizontal="true"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/departureIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/car_icon"/>
+                    <ScrollView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@id/departureIcon"
+                        android:layout_centerHorizontal="true"
+                        android:scrollbars="vertical">
+                        <TextView
+                            android:id="@+id/departure_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="bla"
+
+                            />
+                    </ScrollView>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true">
+                    <ImageView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/destinationIcon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/car_icon" />
+                    <ScrollView
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/destinationIcon"
+                        android:scrollbars="vertical">
+                        <TextView
+
+                            android:id="@+id/destination_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="asdasdasd"
+
+                            />
+                    </ScrollView>
+                </RelativeLayout>
             </RelativeLayout>
 
         </RelativeLayout>
 
+
+            <RelativeLayout
+
+                android:id="@+id/driver_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/route_layout"
+                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/card_style"
+                android:padding="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/driver_icon"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/tate"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_width="1dp" />
+
+                <RelativeLayout
+                    android:id="@+id/driver_info_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/driver_icon"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:id="@+id/driver_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="test"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/driver_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/driver_name"
+                        android:text="test"
+                        android:textSize="20sp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/card_style"
+                android:id="@+id/vehicle_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/driver_info"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+                <ImageView
+                    android:id="@+id/car_icon"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/car_icon"
+                    android:layout_centerVertical="true"/>
+                <RelativeLayout
+                    android:id="@+id/vehicle_info_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_toRightOf="@id/car_icon">
+
+                    <TextView
+                        android:id="@+id/vehicle_name"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="test"
+                        android:textStyle="bold"
+                        android:textSize="25sp"
+                        />
+                    <TextView
+                        android:id="@+id/vehicle_type"
+                        android:layout_below="@id/vehicle_name"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="test"
+                        android:textSize="20sp"
+                        />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ride_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vehicle_info"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/card_style"
+                android:padding="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <ImageView
+                    android:id="@+id/ride_icon"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/destination_marker" />
+
+                <RelativeLayout
+                    android:id="@+id/ride_info_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ride_icon"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="test"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/estimated_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/price"
+                        android:text="test"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/estimated_time"
+                        android:text="test"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/date"
+                        android:text="test"
+                        android:textSize="20sp" />
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
     </RelativeLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

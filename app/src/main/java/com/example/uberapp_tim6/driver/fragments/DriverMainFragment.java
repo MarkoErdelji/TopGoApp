@@ -97,6 +97,7 @@ public class DriverMainFragment extends Fragment {
     private TextView status;
     private VehicleInfoDTO vehicle;
     private GeoLocationDTO center;
+    private boolean drawnPassengers = false;
 
     SharedPreferences userPrefs;
 
@@ -347,6 +348,7 @@ public class DriverMainFragment extends Fragment {
             public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                 if (response.body() != null) {
                     SetCurrentRide(response.body());
+                    drawnPassengers = true;
 
 
                     Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
@@ -395,6 +397,7 @@ public class DriverMainFragment extends Fragment {
 
 
                     SetCurrentRide(response.body());
+                    drawnPassengers = true;
 
                     Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
                     vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
@@ -431,7 +434,8 @@ public class DriverMainFragment extends Fragment {
 
     private void SetCurrentRide(RideDTO response) {
         activeRide = response;
-        ShowActiveRide(activeRide);
+        if (!drawnPassengers)
+            ShowActiveRide(activeRide);
         TextView destination = view.findViewById(R.id.destination_text_view);
         TextView departure = view.findViewById(R.id.departure_text_view);
         destination.setText(activeRide.getLocations().get(0).getDestination().getAddress());

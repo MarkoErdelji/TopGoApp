@@ -213,7 +213,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         if (position == 0) {
             FragmentTransition.to(PassengerInboxFragment.newInstance(passenger), this, false, R.id.mainContent);
         } else if (position == 1) {
-            FragmentTransition.to(PassengerDriveHistoryFragment.newInstance(), this, false, R.id.mainContent);
+            FragmentTransition.to(PassengerDriveHistoryFragment.newInstance(passenger), this, false, R.id.mainContent);
         } else if (position == 2) {
             //..
         } else if (position == 3) {

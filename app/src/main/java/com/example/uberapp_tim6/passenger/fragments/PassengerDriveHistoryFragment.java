@@ -6,22 +6,28 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.uberapp_tim6.DTOS.RideDTO;
+import com.example.uberapp_tim6.DTOS.UserInfoDTO;
+import com.example.uberapp_tim6.DTOS.UserRidesListDTO;
 import com.example.uberapp_tim6.R;
-import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.activities.PassengerRideHistoryDetailActivity;
 import com.example.uberapp_tim6.adapters.PassengerRideHistoryAdapter;
-import com.example.uberapp_tim6.models.Message;
 import com.example.uberapp_tim6.models.Ride;
-import com.example.uberapp_tim6.models.RideHistory;
+import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,14 +36,10 @@ import java.util.List;
  */
 public class PassengerDriveHistoryFragment extends ListFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PASSENGER = "arg_passenger";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    UserInfoDTO passenger;
+    private List<RideDTO> rides;
 
     public PassengerDriveHistoryFragment() {
         // Required empty public constructor
@@ -48,19 +50,39 @@ public class PassengerDriveHistoryFragment extends ListFragment {
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment DriverRideHistoryFragment.
+     * @param passenger
      */
     // TODO: Rename and change types and number of parameters
-    public static PassengerDriveHistoryFragment newInstance() {
-        return new PassengerDriveHistoryFragment();
+    public static PassengerDriveHistoryFragment newInstance(UserInfoDTO passenger) {
+        PassengerDriveHistoryFragment fragment = new PassengerDriveHistoryFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_PASSENGER, passenger);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        passenger = (UserInfoDTO) getArguments().getSerializable(ARG_PASSENGER);
         super.onCreate(savedInstanceState);
-        Toast.makeText(getActivity(), "Istorija", Toast.LENGTH_SHORT).show();
 
-        PassengerRideHistoryAdapter adapter = new PassengerRideHistoryAdapter(getActivity(), Mokap.getAllRides());
-        setListAdapter(adapter);
+        Call<List<RideDTO>> call = ServiceUtils.passengerService.getPassengerRides();
+        call.enqueue(new Callback<List<RideDTO>>() {
+
+            @Override
+            public void onResponse(Call<List<RideDTO>> call, Response<List<RideDTO>> response) {
+                rides = response.body();
+                PassengerRideHistoryAdapter adapter = new PassengerRideHistoryAdapter(getActivity(), response.body());
+                setListAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<RideDTO>> call, Throwable t) {
+
+            }
+        });
+
+
 
     }
 
@@ -74,11 +96,12 @@ public class PassengerDriveHistoryFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Ride ride = Mokap.getAllRides().get(position);
+        RideDTO ride = rides.get(position);
 
         Intent intent = new Intent(getActivity(), PassengerRideHistoryDetailActivity.class);
 
         intent.putExtra("ride", ride);
+        intent.putExtra("passenger", passenger);
         startActivityForResult(intent, 0);
 
     }
