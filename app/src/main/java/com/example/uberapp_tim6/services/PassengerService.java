@@ -6,6 +6,8 @@ import com.example.uberapp_tim6.DTOS.CreateRideDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,10 +23,15 @@ public interface PassengerService {
     @GET("passenger/{id}")
     Call<UserInfoDTO> getPassengerById(@Path("id") String id);
 
+
+    @GET("passenger/ride/finished")
+    Call<List<RideDTO>> getPassengerRides();
+
     @POST("review/{rideId}/driver")
     Call<CreateReviewResponseDTO> createDriverReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
 
     @POST("review/{rideId}/vehicle")
     Call<CreateReviewResponseDTO> createVehicleReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
+
 }
 
