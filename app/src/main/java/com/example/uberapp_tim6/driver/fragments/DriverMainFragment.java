@@ -577,7 +577,7 @@ public class DriverMainFragment extends Fragment {
                 System.out.println("onCloseReceived");
             }
         };
-        webSocketClient.enableAutomaticReconnection(5000);
+        webSocketClient.enableAutomaticReconnection(1000);
         webSocketClient.addHeader("Authorization", "Bearer " + TokenHolder.getInstance().getJwtToken());
         webSocketClient.addHeader("id",userPrefs.getString("id","0"));
         webSocketClient.addHeader("role",userPrefs.getString("role","0"));

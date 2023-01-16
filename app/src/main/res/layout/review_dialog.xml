@@ -24,6 +24,7 @@
         android:id="@+id/vehicleRatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@style/RatingBar"
         android:layout_toEndOf="@id/vehicleRating"
         />
     </RelativeLayout>
@@ -51,6 +52,7 @@
             android:id="@+id/driverRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/RatingBar"
             android:layout_toEndOf="@id/driverRating" />
     </RelativeLayout>
 
