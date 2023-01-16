@@ -6,6 +6,7 @@ import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -24,11 +25,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.uberapp_tim6.DTOS.CreateReviewDTO;
+import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
+
+import com.example.uberapp_tim6.DTOS.JWTTokenDTO;
+import com.example.uberapp_tim6.DTOS.PanicDTO;
+import com.example.uberapp_tim6.DTOS.ReasonDTO;
+import com.example.uberapp_tim6.DTOS.RejectionTextDTO;
+
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.RidePassengerDTO;
 import com.example.uberapp_tim6.DTOS.RouteForCreateRideDTO;
@@ -36,6 +46,7 @@ import com.example.uberapp_tim6.DTOS.TimeAndDistanceDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 import com.example.uberapp_tim6.services.MapService;
@@ -51,6 +62,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URI;
@@ -91,6 +103,8 @@ public class PassengerMainFragment extends Fragment {
     private View step3;
     private View step4;
 
+    private View latestActiveView;
+    private View currentRideView;
     private CheckBox babyCheckbox;
     private CheckBox petCheckbox;
     private EditText numOfSeatsInput;
@@ -147,7 +161,7 @@ public class PassengerMainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         createPassengerNotifSession();
-
+        currentRideView = view.findViewById(R.id.passengerCurrentRide);
         map = view.findViewById(R.id.map);
 
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -167,6 +181,7 @@ public class PassengerMainFragment extends Fragment {
         destinationEditText = view.findViewById(R.id.destination_edit_text);
         step1Order = view.findViewById(R.id.create_ride_button);
         step1 = view.findViewById(R.id.route_creation_layout);
+        latestActiveView = step1;
         step2 = view.findViewById(R.id.create_ride_spinner);
         step3 = view.findViewById(R.id.create_ride_referral);
         step4 = view.findViewById(R.id.create_ride_option_select);
@@ -219,6 +234,7 @@ public class PassengerMainFragment extends Fragment {
                 });
                 step1.setVisibility(View.GONE);
                 step2.setVisibility(View.VISIBLE);
+                latestActiveView = step2;
             }
         });
 
@@ -227,6 +243,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step2.setVisibility(View.GONE);
                 step3.setVisibility(View.VISIBLE);
+                latestActiveView = step3;
             }
         });
 
@@ -235,6 +252,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step3.setVisibility(View.GONE);
                 step4.setVisibility(View.VISIBLE);
+                latestActiveView = step4;
             }
         });
 
@@ -243,6 +261,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step2.setVisibility(View.VISIBLE);
                 step3.setVisibility(View.GONE);
+                latestActiveView = step2;
             }
         });
         step4Back.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +269,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step3.setVisibility(View.VISIBLE);
                 step4.setVisibility(View.GONE);
+                latestActiveView = step3;
             }
         });
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -257,6 +277,7 @@ public class PassengerMainFragment extends Fragment {
             public void onClick(View v) {
                 step1.setVisibility(View.VISIBLE);
                 step2.setVisibility(View.GONE);
+                latestActiveView = step1;
             }
         });
 
@@ -307,7 +328,6 @@ public class PassengerMainFragment extends Fragment {
                 });
                 Log.d("RideDTO",createRideDTO.toString());
                 step2.setVisibility(View.GONE);
-                step1.setVisibility(View.VISIBLE);
             }
         });
         bsb.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -336,6 +356,54 @@ public class PassengerMainFragment extends Fragment {
         });
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
+
+    private void checkForActiveRide(int passengerId){
+        ServiceUtils.rideService.getPassengerActiveRide(Integer.toString(passengerId)).enqueue(
+                new Callback<RideDTO>() {
+                    @Override
+                    public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                        if (response.isSuccessful()) {
+                            changeToCurrentRide();
+                    }
+
+                }
+
+                    @Override
+                    public void onFailure(Call<RideDTO> call, Throwable t) {
+
+                    }
+        });
+    }
+    private void changeToCurrentRide(){
+        latestActiveView.setVisibility(View.GONE);
+        currentRideView.setVisibility(View.VISIBLE);
+    }
+    private void setCurrentRideData(RideDTO rideDTO){
+        TextView departureTextView = currentRideView.findViewById(R.id.departure_text_view);
+        departureTextView.setText(rideDTO.getLocations().get(0).getDeparture().getAddress());
+
+        TextView destinationTextView = currentRideView.findViewById(R.id.destination_text_view);
+        destinationTextView.setText(rideDTO.getLocations().get(0).getDestination().getAddress());
+
+        TextView driverNameAndLastName = currentRideView.findViewById(R.id.driverNameAndLastName);
+        ServiceUtils.driverService.getDriverById(Integer.toString(rideDTO.getDriver().getId())).enqueue(
+                new Callback<UserInfoDTO>() {
+                    @Override
+                    public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
+                        if (response.isSuccessful()) {
+                            String nameAndLastName = response.body().getName() + " " + response.body().getSurname();
+                            driverNameAndLastName.setText(nameAndLastName);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+
 
     private void populateDialogAndShow(View dialogView, AlertDialog dialog, RideDTO ride) {
         TextView emailView = dialogView.findViewById(R.id.emailInfo);
@@ -408,12 +476,51 @@ public class PassengerMainFragment extends Fragment {
         );
     };
 
+    private void showPanicPopup(RideDTO rideDTO){
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.custom_dialog_rejection_of_ride, null);
+        builder2.setView(dialogLayout);
+        builder2.setTitle("What is happening?");
+        builder2.setCancelable(false);
+        builder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                TextView textView = dialogLayout.findViewById(R.id.reason);
+                RejectionTextDTO rejectionTextDTO = new RejectionTextDTO();
+                rejectionTextDTO.setReason(textView.getText().toString());
+                Call<PanicDTO> call = ServiceUtils.rideService.panicRide(new ReasonDTO(rejectionTextDTO.getReason()),rideDTO.getId().toString());
+                call.enqueue(new Callback<PanicDTO>() {
+
+                    @Override
+                    public void onResponse(Call<PanicDTO> call, Response<PanicDTO> response) {
+
+                        map.getOverlays().clear();
+                        currentRideView.setVisibility(View.GONE);
+                        step1.setVisibility(View.VISIBLE);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<PanicDTO> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+        AlertDialog dialog = builder2.create();
+        dialog.show();
+    }
+
 
     private void createPassengerNotifSession() {
         URI uri;
         try {
             // Connect to local host
+
             uri = new URI("ws://"+LOCALHOST+"/websocket");
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -451,6 +558,56 @@ public class PassengerMainFragment extends Fragment {
                             if (rideDTO.getStatus() == Status.PENDING) {
                                 dialog.dismiss();
                                 populateDialogAndShow(dialogView, dialog, rideDTO);
+                            }
+                            if (rideDTO.getStatus() == Status.ACTIVE){
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("Your driver has arrived, ride is about to start.");
+                                builder1.setCancelable(true);
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                                changeToCurrentRide();
+                                setCurrentRideData(rideDTO);
+                                Button panicBtn = currentRideView.findViewById(R.id.panicBtn);
+                                panicBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showPanicPopup(rideDTO);
+                                    }
+                                });
+                            }
+                            if(rideDTO.getStatus() == Status.FINISHED){
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                LayoutInflater inflater = getLayoutInflater();
+                                View dialogLayout = inflater.inflate(R.layout.finished_ride_popup, null);
+                                builder1.setView(dialogLayout);
+                                builder1.setCancelable(true);
+                                builder1.setTitle("You arrived at your destination!");
+
+                                TextView dateTextView = dialogLayout.findViewById(R.id.datetime);
+                                dateTextView.setText(rideDTO.getEndTime().toString());
+
+                                TextView price = dialogLayout.findViewById(R.id.priceTextView);
+                                String priceStr = "PRICE: " + rideDTO.getTotalCost();
+                                price.setText(priceStr);
+
+                                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //do something
+                                        showReviewPopUp(rideDTO);
+
+                                    }
+                                });
+                                builder1.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        map.getOverlays().clear();
+                                        currentRideView.setVisibility(View.GONE);
+                                        step1.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
                             }
                         }
                         catch (Exception e){
@@ -496,6 +653,61 @@ public class PassengerMainFragment extends Fragment {
         webSocketClient.addHeader("id", userPrefs.getString("id", "0"));
         webSocketClient.addHeader("role", userPrefs.getString("role", "0"));
         webSocketClient.connect();
+    }
+
+    private void showReviewPopUp(RideDTO rideDTO) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.review_dialog, null);
+        builder1.setView(dialogLayout);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Rate", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                CreateReviewDTO createVehicleReview = new CreateReviewDTO();
+                TextView textView = dialogLayout.findViewById(R.id.vehicleComment);
+                RatingBar ratingBar = dialogLayout.findViewById(R.id.vehicleRatingBar);
+                createVehicleReview.setComment(textView.getText().toString());
+                createVehicleReview.setRating(ratingBar.getRating());
+                Log.d("vehicle comment", createVehicleReview.getComment());
+                Call<CreateReviewResponseDTO> call = ServiceUtils.passengerService.createVehicleReview(Integer.toString(rideDTO.getId()), createVehicleReview);
+                call.enqueue(new Callback<CreateReviewResponseDTO>() {
+
+                    @Override
+                    public void onResponse(Call<CreateReviewResponseDTO> call, Response<CreateReviewResponseDTO> response) {
+                        CreateReviewDTO createDriverReview = new CreateReviewDTO();
+                        TextView driverComment = dialogLayout.findViewById(R.id.driverComment);
+                        RatingBar ratingBar = dialogLayout.findViewById(R.id.driverRatingBar);
+                        createDriverReview.setComment(driverComment.getText().toString());
+                        createDriverReview.setRating(ratingBar.getRating());
+                        Log.d("driver comment", createDriverReview.getComment());
+                        Call<CreateReviewResponseDTO> call2 = ServiceUtils.passengerService.createDriverReview(Integer.toString(rideDTO.getId()), createDriverReview);
+                        call2.enqueue(new Callback<CreateReviewResponseDTO>() {
+                            @Override
+                            public void onResponse(Call<CreateReviewResponseDTO> call, Response<CreateReviewResponseDTO> response) {
+                                map.getOverlays().clear();
+                                currentRideView.setVisibility(View.GONE);
+                                step1.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onFailure(Call<CreateReviewResponseDTO> call, Throwable t) {
+
+                            }
+                        });
+
+                    }
+                    @Override
+                    public void onFailure(Call<CreateReviewResponseDTO> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
 

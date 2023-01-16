@@ -67,11 +67,12 @@
             </androidx.appcompat.widget.Toolbar>
             <RelativeLayout
                 android:layout_width="wrap_content"
+                android:id = "@+id/route_creation_layout"
                 android:layout_height="230dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id = "@+id/route_creation_layout"
+                    android:id = "@+id/route_under_layout"
                     android:background="@color/white"
                     android:padding="30dp"
                     >
@@ -147,22 +148,26 @@
                             android:text="Order"
                             android:layout_height="45dp" />
 
+                    </RelativeLayout>
                 </RelativeLayout>
-                </RelativeLayout>
-                <include
+            </RelativeLayout>
+            <include
                 android:id="@+id/create_ride_spinner"
                 android:visibility="gone"
                 layout="@layout/create_ride_spinner"/>
-                <include
-                    android:id="@+id/create_ride_referral"
-                    android:visibility="gone"
-                    layout="@layout/create_ride_referral">
-                </include>
-                <include
-                    android:id="@+id/create_ride_option_select"
-                    android:visibility="gone"
-                    layout="@layout/create_ride_option_selection"/>
-            </RelativeLayout>
+            <include
+                android:id="@+id/create_ride_referral"
+                android:visibility="gone"
+                layout="@layout/create_ride_referral">
+            </include>
+            <include
+                android:id="@+id/create_ride_option_select"
+                android:visibility="gone"
+                layout="@layout/create_ride_option_selection"/>
+            <include
+                android:id="@+id/passengerCurrentRide"
+                android:visibility="gone"
+                layout="@layout/passenger_current_ride"/>
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

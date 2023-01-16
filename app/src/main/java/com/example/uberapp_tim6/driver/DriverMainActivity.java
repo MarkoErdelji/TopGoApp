@@ -224,6 +224,8 @@ public class DriverMainActivity extends AppCompatActivity {
         URI uri;
         try {
             // Connect to local host
+
+
             uri = new URI("ws://"+LOCALHOST+"/websocket");
         }
         catch (URISyntaxException e) {
@@ -360,7 +362,7 @@ public class DriverMainActivity extends AppCompatActivity {
                 // Add a "OK" button to the dialog
                 RejectionTextDTO rejectionTextDTO = new RejectionTextDTO();
                 rejectionTextDTO.setReason(reason.getText().toString());
-                Call<RideDTO> call = ServiceUtils.rideService.cancelRide(Integer.toString(rideId), rejectionTextDTO);
+                Call<RideDTO> call = ServiceUtils.rideService.declineRide(Integer.toString(rideId), rejectionTextDTO);
                 call.enqueue(new Callback<RideDTO>() {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
