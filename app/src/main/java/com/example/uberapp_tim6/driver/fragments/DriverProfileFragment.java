@@ -132,7 +132,7 @@ public class DriverProfileFragment extends Fragment {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransition.to(new DriverEditProfileFragment(),DriverMainActivity,false,R.id.mainContent);
+                FragmentTransition.to(DriverEditProfileFragment.newInstance(driver),DriverMainActivity,false,R.id.mainContent);
             }
         });
         image = getView().findViewById(R.id.profileIcon);

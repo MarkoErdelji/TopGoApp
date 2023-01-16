@@ -54,6 +54,16 @@
     <string name="end_time">End Time:</string>
     <string name="passengers">Passengers</string>
     <string name="cancel">Cancel</string>
+    <string name="driver">Driver</string>
+    <string name="imenko_prezimic">Imenko Prezimic</string>
+    <string name="panic">panic</string>
+    <string name="chat">chat</string>
+    <string name="would_you_like_to_rate_our_driver">Would you like to rate our driver?</string>
+    <string name="wouldyou_like_to_rate_our_driver">Would you like to rate our driver?</string>
+    <string name="vehicle_comment">Vehicle comment</string>
+    <string name="vehicle_rating">Vehicle rating</string>
+    <string name="comment_for_driver">Comment for driver</string>
+    <string name="driver_rating">Driver rating</string>
     <string name="vehicle_details">Vehicle details:</string>
     <string name="documents">Documents:</string>
     <string name="pets">Pets</string>
@@ -62,4 +72,6 @@
     <string name="number_of_seats">Number of seats:</string>
     <string name="license_plate">License plate:</string>
     <string name="model">Model:</string>
+    <string name="new_password">New password</string>
+    <string name="current_password">Current password</string>
 </resources>
