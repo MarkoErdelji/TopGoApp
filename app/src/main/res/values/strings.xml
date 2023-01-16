@@ -64,4 +64,14 @@
     <string name="vehicle_rating">Vehicle rating</string>
     <string name="comment_for_driver">Comment for driver</string>
     <string name="driver_rating">Driver rating</string>
+    <string name="vehicle_details">Vehicle details:</string>
+    <string name="documents">Documents:</string>
+    <string name="pets">Pets</string>
+    <string name="baby">Baby</string>
+    <string name="type">Type:</string>
+    <string name="number_of_seats">Number of seats:</string>
+    <string name="license_plate">License plate:</string>
+    <string name="model">Model:</string>
+    <string name="new_password">New password</string>
+    <string name="current_password">Current password</string>
 </resources>

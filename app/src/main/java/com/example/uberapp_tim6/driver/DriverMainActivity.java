@@ -1,5 +1,7 @@
 package com.example.uberapp_tim6.driver;
 
+import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,6 +67,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -155,8 +158,7 @@ public class DriverMainActivity extends AppCompatActivity {
         mDrawerPane = findViewById(R.id.drawerPane);
 
         mNavItems.add(new NavItem("Inbox", "Driver inbox", R.drawable.ic_action_mail));
-        mNavItems.add(new NavItem("History", "Ride history", R.drawable.history_icon));
-        mNavItems.add(new NavItem("Test", "Test", R.drawable.history_icon));
+        mNavItems.add(new NavItem("History", "Ride history", R.drawable.ic_action_history));
         DrawerListAdapter DLA = new DrawerListAdapter(this, mNavItems);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -222,7 +224,9 @@ public class DriverMainActivity extends AppCompatActivity {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://192.168.100.4:8000/websocket");
+
+
+            uri = new URI("ws://"+LOCALHOST+"/websocket");
         }
         catch (URISyntaxException e) {
             e.printStackTrace();
@@ -319,7 +323,7 @@ public class DriverMainActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if(position == 0){
-            FragmentTransition.to(DriverInboxFragment.newInstance(), this, false,R.id.mainContent);
+            FragmentTransition.to(DriverInboxFragment.newInstance(driver), this, false,R.id.mainContent);
         }else if(position == 1){
             FragmentTransition.to(DriverRideHistoryFragment.newInstance(driver), this, false,R.id.mainContent);
 
@@ -401,6 +405,19 @@ public class DriverMainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                             if(response.body() != null) {
+                                ServiceUtils.rideService.simulate(Integer.toString(rideDTO.getId())).enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if(response.isSuccessful()){
+                                            Log.d("RESPONSE",response.toString());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                                    }
+                                });
                                 FragmentTransition.to(DriverMainFragment.newInstance(driver), dvm, false,R.id.mainContent);
                             }
                         }

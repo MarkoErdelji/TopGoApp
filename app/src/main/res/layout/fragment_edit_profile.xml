@@ -17,7 +17,8 @@
             android:layout_marginTop="30sp"
             android:layout_marginBottom="20sp"
             android:src="@drawable/tate"
-            android:textSize="20sp" />
+            android:textSize="20sp">
+        </de.hdodenhof.circleimageview.CircleImageView>
 
         <RelativeLayout
             android:id="@+id/profileBoxLayout"
@@ -35,7 +36,7 @@
                 android:id="@+id/nameLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="30sp"
-                android:layout_centerHorizontal="true">
+                >
 
                 <TextView
                     android:id="@+id/nameText"
@@ -51,13 +52,13 @@
                     android:layout_centerVertical="true"
                     android:layout_height="30sp"
                     android:fillViewport="true">
-                    <TextView
+                    <EditText
+                        android:background="@drawable/edit_text"
                         android:id="@+id/nameValue"
                         android:layout_width="wrap_content"
                         android:singleLine="true"
                         android:gravity="center"
-                        android:layout_height="match_parent"
-                        android:scrollbars="horizontal" />
+                        android:layout_height="match_parent" />
                 </HorizontalScrollView>
             </RelativeLayout>
 
@@ -67,7 +68,7 @@
                 android:layout_height="30sp"
                 android:layout_marginTop="20sp"
                 android:layout_below="@id/nameLayout"
-                android:layout_centerHorizontal="true">
+                >
 
                 <TextView
                     android:id="@+id/surnameText"
@@ -83,13 +84,13 @@
                     android:layout_centerVertical="true"
                     android:layout_height="30sp"
                     android:fillViewport="true">
-                    <TextView
+                    <EditText
+                        android:background="@drawable/edit_text"
                         android:id="@+id/surnameValue"
                         android:layout_width="wrap_content"
                         android:singleLine="true"
-                        android:layout_height="match_parent"
                         android:gravity="center"
-                        android:scrollbars="horizontal" />
+                        android:layout_height="match_parent" />
                 </HorizontalScrollView>
             </RelativeLayout>
 
@@ -114,7 +115,8 @@
                     android:layout_centerVertical="true"
                     android:layout_height="30sp"
                     android:fillViewport="true">
-                    <TextView
+                    <EditText
+                        android:background="@drawable/edit_text"
                         android:id="@+id/usernameValue"
                         android:layout_width="wrap_content"
                         android:singleLine="true"
@@ -145,14 +147,13 @@
                     android:layout_centerVertical="true"
                     android:layout_height="30sp"
                     android:fillViewport="true">
-                    <TextView
+                    <EditText
+                        android:background="@drawable/edit_text"
                         android:id="@+id/phoneNumberValue"
                         android:layout_width="wrap_content"
                         android:singleLine="true"
-                        android:layout_height="match_parent"
-                        android:scrollbars="horizontal"
                         android:gravity="center"
-                        />
+                        android:layout_height="match_parent" />
                 </HorizontalScrollView>
             </RelativeLayout>
 
@@ -177,94 +178,51 @@
                     android:layout_centerVertical="true"
                     android:layout_height="30sp"
                     android:fillViewport="true">
-                    <TextView
+                    <EditText
+                        android:background="@drawable/edit_text"
                         android:id="@+id/addressValue"
                         android:layout_width="wrap_content"
+                        android:singleLine="true"
                         android:gravity="center"
-                        android:scrollbars="horizontal"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent" />
                 </HorizontalScrollView>
             </RelativeLayout>
-
             <RelativeLayout
-                android:id="@+id/documentsLayout"
+                android:id="@+id/changePasswordLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="50sp"
+                android:layout_height="30sp"
                 android:layout_below="@id/addressLayout"
                 android:layout_marginTop="20sp">
-
-                <TextView
-                    android:id="@+id/documentText"
-                    android:layout_width="130sp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginEnd="10sp"
-                    android:text="@string/documents" />
-
                 <RelativeLayout
-                    android:layout_width="180sp"
-                    android:layout_toRightOf="@id/documentText"
-                    android:layout_height="match_parent">
-                    <RelativeLayout
-                        android:background="@drawable/icon_with_border"
-                        android:id="@+id/imageDocumentLayout"
-                        android:layout_width="50sp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:layout_width="40sp"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_baseline_insert_invitation_24"
-                            android:layout_height="40sp">
+                    android:layout_width="match_parent"
+                    android:layout_height="1sp"
+                    android:background="@color/black">
 
-                        </ImageView>
-                    </RelativeLayout>
                 </RelativeLayout>
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/vehicleLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="50sp"
-                android:layout_below="@id/documentsLayout"
-                android:layout_marginTop="20sp">
+                <TextView
+                    android:id="@+id/changePasswordText"
+                    android:layout_width="130sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginEnd="10sp"
+                    android:textColor="@color/primaryC"
+                    android:text="Change password" />
 
                 <TextView
-                    android:id="@+id/vehicleText"
+                    android:id="@+id/changePasswordText2"
                     android:layout_width="130sp"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|left"
                     android:layout_marginEnd="10sp"
-                    android:text="@string/vehicle_details" />
-                <RelativeLayout
-                    android:layout_width="180sp"
-                    android:layout_toRightOf="@id/vehicleText"
-                    android:layout_height="match_parent">
-                    <RelativeLayout
-                        android:background="@drawable/icon_with_border"
-                        android:id="@+id/imageVehicleLayout"
-                        android:layout_width="50sp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:layout_width="40sp"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_baseline_directions_car_24"
-                            android:layout_height="40sp">
-
-                        </ImageView>
-                    </RelativeLayout>
-                </RelativeLayout>
-
-
+                    android:textStyle="bold"
+                    android:text="PASSWORD" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="1sp"
                 android:layout_marginTop="7sp"
-                android:layout_height="358sp"
+                android:layout_height="230sp"
                 android:background="@color/black"
                 android:layout_marginStart="120sp"
                 >
@@ -272,19 +230,46 @@
             </RelativeLayout>
 
 
+
+
+
+
+
+
+
         </RelativeLayout>
-        <Button
-            android:id="@+id/edit_profile"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:textColor="@color/white"
-            android:text="Edit profile"
-            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:layout_below="@id/profileBoxLayout">
 
-        </Button>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back_button"
+            android:layout_marginTop="20sp"
+            android:layout_marginRight="20sp"
+            android:textColor="@color/black"
+            android:id="@+id/edit_driver_back"
+            android:text="Back"
+            android:layout_centerHorizontal="true"
+            >
 
+        </androidx.appcompat.widget.AppCompatButton>
+
+            <Button
+                android:id="@+id/submit_edit"
+                android:layout_marginTop="20sp"
+                android:text="Submit"
+                android:layout_toRightOf="@id/edit_driver_back"
+                android:background="@drawable/edit_text"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </Button>
+        </RelativeLayout>
     </RelativeLayout>
 
 

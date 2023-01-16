@@ -9,17 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIcon"
-            android:layout_width="144dp"
-            android:layout_height="125dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60sp"
-            android:layout_marginBottom="40sp"
+            android:layout_marginBottom="20sp"
             android:src="@drawable/tate"
             android:textSize="20sp" />
 
         <RelativeLayout
+            android:id="@+id/profileBoxLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/profileIcon"
@@ -29,6 +30,7 @@
             android:padding="20sp"
             android:paddingStart="40dp"
             android:paddingEnd="40dp">
+
 
             <RelativeLayout
                 android:id="@+id/nameLayout"
@@ -54,7 +56,7 @@
                         android:id="@+id/nameValue"
                         android:layout_width="wrap_content"
                         android:singleLine="true"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:layout_height="match_parent"
                         android:scrollbars="horizontal" />
                 </HorizontalScrollView>
@@ -87,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:singleLine="true"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:scrollbars="horizontal" />
                 </HorizontalScrollView>
             </RelativeLayout>
@@ -117,7 +119,7 @@
                         android:id="@+id/usernameValue"
                         android:layout_width="wrap_content"
                         android:singleLine="true"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:layout_height="match_parent" />
                 </HorizontalScrollView>
             </RelativeLayout>
@@ -138,6 +140,7 @@
                     android:layout_marginEnd="10sp"
                     android:text="Phone Number:" />
 
+
                 <HorizontalScrollView
                     android:layout_width="180sp"
                     android:layout_toEndOf="@id/phoneNumberText"
@@ -150,47 +153,18 @@
                         android:singleLine="true"
                         android:layout_height="match_parent"
                         android:scrollbars="horizontal"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         />
                 </HorizontalScrollView>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/dateLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="30sp"
-                android:layout_below="@id/phoneNumberLayout"
-                android:layout_marginTop="20sp">
-
-                <TextView
-                    android:id="@+id/dateText"
-                    android:layout_width="130sp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginEnd="10sp"
-                    android:text="@string/date_of_birth" />
-
-                <HorizontalScrollView
-                    android:layout_width="180sp"
-                    android:layout_toEndOf="@id/dateText"
-                    android:layout_centerVertical="true"
-                    android:layout_height="30sp"
-                    android:fillViewport="true">
-                    <TextView
-                        android:id="@+id/dateValue"
-                        android:layout_width="wrap_content"
-                        android:gravity="center_vertical"
-                        android:scrollbars="horizontal"
-                        android:layout_height="match_parent"/>
-                </HorizontalScrollView>
-            </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/addressLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="30sp"
-                android:layout_below="@id/dateLayout"
+                android:layout_below="@id/phoneNumberLayout"
                 android:layout_marginTop="20sp">
 
                 <TextView
@@ -210,14 +184,35 @@
                     <TextView
                         android:id="@+id/addressValue"
                         android:layout_width="wrap_content"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:scrollbars="horizontal"
                         android:layout_height="match_parent"/>
                 </HorizontalScrollView>
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="1sp"
+                android:layout_marginTop="7sp"
+                android:layout_height="220sp"
+                android:background="@color/black"
+                android:layout_marginStart="120sp"
+                >
+
+            </RelativeLayout>
+
+
 
         </RelativeLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:textColor="@color/white"
+            android:text="Edit profile"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/profileBoxLayout">
+
+        </Button>
     </RelativeLayout>
 
 
