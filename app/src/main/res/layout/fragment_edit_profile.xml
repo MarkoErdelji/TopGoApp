@@ -9,16 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profileIcon"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30sp"
-            android:layout_marginBottom="20sp"
-            android:src="@drawable/tate"
-            android:textSize="20sp">
-        </de.hdodenhof.circleimageview.CircleImageView>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileIcon"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="20sp"
+                android:src="@drawable/tate"
+                android:textSize="20sp">
+            </de.hdodenhof.circleimageview.CircleImageView>
 
         <RelativeLayout
             android:id="@+id/profileBoxLayout"
@@ -184,15 +184,27 @@
                         android:layout_width="wrap_content"
                         android:singleLine="true"
                         android:gravity="center"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content" />
                 </HorizontalScrollView>
             </RelativeLayout>
+            <TextView
+                android:id="@+id/addressError"
+                android:layout_below="@id/addressLayout"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/design_default_color_error"
+                android:text="@string/error"
+                android:visibility="invisible"
+                android:layout_height="wrap_content">
+
+            </TextView>
             <RelativeLayout
                 android:id="@+id/changePasswordLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="30sp"
-                android:layout_below="@id/addressLayout"
-                android:layout_marginTop="20sp">
+                android:layout_below="@id/addressError">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="1sp"
