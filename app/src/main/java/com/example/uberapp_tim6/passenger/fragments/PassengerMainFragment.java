@@ -5,6 +5,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
@@ -56,8 +58,10 @@ import com.example.uberapp_tim6.tools.DateTimeDeserializer;
 import com.example.uberapp_tim6.tools.DateTimeSerializer;
 import com.example.uberapp_tim6.tools.TokenHolder;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -70,7 +74,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -85,7 +94,7 @@ import tech.gusavila92.websocketclient.WebSocketClient;
  * Use the {@link PassengerMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PassengerMainFragment extends Fragment {
+public class PassengerMainFragment extends Fragment implements DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
 
     private WebSocketClient webSocketClient;
 
@@ -112,10 +121,9 @@ public class PassengerMainFragment extends Fragment {
     private EditText numOfSeatsInput;
 
     private Button step2Next;
-    private Button step3Next;
     private Button step4Order;
 
-    private AppCompatButton step3Back;
+
     private AppCompatButton step4Back;
     AlertDialog dialog;
     private AppCompatButton backBtn;
@@ -124,6 +132,7 @@ public class PassengerMainFragment extends Fragment {
 
 
     private SharedPreferences userPrefs;
+    Calendar now = Calendar.getInstance();
 
     public PassengerMainFragment() {
         // Required empty public constructor
@@ -157,11 +166,14 @@ public class PassengerMainFragment extends Fragment {
 
 
     }
+    Calendar setDate = Calendar.getInstance();
 
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        setDate.clear();
+        now.add(Calendar.HOUR,1);
         super.onViewCreated(view, savedInstanceState);
         userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         createDriverVehicleLocationNotifSession();
@@ -188,7 +200,6 @@ public class PassengerMainFragment extends Fragment {
         step1 = view.findViewById(R.id.route_creation_layout);
         latestActiveView = step1;
         step2 = view.findViewById(R.id.create_ride_spinner);
-        step3 = view.findViewById(R.id.create_ride_referral);
         step4 = view.findViewById(R.id.create_ride_option_select);
         spinnerVehicleType = view.findViewById(R.id.spinner_vehicle_type);
         babyCheckbox = view.findViewById(R.id.checkbox_babies);
@@ -196,10 +207,24 @@ public class PassengerMainFragment extends Fragment {
         numOfSeatsInput = view.findViewById(R.id.sets_input);
         step4Order = view.findViewById(R.id.order_ride_button);
         backBtn = view.findViewById(R.id.step2_back_button);
-        step3Back = view.findViewById(R.id.step3_back_button);
         step4Back = view.findViewById(R.id.step4_back_button);
         step2Next = view.findViewById(R.id.step2_button);
-        step3Next = view.findViewById(R.id.step4_button);
+        Button buttonDateTime = view.findViewById(R.id.button_date_time);
+        buttonDateTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        PassengerMainFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setAccentColor(1);
+                dpd.setAccentColor("#FF9642");
+                dpd.show(getFragmentManager(), "Datepickerdialog");
+            }
+        });
 
         ArrayAdapter ad
                 = ArrayAdapter.createFromResource(
@@ -245,34 +270,19 @@ public class PassengerMainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 step2.setVisibility(View.GONE);
-                step3.setVisibility(View.VISIBLE);
-                latestActiveView = step3;
-            }
-        });
-
-        step3Next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                step3.setVisibility(View.GONE);
                 step4.setVisibility(View.VISIBLE);
                 latestActiveView = step4;
             }
         });
 
-        step3Back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                step2.setVisibility(View.VISIBLE);
-                step3.setVisibility(View.GONE);
-                latestActiveView = step2;
-            }
-        });
+
+
         step4Back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                step3.setVisibility(View.VISIBLE);
+                step2.setVisibility(View.VISIBLE);
                 step4.setVisibility(View.GONE);
-                latestActiveView = step3;
+                latestActiveView = step2;
             }
         });
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -303,13 +313,51 @@ public class PassengerMainFragment extends Fragment {
                 createRideDTO.setBabyTransport(babyCheckbox.isChecked());
                 createRideDTO.setPetTransport(petCheckbox.isChecked());
                 createRideDTO.setVehicleType(VehicleName.valueOf(spinnerVehicleType.getSelectedItem().toString()));
+                Log.d("SETDATE:", String.valueOf(setDate.getTimeInMillis()));
+                LocalDateTime selectedTime;
+                if(setDate.getTimeInMillis() > 0) {
+                     selectedTime = LocalDateTime.ofInstant(setDate.toInstant(), ZoneId.ofOffset("UTC", ZoneOffset.UTC));
+                    if (selectedTime.plusMinutes(1).isBefore(LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC)))) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Error")
+                                .setMessage("Cannot select a time or date before now")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // Dismiss the dialog
+                                        dialog.dismiss();
+                                    }
+                                });
+                        builder.create().show();
+                        return;
+                    } else if (selectedTime.isAfter(LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC))) && selectedTime.isBefore(LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC)).plusMinutes(15))) {
+                        selectedTime = LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC));
+                    }
+                }
+
+                else{
+                    selectedTime = LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC));
+
+                }
+                Log.d("SYSTEM DATE:",selectedTime.toString());
+                createRideDTO.setScheduledTime(selectedTime.toString());
+
                 Call<RideDTO> createRideCall = ServiceUtils.rideService.createRide(createRideDTO);
                 createRideCall.enqueue(new Callback<RideDTO>() {
                     @Override
                     public void onResponse(Call<RideDTO> call, retrofit2.Response<RideDTO> response) {
                         if (response.code() == 200) {
                             assert response.body() != null;
+                            if(response.body().status == Status.SCHEDULED){
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("You will be notified if a driver accepts your ride,please be patient!");
+                                builder1.setCancelable(true);
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                                return;
+                            }
                             populateDialogAndShow(dialogView,dialog,response.body());
+
+
                         } else if (response.code() == 400) {
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                             builder1.setMessage("Something went wrong,please make sure to wait for the route to load on the map before ordering ride");
@@ -329,6 +377,8 @@ public class PassengerMainFragment extends Fragment {
 
                     }
                 });
+                setDate = Calendar.getInstance();
+                setDate.setTime(new Date());
                 Log.d("RideDTO",createRideDTO.toString());
                 step2.setVisibility(View.GONE);
             }
@@ -637,6 +687,40 @@ public class PassengerMainFragment extends Fragment {
                                 AlertDialog alert11 = builder1.create();
                                 alert11.show();
                             }
+                            if(rideDTO.getStatus() == Status.SCHEDULED){
+                                dialog.dismiss();
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                LayoutInflater inflater = getLayoutInflater();
+                                View dialogLayout = inflater.inflate(R.layout.finished_ride_popup, null);
+                                builder1.setView(dialogLayout);
+                                builder1.setCancelable(true);
+                                builder1.setTitle("Your ride scheduled for " + rideDTO.startTime + " has been accepted by one of our drivers!");
+                                TextView dateTextView = dialogLayout.findViewById(R.id.datetime);
+                                dateTextView.setText(rideDTO.getEndTime().toString());
+
+                                TextView price = dialogLayout.findViewById(R.id.priceTextView);
+                                String priceStr = "PRICE: " + rideDTO.getTotalCost();
+                                price.setText(priceStr);
+
+                                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //do something
+                                        showReviewPopUp(rideDTO);
+
+                                    }
+                                });
+                                builder1.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        map.getOverlays().clear();
+                                        currentRideView.setVisibility(View.GONE);
+                                        step1.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                            }
                         }
                         catch (Exception e){
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
@@ -804,4 +888,25 @@ public class PassengerMainFragment extends Fragment {
     }
 
 
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        setDate.set(Calendar.YEAR,year);
+        setDate.set(Calendar.MONTH,monthOfYear);
+        setDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        setDate.set(year,monthOfYear,dayOfMonth);
+        com.wdullaer.materialdatetimepicker.time.TimePickerDialog timePickerDialog = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance(
+                PassengerMainFragment.this,
+                Calendar.HOUR_OF_DAY-1,
+                Calendar.MINUTE,
+                true
+        );
+        timePickerDialog.setAccentColor("#FF9642");
+        timePickerDialog.show(getFragmentManager(), "Timepickerdialog");
+    }
+
+    @Override
+    public void onTimeSet(com.wdullaer.materialdatetimepicker.time.TimePickerDialog view, int hourOfDay, int minute, int second) {
+        setDate.set(Calendar.HOUR_OF_DAY,hourOfDay+1);
+        setDate.set(Calendar.MINUTE,minute);
+    }
 }

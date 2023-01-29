@@ -2,6 +2,7 @@ package com.example.uberapp_tim6.DTOS;
 
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CreateRideDTO {
@@ -16,6 +17,8 @@ public class CreateRideDTO {
 
         private boolean petTransport;
 
+        private String scheduledTime;
+
     @Override
     public String toString() {
         return "CreateRideDTO{" +
@@ -24,7 +27,32 @@ public class CreateRideDTO {
                 ", vehicleType=" + vehicleType +
                 ", babyTransport=" + babyTransport +
                 ", petTransport=" + petTransport +
+                ", scheduledTime=" + scheduledTime+
                 '}';
+    }
+
+    public boolean isBabyTransport() {
+        return babyTransport;
+    }
+
+    public void setBabyTransport(boolean babyTransport) {
+        this.babyTransport = babyTransport;
+    }
+
+    public boolean isPetTransport() {
+        return petTransport;
+    }
+
+    public void setPetTransport(boolean petTransport) {
+        this.petTransport = petTransport;
+    }
+
+    public String getScheduledTime() {
+        return scheduledTime;
+    }
+
+    public void setScheduledTime(String scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 
     public List<RouteForCreateRideDTO> getLocations() {
