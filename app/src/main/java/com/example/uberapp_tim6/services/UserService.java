@@ -2,7 +2,9 @@ package com.example.uberapp_tim6.services;
 
 import com.example.uberapp_tim6.DTOS.ChangePasswordDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
+import com.example.uberapp_tim6.DTOS.SendMessageDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
+import com.example.uberapp_tim6.DTOS.UserMessagesDTO;
 import com.example.uberapp_tim6.DTOS.UserMessagesListDTO;
 
 import okhttp3.ResponseBody;
@@ -26,4 +28,8 @@ public interface UserService {
 
     @PUT("user/{id}/changePassword")
     Call<ResponseBody> changeUserPassword(@Path("id") String id, @Body ChangePasswordDTO changePasswordDTO);
+
+    @POST("user/{id}/message")
+    Call<UserMessagesDTO> sendUserMessage(@Path("id") String id, @Body SendMessageDTO message);
+
 }

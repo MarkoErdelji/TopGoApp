@@ -1,5 +1,6 @@
 package com.example.uberapp_tim6.passenger.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,16 +11,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.uberapp_tim6.DTOS.DocumentInfoDTO;
+import com.example.uberapp_tim6.DTOS.FavouriteRideInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.adapters.DriverDocumentDialogAdapter;
+import com.example.uberapp_tim6.adapters.PassengerRoutesDialogAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.models.User;
+import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +58,11 @@ public class PassengerProfileFragment extends Fragment {
     private TextView dateOfBirth;
     private TextView address;
     private UserInfoDTO passenger;
+    private View iconRoutes;
+
+    private View routesDialogView;
+
+    private AlertDialog routesDialog;
 
     private ImageView image;
 
@@ -53,14 +71,7 @@ public class PassengerProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PassengerProfileFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static PassengerProfileFragment newInstance(UserInfoDTO p) {
         PassengerProfileFragment fragment = new PassengerProfileFragment();
@@ -91,6 +102,21 @@ public class PassengerProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        LayoutInflater inflater = getLayoutInflater();
+        routesDialogView = inflater.inflate(R.layout.passenger_routes_dialog, null);
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this.getContext());
+        builder2.setView(routesDialogView);
+        routesDialog = builder2.create();
+
+        iconRoutes = getView().findViewById(R.id.imageRouteLayout);
+        iconRoutes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createRouteDialogAndShow(routesDialogView,routesDialog,passenger.getId());
+            }
+        });
+
         ImageView image = getView().findViewById(R.id.profileIcon);
         Glide.with(getContext()).load(passenger.getProfilePicture()).into(image);
 
@@ -106,6 +132,31 @@ public class PassengerProfileFragment extends Fragment {
         email.setText(passenger.getEmail());
         phoneNumber.setText(passenger.getTelephoneNumber());
         address.setText(passenger.getAddress());
+
+    }
+
+    private void createRouteDialogAndShow(View routesDialogView, AlertDialog routesDialog, Integer driverId) {
+
+
+        ServiceUtils.rideService.getFavouriteRides().enqueue(new Callback<List<FavouriteRideInfoDTO>>() {
+            @Override
+            public void onResponse(Call<List<FavouriteRideInfoDTO>> call, Response<List<FavouriteRideInfoDTO>> response) {
+                if(response.isSuccessful()){
+                    ListView listView = routesDialogView.findViewById(R.id.routesList);
+                    PassengerRoutesDialogAdapter adapter = new PassengerRoutesDialogAdapter(getContext(), response.body());
+                    listView.setAdapter(adapter);
+                    routesDialog.show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FavouriteRideInfoDTO>> call, Throwable t) {
+
+            }
+
+        });
+
 
     }
 }

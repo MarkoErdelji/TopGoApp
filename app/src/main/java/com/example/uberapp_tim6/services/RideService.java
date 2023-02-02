@@ -3,16 +3,20 @@ package com.example.uberapp_tim6.services;
 
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
+import com.example.uberapp_tim6.DTOS.FavouriteRideDTO;
+import com.example.uberapp_tim6.DTOS.FavouriteRideInfoDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
 import com.example.uberapp_tim6.DTOS.RejectionTextDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
+import com.example.uberapp_tim6.DTOS.RideReviewsDTO;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -42,6 +46,9 @@ public interface RideService {
     @GET("review/ride/{id}")
     Call<List<CreateReviewResponseDTO>> getAllRideReviews(@Path("id") String id);
 
+    @GET("review/{id}")
+    Call<List<RideReviewsDTO>> getRideReviews(@Path("id") String id);
+
     @PUT("ride/{rideId}/end")
     Call<RideDTO> endRide(@Path("rideId") String rideId);
 
@@ -65,5 +72,14 @@ public interface RideService {
 
     @POST("ride")
     Call<RideDTO> createRide(@Body CreateRideDTO createRideDto);
+
+    @GET("ride/favorites")
+    Call<List<FavouriteRideInfoDTO>> getFavouriteRides();
+
+    @POST("ride/favorites")
+    Call<List<FavouriteRideInfoDTO>> addFavouriteRides(@Body FavouriteRideDTO fav);
+
+    @DELETE("ride/favorites/{rideId}")
+    Call<String> deleteRide(@Path("rideId") String rideId);
 }
 
