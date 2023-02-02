@@ -176,12 +176,23 @@
                     android:maxLines="1" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/registerError"
+                android:layout_below="@id/addressLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/design_default_color_error"
+                android:text="@string/error">
+
+            </TextView>
             <RelativeLayout
                 android:id="@+id/loginButtonLayout"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="45sp"
-                android:layout_below="@id/addressLayout"
+                android:layout_below="@id/registerError"
                 android:layout_marginTop="20sp">
 
                 <Button
