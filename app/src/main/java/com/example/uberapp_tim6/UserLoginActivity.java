@@ -60,6 +60,8 @@ public class UserLoginActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 loginCredentialDTO.setEmail(username);
                 loginCredentialDTO.setPassword(password);
+                Log.d("Password",password);
+                Log.d("Email",username);
                 Call<JWTTokenDTO> loginCall = ServiceUtils.authService.login(loginCredentialDTO);
                 loginCall.enqueue(new Callback<JWTTokenDTO>() {
                     @Override

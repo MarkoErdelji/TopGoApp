@@ -1,6 +1,8 @@
 package com.example.uberapp_tim6.DTOS;
 
-public class GeoLocationDTO {
+import java.io.Serializable;
+
+public class GeoLocationDTO implements Serializable {
 
     private String address;
 

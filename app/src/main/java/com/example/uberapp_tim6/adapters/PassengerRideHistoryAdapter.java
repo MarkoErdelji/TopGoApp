@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.models.Ride;
 
@@ -14,9 +15,9 @@ import java.util.List;
 
 public class PassengerRideHistoryAdapter extends BaseAdapter {
     private Activity activity;
-    private List<Ride> rides;
+    private List<RideDTO> rides;
 
-    public PassengerRideHistoryAdapter(Activity activity,List<Ride> rides) {
+    public PassengerRideHistoryAdapter(Activity activity, List<RideDTO> rides) {
         this.activity = activity;
         this.rides = rides;
     }
@@ -62,24 +63,27 @@ public class PassengerRideHistoryAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        Ride rideHistory = this.rides.get(position);
+        RideDTO rideHistory = this.rides.get(position);
 
         if(convertView==null)
             vi = activity.getLayoutInflater().inflate(R.layout.passenger_ride_history_list, null);
 
-        TextView startDate = (TextView)vi.findViewById(R.id.startDate);
-        TextView date = (TextView)vi.findViewById(R.id.date);
-        TextView name = (TextView)vi.findViewById(R.id.driverName);
-        TextView price = (TextView)vi.findViewById(R.id.price);
-        TextView route = (TextView)vi.findViewById(R.id.route);
-        name.setText(rideHistory.getDriver().getFirstName() + " " + rideHistory.getDriver().getLastName());
-        date.setText(rideHistory.getBeggining().getHour() + ":" + rideHistory.getBeggining().getMinute() + "-" +
-                rideHistory.getEnd().getHour() + ":" + rideHistory.getEnd().getMinute());
-        startDate.setText(rideHistory.getBeggining().toLocalDate().toString());
-        price.setText(Float.toString(rideHistory.getPrice()));
-        route.setText(rideHistory.getRoute().getBegginingLocation().getLatitude());
-        //String infoText = "Destination: " + rideHistory.getDestination() + " Price: " + rideHistory.getPrice();
-        //info.setText(infoText);
+        TextView date = (TextView)vi.findViewById(R.id.dateTextView);
+        TextView beggining = (TextView)vi.findViewById(R.id.begginingTextView);
+        TextView end = (TextView)vi.findViewById(R.id.endTextView);
+        TextView price = (TextView)vi.findViewById(R.id.priceTextView);
+
+        String dateText = "" + rideHistory.getStartTime().toLocalDate();
+        date.setText(dateText);
+
+        String begginingText = "Beggining: " + rideHistory.getLocations().get(0).getDeparture().getAddress();
+        beggining.setText(begginingText);
+
+        String endText = "End: " + rideHistory.getLocations().get(0).getDestination().getAddress();
+        end.setText(endText);
+
+        String priceText = "Price: " + rideHistory.getTotalCost() + "RSD";
+        price.setText(priceText);
 
 
         return  vi;
