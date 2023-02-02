@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".passenger.fragments.PassengerProfileFragment">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -273,19 +275,41 @@
 
 
         </RelativeLayout>
-        <Button
-            android:id="@+id/edit_profile"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:textColor="@color/white"
-            android:text="Edit profile"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/profileBoxLayout">
+            android:layout_below="@id/profileBoxLayout"
+            >
 
-        </Button>
+            <Button
+                android:id="@+id/edit_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:textColor="@color/white"
+                android:text="Edit profile">
+
+            </Button>
+
+            <Button
+                android:id="@+id/reports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:textColor="@color/white"
+                android:text="Reports"
+                android:layout_marginLeft="30sp"
+                android:layout_toEndOf="@id/edit_profile"
+                android:layout_toRightOf="@id/edit_profile">
+
+            </Button>
+        </RelativeLayout>
+
 
     </RelativeLayout>
+    </ScrollView>
+
 
 
 </FrameLayout>
