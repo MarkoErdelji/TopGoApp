@@ -112,6 +112,17 @@ public class UserLoginActivity extends AppCompatActivity {
             }
         });
 
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        TextView forgotPasswordbutton = findViewById(R.id.forgotPassword);
+        forgotPasswordbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserLoginActivity.this, ForgotPasswordActivity.class));
+
+            }
+        });
+
+
 
     }
 }
