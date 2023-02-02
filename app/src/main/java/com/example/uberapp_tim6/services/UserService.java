@@ -3,6 +3,7 @@ package com.example.uberapp_tim6.services;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserMessagesListDTO;
+import com.example.uberapp_tim6.DTOS.UserRef;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,4 +19,11 @@ public interface UserService {
 
     @GET("user/id/{id}")
     Call<UserInfoDTO> getUserById(@Path("id") String id);
+
+    @GET("user/{id}/resetPassword")
+    Call<String> sendMail(@Path("id") String id);
+
+    @GET("user/{email}")
+    Call<UserRef> getUserRefByEmail(@Path("email") String email);
+
 }
