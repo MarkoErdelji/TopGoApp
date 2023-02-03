@@ -37,6 +37,17 @@ public interface RideService {
     @GET("ride/driver/{driverId}/finished")
     Call<List<RideDTO>> getDriverFinishedRides(@Path("driverId") String driverId);
 
+
+    @GET("ride/passenger/{id}/accepted")
+    Call<RideDTO> getPassengerAcceptedRide(@Path("id") String id);
+
+    @GET("ride/passenger/{id}/pending")
+    Call<RideDTO> getPassengerPendingRide(@Path("id") String id);
+
+    @GET("ride/passenger/{id}/finished")
+    Call<List<RideDTO>> getPassengerFinishedRides(@Path("id") String id);
+
+
     @GET("ride/{id}")
     Call<RideDTO> getRide(@Path("id") String id);
 
