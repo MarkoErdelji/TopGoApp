@@ -9,6 +9,17 @@ public class RouteForCreateRideDTO implements Serializable {
 
     private GeoLocationDTO destination;
 
+    private float lenght;
+
+
+    public float getLenght() {
+        return lenght;
+    }
+
+    public void setLenght(float lenght) {
+        this.lenght = lenght;
+    }
+
     public RouteForCreateRideDTO() {
     }
 
