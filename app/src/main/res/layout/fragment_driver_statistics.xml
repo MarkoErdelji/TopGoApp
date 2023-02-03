@@ -1,14 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".driver.fragments.DriverStatisticsFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:layout_height="match_parent">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <RelativeLayout
+            android:id="@+id/image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileIcon"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="20sp"
+                android:src="@drawable/tate"
+                android:textSize="20sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/stats_header_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_layout"
+            android:layout_centerHorizontal="true"
+            >
+            <TextView
+                android:id="@+id/stats_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="STATISTICS"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10sp"
+                android:textSize="30sp">
+
+            </TextView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/stats_holder"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/stats_header_layout"
+            android:background="@drawable/reports_holder_layout"
+            android:layout_width="350sp"
+            android:layout_height="270sp">
+
+        <TextView
+            android:id="@+id/tv_rejected_drives"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:text="Rejected drives: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_rejected_drives_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_toEndOf="@id/tv_rejected_drives"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_accepted_drives"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:text="Accepted drives: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tv_rejected_drives"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_accepted_drives_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_toEndOf="@id/tv_accepted_drives"
+            android:layout_below="@id/tv_rejected_drives_value"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/tv_working_hours"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:text="Working hours: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tv_accepted_drives"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
+
+
+            <TextView
+                android:id="@+id/tv_working_hours_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/tv_working_hours"
+                android:layout_below="@id/tv_accepted_drives_value"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_total_money"
+                android:layout_width="140sp"
+                android:layout_height="wrap_content"
+                android:text="Total Earned: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/tv_working_hours"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_total_money_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/tv_total_money"
+                android:layout_below="@id/tv_working_hours_value"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="30sp"
+            android:background="@drawable/reports_holder_layout"
+            android:layout_width="400sp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stats_holder"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textView_start_date"
+                android:layout_width="130sp"
+                android:layout_height="40sp"
+                android:text="Start Date:"
+                android:textSize="20sp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="16dp" />
+
+            <EditText
+                android:id="@+id/editText_start_date"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:hint="Enter start date"
+                android:background="@drawable/edit_text"
+                android:inputType="text"
+                android:layout_toRightOf="@id/textView_start_date" />
+
+            <TextView
+                android:id="@+id/textView_end_date"
+                android:layout_width="130sp"
+                android:layout_height="40sp"
+                android:text="End Date:"
+                android:textSize="20sp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/textView_start_date"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/editText_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:hint="Enter end date"
+                android:inputType="text"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edit_text"
+                android:layout_toRightOf="@id/textView_end_date"
+                android:layout_below="@id/editText_start_date" />
+
+            <Button
+                android:id="@+id/button_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/editText_end_date"
+                android:layout_marginTop="16dp" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

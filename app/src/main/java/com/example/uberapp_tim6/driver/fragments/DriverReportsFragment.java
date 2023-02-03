@@ -20,6 +20,7 @@ import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserRidesListDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
@@ -164,6 +165,9 @@ public class DriverReportsFragment extends Fragment {
                     AtomicReference<Integer> totalRides = new AtomicReference<>(Integer.valueOf(0));
                     Log.d("RIDES",rides.toString());
                     rides.forEach(ride->{
+                        if(ride.status == Status.PANIC ||  ride.status == Status.REJECTED){
+                            return;
+                        }
                         String startDate = ride.startTime.format(formatter);
                         if(chart1Map.containsKey(startDate)){
                             float val = chart1Map.get(startDate)+ride.getTotalCost();
@@ -442,6 +446,9 @@ public class DriverReportsFragment extends Fragment {
                     AtomicReference<Integer> totalRides = new AtomicReference<>(Integer.valueOf(0));
                     Log.d("RIDES",rides.toString());
                     rides.forEach(ride->{
+                        if(ride.status == Status.PANIC ||  ride.status == Status.REJECTED){
+                            return;
+                        }
                         String startDate = ride.startTime.format(formatter);
                         if(chart1Map.containsKey(startDate)){
                             float val = chart1Map.get(startDate)+ride.getTotalCost();
