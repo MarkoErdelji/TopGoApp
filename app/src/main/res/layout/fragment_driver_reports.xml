@@ -9,24 +9,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-<<<<<<< Updated upstream
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart1"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart2"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@id/chart1"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart3"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_below="@id/chart2"/>
-=======
 
         <RelativeLayout
             android:id="@+id/moneyChart"
@@ -229,7 +211,6 @@
                     android:layout_marginTop="16dp" />
 
             </RelativeLayout>
->>>>>>> Stashed changes
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

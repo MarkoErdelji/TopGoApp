@@ -1,18 +1,12 @@
 package com.example.uberapp_tim6.driver.fragments;
 
-<<<<<<< Updated upstream
-=======
+
 import android.graphics.Color;
->>>>>>> Stashed changes
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-<<<<<<< Updated upstream
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-=======
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,37 +15,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
->>>>>>> Stashed changes
 
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserRidesListDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.services.ServiceUtils;
-<<<<<<< Updated upstream
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-=======
 import com.example.uberapp_tim6.tools.ChartLocalDateFormatter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
->>>>>>> Stashed changes
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
-<<<<<<< Updated upstream
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-=======
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -63,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
->>>>>>> Stashed changes
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,9 +61,7 @@ public class DriverReportsFragment extends Fragment {
     private UserInfoDTO driver;
     private View reportsView;
     Map<String,Float> mapPrice = new HashMap<>();
-<<<<<<< Updated upstream
     int totalCount = 0;
-=======
 
     private EditText beginDateInput;
     private EditText endDateInput;
@@ -100,7 +80,6 @@ public class DriverReportsFragment extends Fragment {
     List<Entry> averageEntries2 = new ArrayList<>();
     List<Entry> averageEntries3 = new ArrayList<>();
 
->>>>>>> Stashed changes
     private static final String ARG_DRIVER = "arg_driver";
 
     // TODO: Rename parameter arguments, choose names that match
@@ -126,11 +105,9 @@ public class DriverReportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< Updated upstream
-=======
+
         driver = (UserInfoDTO) getArguments().getSerializable(ARG_DRIVER);
 
->>>>>>> Stashed changes
 
     }
 
@@ -138,10 +115,6 @@ public class DriverReportsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         reportsView = inflater.inflate(R.layout.fragment_driver_reports, null);
-<<<<<<< Updated upstream
-        LineChart chart1 = reportsView.findViewById(R.id.chart1);
-        List<Entry> entries = new ArrayList<>();
-=======
 
 
         beginDateInput = reportsView.findViewById(R.id.editText_start_date);
@@ -175,7 +148,6 @@ public class DriverReportsFragment extends Fragment {
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
->>>>>>> Stashed changes
 
         ServiceUtils.driverService.getDriverRides(driver.getId(),0,10000).enqueue(new Callback<UserRidesListDTO>() {
             @Override
@@ -183,19 +155,7 @@ public class DriverReportsFragment extends Fragment {
                 if(response.isSuccessful()) {
                     List<RideDTO> rides = response.body().getResults();
                     Collections.reverse(rides);
-<<<<<<< Updated upstream
-                    AtomicInteger i = new AtomicInteger();
-                    rides.forEach(ride->{
-                        i.getAndIncrement();
-                        entries.add(new BarEntry(i.intValue(), ride.getTotalCost(), ride.getStartTime().toString()));
-                    });
 
-                    totalCount = response.body().getTotalCount();
-                    LineDataSet dataSet1 = new LineDataSet(entries, "Chart 1");
-                    LineData lineData1 = new LineData(dataSet1);
-                    chart1.setData(lineData1);
-                    chart1.invalidate();
-=======
                     int totalCountMoney = 0;
                     int totalCountRides = 0;
                     int totalCountKM = 0;
@@ -402,7 +362,6 @@ public class DriverReportsFragment extends Fragment {
                     totalMoneyView.setText(totalValuePrice.toString());
                     totalKmView.setText(totalKm.toString());
                     totalRidesView.setText(totalRides.toString());
->>>>>>> Stashed changes
                 }
                 else{
                     return;
@@ -414,32 +373,7 @@ public class DriverReportsFragment extends Fragment {
 
             }
         });
-<<<<<<< Updated upstream
-        LineChart chart2 = reportsView.findViewById(R.id.chart2);
-        LineChart chart3 = reportsView.findViewById(R.id.chart3);
 
-
-        List<Entry> entries2 = new ArrayList<>();
-        entries2.add(new Entry(0, 3));
-        entries2.add(new Entry(1, 4));
-        entries2.add(new Entry(2, 5));
-        LineDataSet dataSet2 = new LineDataSet(entries2, "Chart 2");
-        LineData lineData2 = new LineData(dataSet2);
-        chart2.setData(lineData2);
-        chart2.invalidate();
-
-        List<Entry> entries3 = new ArrayList<>();
-        entries3.add(new Entry(0, 6));
-        entries3.add(new Entry(1, 7));
-        entries3.add(new Entry(2, 8));
-        LineDataSet dataSet3 = new LineDataSet(entries3, "Chart 3");
-        LineData lineData3 = new LineData(dataSet3);
-        chart3.setData(lineData3);
-        chart3.invalidate();
-
-        return reportsView;
-    }
-=======
 
         return reportsView;
     }
@@ -644,5 +578,4 @@ public class DriverReportsFragment extends Fragment {
             }
         });    }
 
->>>>>>> Stashed changes
 }

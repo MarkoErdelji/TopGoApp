@@ -29,10 +29,7 @@ android {
 }
 
 dependencies {
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
     implementation 'com.google.code.gson:gson:2.8.6'
