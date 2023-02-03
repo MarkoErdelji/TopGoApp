@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="16dp">
+    android:layout_marginTop="16dp"
+    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/text_gchat_date_other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
-        android:text="June 10"
-        android:textColor="#C0C0C0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/image_gchat_profile_other"
@@ -28,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:contentDescription="User Icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+        app:layout_constraintTop_toTopOf="@+id/text_gchat_user_other" />
 
     <TextView
         android:fontFamily="sans-serif"
@@ -39,7 +27,7 @@
         android:text="John Grady Cole"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+        tools:ignore="MissingConstraints" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_gchat_message_other"

@@ -1,6 +1,9 @@
 package com.example.uberapp_tim6.adapters;
 
+import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +12,23 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserMessagesDTO;
 import com.example.uberapp_tim6.DTOS.UserMessagesListDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.tools.DateTimeDeserializer;
+import com.example.uberapp_tim6.tools.DateTimeSerializer;
+import com.example.uberapp_tim6.tools.TokenHolder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
@@ -24,6 +38,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private List<UserMessagesDTO> mMessageList;
     private UserInfoDTO currentUser;
     private UserInfoDTO sender;
+
 
     public MessageListAdapter(Context context, UserMessagesListDTO messageList, UserInfoDTO currentUser, UserInfoDTO body) {
         mContext = context;
@@ -123,4 +138,5 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             // Insert the profile image from the URL into the ImageView
         }
     }
+
 }

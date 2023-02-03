@@ -99,7 +99,7 @@ public class PassengerMainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
         userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-
+        pvm = this;
         Call<UserInfoDTO> driverInfoDTOCall = ServiceUtils.passengerService.getPassengerById(userPrefs.getString("id","nema id"));
         driverInfoDTOCall.enqueue(new Callback<UserInfoDTO>() {
             @Override
@@ -107,7 +107,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                 passenger = response.body();
                 setPassengerInfo(passenger);
 
-                FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false,R.id.mainContent);
+                FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, true,R.id.mainContent);
 
 
             }
@@ -118,8 +118,6 @@ public class PassengerMainActivity extends AppCompatActivity {
             }
         });
 
-        pvm = this;
-        FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false, R.id.mainContent);
 
 
         createPassengerNotifSession();

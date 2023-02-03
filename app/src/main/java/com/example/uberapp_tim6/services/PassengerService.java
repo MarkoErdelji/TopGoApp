@@ -1,5 +1,7 @@
 package com.example.uberapp_tim6.services;
 
+import com.example.uberapp_tim6.DTOS.CreatePassengerDTO;
+import com.example.uberapp_tim6.DTOS.CreatePassengerResponseDTO;
 import com.example.uberapp_tim6.DTOS.CreateReviewDTO;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
@@ -23,15 +25,19 @@ public interface PassengerService {
     @GET("passenger/{id}")
     Call<UserInfoDTO> getPassengerById(@Path("id") String id);
 
-
+    @POST("passenger")
+    Call<CreatePassengerResponseDTO> register(@Body CreatePassengerDTO createPassengerDTO);
     @GET("passenger/ride/finished")
     Call<List<RideDTO>> getPassengerRides();
+
 
     @POST("review/{rideId}/driver")
     Call<CreateReviewResponseDTO> createDriverReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
 
     @POST("review/{rideId}/vehicle")
     Call<CreateReviewResponseDTO> createVehicleReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
+
+
 
 }
 

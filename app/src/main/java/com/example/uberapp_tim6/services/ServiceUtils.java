@@ -24,6 +24,8 @@ public class ServiceUtils {
 
     public static final String LOCALHOST = "192.168.0.197:8000";
 
+
+
     public static final String SERVICE_API_PATH = "http://"+LOCALHOST+"/api/";
 
 

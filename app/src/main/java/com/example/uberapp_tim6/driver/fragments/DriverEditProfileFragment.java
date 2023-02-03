@@ -164,28 +164,16 @@ public class DriverEditProfileFragment extends Fragment {
         submitPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (oldPassword.getText().length() != 0) {
-                    errorChangePassword.setVisibility(View.GONE);
-                } else {
-                    errorChangePassword.setVisibility(View.VISIBLE);
-                    errorChangePassword.setText("Error: Field old password cannot be empty!");
-                    return;
-
-                }
-                if (newPassword.getText().length() != 0) {
-                    errorChangePassword.setVisibility(View.GONE);
-                } else {
-                    errorChangePassword.setVisibility(View.VISIBLE);
-                    errorChangePassword.setText("Error: Field new password cannot be empty!");
+                if (oldPassword.getText().length() == 0) {
+                    oldPassword.setError("Error: Field old password cannot be empty!");
+                    return;                }
+                if (newPassword.getText().length() == 0) {
+                    newPassword.setError("Error: Field new password cannot be empty!");
                     return;
                 }
 
-                if (newPassword.getText().length() > 6) {
-                    errorChangePassword.setVisibility(View.GONE);
-                } else {
-                    Log.d("LENGHT", String.valueOf(newPassword.getText().length()));
-                    errorChangePassword.setVisibility(View.VISIBLE);
-                    errorChangePassword.setText("Error: New password needs to be at least 6 characters!");
+                if (newPassword.getText().length() < 6) {
+                    newPassword.setError("Error: New password needs to be at least 6 characters!");
                     return;
                 }
                 ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO(newPassword.getText().toString(),oldPassword.getText().toString());
@@ -248,40 +236,24 @@ public class DriverEditProfileFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
-                if (Username.getText().length() != 0) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Email cannot be empty!");
-                    return;
-
-                }
-                if (firstName.getText().length() != 0) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Name cannot be empty!");
+                if (Username.getText().length() == 0) {
+                    Username.setError("Error: Field Email cannot be empty!");
                     return;
                 }
-                if (lastName.getText().length() != 0) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Last Name cannot be empty!");
+                if (firstName.getText().length() == 0) {
+                    firstName.setError("Error: Field Name cannot be empty!");
                     return;
                 }
-                if (PhoneNumber.getText().length() != 0) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Phone Number cannot be empty!");
+                if (lastName.getText().length() == 0) {
+                    lastName.setError("Error: Field Last Name cannot be empty!");
                     return;
                 }
-                if (Address.getText().length() != 0) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Address cannot be empty!");
+                if (PhoneNumber.getText().length() == 0) {
+                    PhoneNumber.setError("Error: Field Phone Number cannot be empty!");
+                    return;
+                }
+                if (Address.getText().length() == 0) {
+                    Address.setError("Error: Field Address cannot be empty!");
                     return;
                 }
                 String email = Username.getText().toString();
@@ -292,48 +264,32 @@ public class DriverEditProfileFragment extends Fragment {
 
                 Pattern emailNamePattern = Pattern.compile(emailRegex);
                 Matcher emailNameMatcher = emailNamePattern.matcher(email);
-                if (emailNameMatcher.find()) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Email not in correct format!");
+                if (!emailNameMatcher.find()) {
+                    Username.setError("Error: Email not in correct format!");
                     return;
-
                 }
                 Pattern firstNamePattern = Pattern.compile(firstNameRegex,Pattern.UNICODE_CASE);
                 Matcher firstNameMatcher = firstNamePattern.matcher(name);
-                if (firstNameMatcher.find()) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Name must start with uppercase!");
+                if (!firstNameMatcher.find()) {
+                    firstName.setError("Error: Name must start with uppercase!");
                     return;
                 }
                 Pattern surnameNamePattern = Pattern.compile(lastNameRegex,Pattern.UNICODE_CASE);
                 Matcher surnameNameMatcher = surnameNamePattern.matcher(surname);
-                if (surnameNameMatcher.find()) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Last name must start with uppercase!");
+                if (!surnameNameMatcher.find()) {
+                    lastName.setError("Error: Last name must start with uppercase!");
                     return;
                 }
                 Pattern phoneNumberNamePattern = Pattern.compile(phoneNumberRegex);
                 Matcher phoneNumberNameMatcher = phoneNumberNamePattern.matcher(phoneNumber);
-                if (phoneNumberNameMatcher.find()) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Phone number is in incorrect format!");
+                if (!phoneNumberNameMatcher.find()) {
+                    PhoneNumber.setError("Error: Phone number is in incorrect format!");
                     return;
                 }
                 Pattern addressNamePattern = Pattern.compile(addressRegex,Pattern.UNICODE_CASE);
                 Matcher addressNameMatcher = addressNamePattern.matcher(address);
-                if (addressNameMatcher.find()) {
-                    errorView.setVisibility(View.INVISIBLE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Address is in incorrect format!");
+                if (!addressNameMatcher.find()) {
+                    Address.setError("Error: Address is in incorrect format!");
                     return;
                 }
 
