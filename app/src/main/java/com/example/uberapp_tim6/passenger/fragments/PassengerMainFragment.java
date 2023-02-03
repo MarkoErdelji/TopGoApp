@@ -152,12 +152,6 @@ public class PassengerMainFragment extends Fragment {
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
-
 
 
     @Override
@@ -396,7 +390,7 @@ public class PassengerMainFragment extends Fragment {
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
                         if (response.body() != null) {
                             changeToCurrentRide();
-                            map.getOverlays().clear();
+                            //map.getOverlays().clear();
                             MapService.getRoute(response.body().getLocations().get(0).getDeparture(), response.body().getLocations().get(0).getDestination(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
                             carMarker = MapService.DrawMarker(response.body().getLocations().get(0).getDeparture(),R.drawable.car_icon,map,getContext());
                             MapService.ZoomTo(response.body().getLocations().get(0).getDeparture(),16.0,map);
@@ -501,11 +495,11 @@ public class PassengerMainFragment extends Fragment {
 
 
                                     moneyView.setText(String.valueOf(ride.getTotalCost()) + " RSD");
-                                    Glide.with(context).load(response.body().getProfilePicture()).into(profilePic);
+                                    Glide.with(getContext()).load(response.body().getProfilePicture()).into(profilePic);
 
                                     GifDrawable gifDrawable = null;
                                     try {
-                                        gifDrawable = new GifDrawable(context.getResources(), R.drawable.loading_gif);
+                                        gifDrawable = new GifDrawable(getContext().getResources(), R.drawable.loading_gif);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -720,7 +714,7 @@ public class PassengerMainFragment extends Fragment {
             public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
                 map.getOverlays().clear();
                 MapService.getRoute(response.body().currentLocation, rideDTO.getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
-                carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, context);
+                carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, getContext());
                 MapService.ZoomTo(response.body().currentLocation,16.0,map);
             }
 
@@ -744,7 +738,7 @@ public class PassengerMainFragment extends Fragment {
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
                             map.getOverlays().clear();
                             MapService.getRoute(response.body().currentLocation, response1.body().getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
-                            carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, context);
+                            carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, getContext());
                             MapService.ZoomTo(response.body().currentLocation,16.0,map);
                         }
 

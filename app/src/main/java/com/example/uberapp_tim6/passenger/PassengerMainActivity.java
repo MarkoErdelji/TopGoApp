@@ -63,7 +63,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passenger_main);
         userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
-
+        pvm = this;
         Call<UserInfoDTO> driverInfoDTOCall = ServiceUtils.passengerService.getPassengerById(userPrefs.getString("id","nema id"));
         driverInfoDTOCall.enqueue(new Callback<UserInfoDTO>() {
             @Override
@@ -82,8 +82,6 @@ public class PassengerMainActivity extends AppCompatActivity {
             }
         });
 
-        pvm = this;
-        FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false, R.id.mainContent);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
