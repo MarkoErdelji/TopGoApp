@@ -9,6 +9,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+<<<<<<< Updated upstream
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
             android:layout_width="match_parent"
@@ -25,6 +26,210 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_below="@id/chart2"/>
+=======
+
+        <RelativeLayout
+            android:id="@+id/moneyChart"
+            android:layout_width="500sp"
+            android:layout_height="300sp"
+            android:layout_marginStart="30sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="30sp"
+            android:layout_marginBottom="30sp"
+            android:paddingBottom="20sp"
+
+            android:background="@drawable/reports_holder_layout"
+            android:elevation="10dp"
+            tools:ignore="RtlSymmetry">
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+        </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalMoneyHolder"
+                android:layout_below="@id/moneyChart"
+                android:layout_width="wrap_content"
+                android:padding="10sp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/reports_holder_layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/totalMoneyLabel"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_earned">
+
+                </TextView>
+                <TextView
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/totalMoneyLabel"
+                    android:id="@+id/totalMoneyValue"
+                    android:layout_marginLeft="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value">
+
+                </TextView>
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ridesChart"
+            android:layout_width="500sp"
+            android:layout_height="300sp"
+            android:layout_marginStart="30sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="30sp"
+            android:layout_marginBottom="30sp"
+            android:paddingBottom="20sp"
+            android:layout_below="@id/totalMoneyHolder"
+            android:background="@drawable/reports_holder_layout"
+            android:elevation="10dp"
+            tools:ignore="RtlSymmetry">
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalRidesHolder"
+                android:layout_below="@id/ridesChart"
+                android:layout_width="wrap_content"
+                android:padding="10sp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/reports_holder_layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/totalRidesLabel"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_rides">
+
+                </TextView>
+                <TextView
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/totalRidesLabel"
+                    android:id="@+id/totalRidesValue"
+                    android:layout_marginLeft="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value">
+
+                </TextView>
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/kmChart"
+            android:layout_width="500sp"
+            android:layout_height="300sp"
+            android:layout_marginStart="30sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="30sp"
+            android:layout_marginBottom="30sp"
+            android:paddingBottom="20sp"
+            android:layout_below="@id/totalRidesHolder"
+            android:background="@drawable/reports_holder_layout"
+            android:elevation="10dp"
+            tools:ignore="RtlSymmetry">
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/totalKmHolder"
+                android:layout_below="@id/kmChart"
+                android:layout_width="wrap_content"
+                android:padding="10sp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/reports_holder_layout"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/totalKmLabel"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_km">
+
+                </TextView>
+                <TextView
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/totalKmLabel"
+                    android:id="@+id/totalKmValue"
+                    android:layout_marginLeft="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value">
+
+                </TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="30sp"
+                android:background="@drawable/reports_holder_layout"
+                android:layout_width="400sp"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/totalKmHolder"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/textView_start_date"
+                    android:layout_width="130sp"
+                    android:layout_height="40sp"
+                    android:text="Start Date:"
+                    android:textSize="20sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="16dp" />
+
+                <EditText
+                    android:id="@+id/editText_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:hint="Enter start date"
+                    android:background="@drawable/edit_text"
+                    android:inputType="text"
+                    android:layout_toRightOf="@id/textView_start_date" />
+
+                <TextView
+                    android:id="@+id/textView_end_date"
+                    android:layout_width="130sp"
+                    android:layout_height="40sp"
+                    android:text="End Date:"
+                    android:textSize="20sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/textView_start_date"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp" />
+
+                <EditText
+                    android:id="@+id/editText_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:hint="Enter end date"
+                    android:inputType="text"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edit_text"
+                    android:layout_toRightOf="@id/textView_end_date"
+                    android:layout_below="@id/editText_start_date" />
+
+                <Button
+                    android:id="@+id/button_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/editText_end_date"
+                    android:layout_marginTop="16dp" />
+
+            </RelativeLayout>
+>>>>>>> Stashed changes
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

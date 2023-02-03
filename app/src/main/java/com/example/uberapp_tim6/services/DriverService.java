@@ -40,15 +40,28 @@ public interface DriverService {
     @POST("profileChangesRequest")
     Call<ResponseBody> postDriverProfileChanges(@Body DriverInfoDTO driverInfoDTO);
 
+<<<<<<< Updated upstream
+=======
+    @GET("driver/{id}/ride")
+>>>>>>> Stashed changes
     Call<UserRidesListDTO> getDriverRides(@Path("id") Integer id,
                                           @Query("page") Integer page,
                                           @Query("size") Integer size);
 
+<<<<<<< Updated upstream
     Call<UserRidesListDTO> getDriverRidesWithInterval(@Path("id") Integer id,
                                                       @Query("page") Integer page,
                                                       @Query("size") Integer size,
                                                       @Query("beginDateInterval") LocalDateTime beginDateInterval,
                                                       @Query("endDateInterval") LocalDateTime endDateInterval);
+=======
+    @GET("driver/{id}/ride")
+    Call<UserRidesListDTO> getDriverRidesWithInterval(@Path("id") Integer id,
+                                                      @Query("page") Integer page,
+                                                      @Query("size") Integer size,
+                                                      @Query("beginDateInterval") String beginDateInterval,
+                                                      @Query("endDateInterval") String endDateInterval);
+>>>>>>> Stashed changes
 
 
 }
