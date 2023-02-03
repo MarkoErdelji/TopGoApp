@@ -60,11 +60,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.TileStates;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.w3c.dom.Text;
+
 
 import java.io.IOException;
 import java.net.URI;
@@ -72,6 +75,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pl.droidsonroids.gif.GifDrawable;
@@ -79,6 +83,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tech.gusavila92.websocketclient.WebSocketClient;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,6 +94,7 @@ public class PassengerMainFragment extends Fragment {
 
     private WebSocketClient webSocketClient;
 
+    private Context context;
 
     private EditText departureEditText;
 
@@ -146,6 +152,12 @@ public class PassengerMainFragment extends Fragment {
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
 
 
     @Override
@@ -167,11 +179,10 @@ public class PassengerMainFragment extends Fragment {
         createDriverVehicleLocationNotifSession();
         createPassengerNotifSession();
         currentRideView = view.findViewById(R.id.passengerCurrentRide);
-        map = view.findViewById(R.id.map);
 
+        map = (MapView) view.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setMultiTouchControls(true);
-
         GeoPoint startPoint = new GeoPoint(45.2517, 19.8369);
 
         map.getController().setZoom(15.0);
@@ -220,6 +231,7 @@ public class PassengerMainFragment extends Fragment {
             }
         });
         CreateRideDTO createRideDTO = new CreateRideDTO();
+
         step1Order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -358,16 +370,48 @@ public class PassengerMainFragment extends Fragment {
 
         });
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        // evaluate the tile states
+        while (true){
+            if(map.getRepository()==null){
+                continue;
+            }
+            TileStates tileStates = map.getOverlayManager().getTilesOverlay().getTileStates();
+            if (tileStates.getTotal() == tileStates.getUpToDate())
+            {
+                // map is loaded completely
+                Log.d("nesto", "kurac moj");
+                checkForActiveRide();
+                break;
+            }
+        }
+
+//        checkForAcceptedRide();
     }
 
-    private void checkForActiveRide(int passengerId){
-        ServiceUtils.rideService.getPassengerActiveRide(Integer.toString(passengerId)).enqueue(
+    private void checkForActiveRide(){
+        ServiceUtils.rideService.getPassengerActiveRide(userPrefs.getString("id", "0")).enqueue(
                 new Callback<RideDTO>() {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
-                        if (response.isSuccessful()) {
+                        if (response.body() != null) {
                             changeToCurrentRide();
-                    }
+                            map.getOverlays().clear();
+                            MapService.getRoute(response.body().getLocations().get(0).getDeparture(), response.body().getLocations().get(0).getDestination(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
+                            carMarker = MapService.DrawMarker(response.body().getLocations().get(0).getDeparture(),R.drawable.car_icon,map,getContext());
+                            MapService.ZoomTo(response.body().getLocations().get(0).getDeparture(),16.0,map);
+                            changeToCurrentRide();
+                            setCurrentRideData(response.body());
+                            Button panicBtn = currentRideView.findViewById(R.id.panicBtn);
+                            panicBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showPanicPopup(response.body());
+                                }
+                            });
+                    }else{
+                            checkForAcceptedRide();
+                        }
 
                 }
 
@@ -408,6 +452,8 @@ public class PassengerMainFragment extends Fragment {
 
 
 
+
+
     private void populateDialogAndShow(View dialogView, AlertDialog dialog, RideDTO ride) {
         TextView emailView = dialogView.findViewById(R.id.emailInfo);
         TextView nameSurname = dialogView.findViewById(R.id.name_surname);
@@ -436,7 +482,7 @@ public class PassengerMainFragment extends Fragment {
                                     assert response.body() != null;
                                     MapService.getDistance(ride.getLocations().get(0).getDeparture(), ride.getLocations().get(0).getDestination(), callback -> {
                                         TimeAndDistanceDTO timeAndDistanceDTO = callback;
-                                        getActivity().runOnUiThread(new Runnable() {
+                                        requireActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 distanceView.setText(String.valueOf(timeAndDistanceDTO.getDistanceInKm() + " KM"));
@@ -455,11 +501,11 @@ public class PassengerMainFragment extends Fragment {
 
 
                                     moneyView.setText(String.valueOf(ride.getTotalCost()) + " RSD");
-                                    Glide.with(getContext()).load(response.body().getProfilePicture()).into(profilePic);
+                                    Glide.with(context).load(response.body().getProfilePicture()).into(profilePic);
 
                                     GifDrawable gifDrawable = null;
                                     try {
-                                        gifDrawable = new GifDrawable(getResources(), R.drawable.loading_gif);
+                                        gifDrawable = new GifDrawable(context.getResources(), R.drawable.loading_gif);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -562,20 +608,7 @@ public class PassengerMainFragment extends Fragment {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                                 builder1.setMessage("Your ride was accepted!");
                                 builder1.setCancelable(true);
-                                ServiceUtils.driverService.getDriverVehicle(String.valueOf(rideDTO.getDriver().getId())).enqueue(new Callback<VehicleInfoDTO>() {
-                                    @Override
-                                    public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
-                                        map.getOverlays().clear();
-                                        MapService.getRoute(response.body().currentLocation, rideDTO.getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
-                                        carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map,getContext());
-                                        MapService.ZoomTo(response.body().currentLocation,16.0,map);
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
-
-                                    }
-                                });
+                                setAcceptedRide(rideDTO);
 
                                 AlertDialog alert11 = builder1.create();
                                 alert11.show();
@@ -679,6 +712,78 @@ public class PassengerMainFragment extends Fragment {
         webSocketClient.addHeader("id", userPrefs.getString("id", "0"));
         webSocketClient.addHeader("role", userPrefs.getString("role", "0"));
         webSocketClient.connect();
+    }
+
+    private void setAcceptedRide(RideDTO rideDTO){
+        ServiceUtils.driverService.getDriverVehicle(String.valueOf(rideDTO.getDriver().getId())).enqueue(new Callback<VehicleInfoDTO>() {
+            @Override
+            public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
+                map.getOverlays().clear();
+                MapService.getRoute(response.body().currentLocation, rideDTO.getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
+                carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, context);
+                MapService.ZoomTo(response.body().currentLocation,16.0,map);
+            }
+
+            @Override
+            public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    private void checkForAcceptedRide(){
+        Call<RideDTO> acceptedRideCall = ServiceUtils.rideService.getPassengerAcceptedRide(userPrefs.getString("id", "0"));
+        acceptedRideCall.enqueue(new Callback<RideDTO>() {
+            @Override
+            public void onResponse(Call<RideDTO> call1, Response<RideDTO> response1) {
+                if(response1.body() != null){
+
+                    ServiceUtils.driverService.getDriverVehicle(String.valueOf(response1.body().getDriver().getId())).enqueue(new Callback<VehicleInfoDTO>() {
+                        @Override
+                        public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
+                            map.getOverlays().clear();
+                            MapService.getRoute(response.body().currentLocation, response1.body().getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
+                            carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, context);
+                            MapService.ZoomTo(response.body().currentLocation,16.0,map);
+                        }
+
+                        @Override
+                        public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
+
+                        }
+                    });
+                }
+                else{
+                    checkForPendingRides();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RideDTO> call1, Throwable t) {
+
+            }
+        });
+    }
+
+    private void checkForPendingRides(){
+        Call<RideDTO> pendingRideCall = ServiceUtils.rideService.getPassengerPendingRide(userPrefs.getString("id", "0"));
+        pendingRideCall.enqueue(new Callback<RideDTO>() {
+            @Override
+            public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
+                if(response.body() != null){
+                    latestActiveView = step4;
+                    dialog.dismiss();
+                    populateDialogAndShow(dialogView, dialog, response.body());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RideDTO> call, Throwable t) {
+
+            }
+        });
     }
 
     private void createDriverVehicleLocationNotifSession(){

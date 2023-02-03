@@ -30,6 +30,8 @@ public interface PassengerService {
     @GET("passenger/ride/finished")
     Call<List<RideDTO>> getPassengerRides();
 
+
+
     @POST("review/{rideId}/driver")
     Call<CreateReviewResponseDTO> createDriverReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
 

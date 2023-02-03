@@ -71,7 +71,7 @@ public class PassengerMainActivity extends AppCompatActivity {
                 passenger = response.body();
                 setPassengerInfo(passenger);
 
-                FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, false,R.id.mainContent);
+                FragmentTransition.to(PassengerMainFragment.newInstance(passenger), pvm, true,R.id.mainContent);
 
 
             }
