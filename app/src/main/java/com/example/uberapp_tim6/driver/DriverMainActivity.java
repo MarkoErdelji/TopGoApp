@@ -444,7 +444,7 @@ public class DriverMainActivity extends AppCompatActivity {
         final int[] previousId = {0};
         for (int i = 0; i < passengers.size(); i++) {
             UserRef passenger = passengers.get(i);
-            Call<UserInfoDTO> call = ServiceUtils.passengerService.getPassengerById(passenger.getId().toString());
+            Call<UserInfoDTO> call = ServiceUtils.userService.getUserById(passenger.getId().toString());
             call.enqueue(new Callback<UserInfoDTO>() {
                 @Override
                 public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {

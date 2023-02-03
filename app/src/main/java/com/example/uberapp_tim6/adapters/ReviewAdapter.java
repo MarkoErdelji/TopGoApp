@@ -55,7 +55,7 @@ public class ReviewAdapter extends BaseAdapter {
         final View vi= activity.getLayoutInflater().inflate(R.layout.review_item_list, null);;
         CreateReviewResponseDTO review = this.reviews.get(position);
 
-        Call<UserInfoDTO> call2 = ServiceUtils.passengerService.getPassengerById(Integer.toString(review.getPassenger().getId()));
+        Call<UserInfoDTO> call2 = ServiceUtils.userService.getUserById(Integer.toString(review.getPassenger().getId()));
         call2.enqueue(new Callback<UserInfoDTO>() {
             @Override
             public void onResponse(Call<UserInfoDTO> call2, Response<UserInfoDTO> response) {

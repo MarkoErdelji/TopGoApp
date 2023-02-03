@@ -81,5 +81,6 @@
     <string name="total_km">Total km:</string>
     <string name="total_rides">Total rides:</string>
     <string name="total_earned">Total earned:</string>
+    <string name="routes">Routes</string>
 
 </resources>
