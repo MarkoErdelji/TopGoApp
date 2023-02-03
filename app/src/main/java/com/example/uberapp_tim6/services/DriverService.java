@@ -4,6 +4,7 @@ import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.DocumentInfoDTO;
 import com.example.uberapp_tim6.DTOS.DriverInfoDTO;
 import com.example.uberapp_tim6.DTOS.DriverReviewListDTO;
+import com.example.uberapp_tim6.DTOS.DriverWorkHoursDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserRidesListDTO;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
@@ -54,5 +55,16 @@ public interface DriverService {
                                                       @Query("beginDateInterval") String beginDateInterval,
                                                       @Query("endDateInterval") String endDateInterval);
 
+    @GET("driver/{id}/working-hour")
+    Call<DriverWorkHoursDTO> getDriverWorkingHours(@Path("id") Integer id,
+                                                   @Query("page") Integer page,
+                                                   @Query("size") Integer size);
+
+    @GET("driver/{id}/working-hour")
+    Call<DriverWorkHoursDTO> getDriverWorkingHoursWithInterval(@Path("id") Integer id,
+                                                 @Query("page") Integer page,
+                                                 @Query("size") Integer size,
+                                                 @Query("beginDateInterval") String beginDateInterval,
+                                                 @Query("endDateInterval") String endDateInterval);
 
 }

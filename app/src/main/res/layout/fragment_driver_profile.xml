@@ -287,23 +287,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:text="Edit profile">
 
             </Button>
 
-            <Button
-                android:id="@+id/reports"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:textColor="@color/white"
-                android:text="Reports"
-                android:layout_marginLeft="30sp"
-                android:layout_toEndOf="@id/edit_profile"
-                android:layout_toRightOf="@id/edit_profile">
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/edit_profile">
+                <Button
+                    android:id="@+id/reports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:textColor="@color/white"
+                    android:text="Reports"
+                    android:layout_marginLeft="30sp">
 
-            </Button>
+                </Button>
+
+                <Button
+                    android:id="@+id/statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:textColor="@color/white"
+                    android:text="Statistics"
+                    android:layout_marginBottom="30sp"
+                    android:layout_marginLeft="30sp"
+                    android:layout_marginRight="30sp"
+                    android:layout_toEndOf="@id/reports"
+                    android:layout_toRightOf="@id/reports">
+
+                </Button>
+            </RelativeLayout>
+
         </RelativeLayout>
 
 

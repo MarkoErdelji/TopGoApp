@@ -64,6 +64,7 @@ public class DriverProfileFragment extends Fragment {
 
     private Button editProfile;
     private Button reportsButotn;
+    private Button statisticsButton;
 
     private AlertDialog vehicleDialog;
     private View documentDialogView;
@@ -137,11 +138,18 @@ public class DriverProfileFragment extends Fragment {
                 FragmentTransition.to(DriverEditProfileFragment.newInstance(driver),DriverMainActivity,false,R.id.mainContent);
             }
         });
+        statisticsButton = view.findViewById(R.id.statistics);
+        statisticsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(DriverStatisticsFragment.newInstance(driver),DriverMainActivity,true,R.id.mainContent);
+            }
+        });
         reportsButotn = view.findViewById(R.id.reports);
         reportsButotn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransition.to(DriverReportsFragment.newInstance(driver),DriverMainActivity,false,R.id.mainContent);
+                FragmentTransition.to(DriverReportsFragment.newInstance(driver),DriverMainActivity,true,R.id.mainContent);
             }
         });
         image = getView().findViewById(R.id.profileIcon);
