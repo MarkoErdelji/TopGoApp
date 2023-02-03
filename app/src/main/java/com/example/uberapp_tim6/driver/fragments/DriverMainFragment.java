@@ -6,12 +6,9 @@ import static com.example.uberapp_tim6.services.ServiceUtils.LOCALHOST;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 
 import android.os.Bundle;
 
@@ -29,7 +26,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
@@ -40,9 +36,9 @@ import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserRef;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.MapService;
-import com.example.uberapp_tim6.services.RideService;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.DateTimeDeserializer;
 import com.example.uberapp_tim6.tools.DateTimeSerializer;
@@ -61,7 +57,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
@@ -155,6 +150,7 @@ public class DriverMainFragment extends Fragment {
         BottomSheetBehavior<View> bsb = BottomSheetBehavior.from(v);
         bsb.setPeekHeight(appBar.getHeight()+100);
 
+
         bsb.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -179,6 +175,7 @@ public class DriverMainFragment extends Fragment {
 
         });
 
+
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,6 +185,8 @@ public class DriverMainFragment extends Fragment {
                     bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+
+
 
         bsb.setState(BottomSheetBehavior.STATE_COLLAPSED);
         checkForCurrentRide();
@@ -249,6 +248,17 @@ public class DriverMainFragment extends Fragment {
 
             }
         });
+    }
+
+    private void openChat(UserInfoDTO user, RideDTO body) {
+        String userId = user.getId().toString();
+
+        Intent intent = new Intent(getActivity(), MessageListActivity.class);
+        intent.putExtra("Sender",userId);
+        intent.putExtra("Ride",body);
+        intent.putExtra("text", "message.getDateTime().toString()");
+        intent.putExtra("currentUser",driver);
+        startActivityForResult(intent, 0);
     }
 
     private void endRideDialog(RideDTO body) {
@@ -475,7 +485,7 @@ public class DriverMainFragment extends Fragment {
         final int[] previousId = {0};
         for (int i = 0; i < passengers.size(); i++) {
             UserRef passenger = passengers.get(i);
-            Call<UserInfoDTO> call = ServiceUtils.passengerService.getPassengerById(passenger.getId().toString());
+            Call<UserInfoDTO> call = ServiceUtils.userService.getUserById(passenger.getId().toString());
             call.enqueue(new Callback<UserInfoDTO>() {
                 @Override
                 public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
@@ -495,6 +505,15 @@ public class DriverMainFragment extends Fragment {
                     Glide.with(getContext()).load(user.getProfilePicture()).into(passengerIcon);
                     layoutParams = (RelativeLayout.LayoutParams) passengerIcon.getLayoutParams();
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+                    passengerIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            openChat(user,body);
+
+
+                        }
+                    });
 
                     passengerIcon.setLayoutParams(layoutParams);
                     passengerLayout.addView(passengerIcon);

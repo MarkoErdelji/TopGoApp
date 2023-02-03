@@ -53,6 +53,7 @@ public class MessageListActivity extends AppCompatActivity {
     private Context contex ;
     private Button send_btn;
     private EditText msgText;
+    private RideDTO ride;
     UserInfoDTO user;
     UserMessagesListDTO messages;
     @Override
@@ -71,13 +72,19 @@ public class MessageListActivity extends AppCompatActivity {
         mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_gchat);
         send_btn = findViewById(R.id.button_gchat_send);
         msgText = findViewById(R.id.edit_gchat_message);
+        ride = (RideDTO) getIntent().getSerializableExtra("Ride");
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SendMessageDTO msg = new SendMessageDTO();
                 msg.setMessage(msgText.getText().toString());
-                msg.setRideId(1);
+                if (!(ride == null))
+                    msg.setRideId(ride.id);
+                else
+                {
+                    msg.setRideId(1);
+                }
                 msg.setType(MessageType.RIDE);
                 if (!msgText.getText().toString().equals("")) {
 
