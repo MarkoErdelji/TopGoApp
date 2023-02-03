@@ -40,15 +40,19 @@ public interface DriverService {
     @POST("profileChangesRequest")
     Call<ResponseBody> postDriverProfileChanges(@Body DriverInfoDTO driverInfoDTO);
 
+
+    @GET("driver/{id}/ride")
     Call<UserRidesListDTO> getDriverRides(@Path("id") Integer id,
                                           @Query("page") Integer page,
                                           @Query("size") Integer size);
 
+
+    @GET("driver/{id}/ride")
     Call<UserRidesListDTO> getDriverRidesWithInterval(@Path("id") Integer id,
                                                       @Query("page") Integer page,
                                                       @Query("size") Integer size,
-                                                      @Query("beginDateInterval") LocalDateTime beginDateInterval,
-                                                      @Query("endDateInterval") LocalDateTime endDateInterval);
+                                                      @Query("beginDateInterval") String beginDateInterval,
+                                                      @Query("endDateInterval") String endDateInterval);
 
 
 }

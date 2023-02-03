@@ -17,5 +17,6 @@
     <color name="yellow">#FFEB3B</color>
     <color name="iconColor">#CACACA</color>
     <color name="dialogColor">#F4F4F4</color>
+    <color name="red">#A60404</color>
 
 </resources>

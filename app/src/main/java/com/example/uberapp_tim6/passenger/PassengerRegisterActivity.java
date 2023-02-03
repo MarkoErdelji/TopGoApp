@@ -58,48 +58,29 @@ public class PassengerRegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (firstName.getText().length() != 0) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Name cannot be empty!");
-                    return;
-                }
-                if (lastName.getText().length() != 0) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Last Name cannot be empty!");
-                    return;
-                }
-                if (Username.getText().length() != 0) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Email cannot be empty!");
-                    return;
 
-                }
-                if (password.getText().length() != 0) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Password cannot be empty!");
-                    return;
-
-                }
-                if (PhoneNumber.getText().length() != 0) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Phone Number cannot be empty!");
+                if (firstName.getText().length() == 0) {
+                    firstName.setError("Error: Field Name cannot be empty!");
                     return;
                 }
-                if (Address.getText().length() != 0) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Address cannot be empty!");
+                if (lastName.getText().length() == 0) {
+                    lastName.setError("Error: Field Last Name cannot be empty!");
+                    return;
+                }
+                if (Username.getText().length() == 0) {
+                    Username.setError("Error: Field Email cannot be empty!");
+                    return;
+                }
+                if (password.getText().length() == 0) {
+                    password.setError("Error: Field Password cannot be empty!");
+                    return;
+                }
+                if (PhoneNumber.getText().length() == 0) {
+                    PhoneNumber.setError("Error: Field Phone Number cannot be empty!");
+                    return;
+                }
+                if (Address.getText().length() == 0) {
+                    Address.setError("Error: Field Address cannot be empty!");
                     return;
                 }
                 String email = Username.getText().toString();
@@ -110,58 +91,41 @@ public class PassengerRegisterActivity extends AppCompatActivity {
 
                 Pattern firstNamePattern = Pattern.compile(firstNameRegex,Pattern.UNICODE_CASE);
                 Matcher firstNameMatcher = firstNamePattern.matcher(name);
-                if (firstNameMatcher.find()) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Name must start with uppercase!");
+
+                if (!firstNameMatcher.find()) {
+                    firstName.setError("Error: Name must start with uppercase!");
                     return;
                 }
                 Pattern surnameNamePattern = Pattern.compile(lastNameRegex,Pattern.UNICODE_CASE);
                 Matcher surnameNameMatcher = surnameNamePattern.matcher(surname);
-                if (surnameNameMatcher.find()) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Last name must start with uppercase!");
+
+                if (!surnameNameMatcher.find()) {
+                    lastName.setError("Error: Last name must start with uppercase!");
                     return;
                 }
 
                 Pattern emailNamePattern = Pattern.compile(emailRegex);
                 Matcher emailNameMatcher = emailNamePattern.matcher(email);
-                if (emailNameMatcher.find()) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Email not in correct format!");
+                if (!emailNameMatcher.find()) {
+                    Username.setError("Error: Email not in correct format!");
                     return;
-
                 }
 
-                if (password.getText().length() > 6) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Field Password must be at least 6 characters long!");
+                if (password.getText().length() < 6) {
+                    password.setError("Error: Field Password must be at least 6 characters long!");
                     return;
-
                 }
                 Pattern phoneNumberNamePattern = Pattern.compile(phoneNumberRegex);
                 Matcher phoneNumberNameMatcher = phoneNumberNamePattern.matcher(phoneNumber);
-                if (phoneNumberNameMatcher.find()) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Phone number is in incorrect format!");
+                if (!phoneNumberNameMatcher.find()) {
+                    PhoneNumber.setError("Error: Phone number is in incorrect format!");
                     return;
                 }
                 Pattern addressNamePattern = Pattern.compile(addressRegex,Pattern.UNICODE_CASE);
                 Matcher addressNameMatcher = addressNamePattern.matcher(address);
-                if (addressNameMatcher.find()) {
-                    errorView.setVisibility(View.GONE);
-                } else {
-                    errorView.setVisibility(View.VISIBLE);
-                    errorView.setText("Error: Address is in incorrect format!");
+
+                if (!addressNameMatcher.find()) {
+                    Address.setError("Error: Address is in incorrect format!");
                     return;
                 }
                 CreatePassengerDTO createPassengerDTO = new CreatePassengerDTO();

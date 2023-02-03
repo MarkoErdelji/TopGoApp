@@ -31,12 +31,13 @@ public interface PassengerService {
     Call<List<RideDTO>> getPassengerRides();
 
 
-
     @POST("review/{rideId}/driver")
     Call<CreateReviewResponseDTO> createDriverReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
 
     @POST("review/{rideId}/vehicle")
     Call<CreateReviewResponseDTO> createVehicleReview(@Path("rideId") String rideId,@Body CreateReviewDTO createReviewDTO);
+
+
 
 }
 
