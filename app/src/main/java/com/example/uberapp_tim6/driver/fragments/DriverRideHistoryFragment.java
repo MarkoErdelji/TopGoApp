@@ -25,11 +25,8 @@ import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
 import com.example.uberapp_tim6.driver.CertainRideFromHistory;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
-<<<<<<< Updated upstream
 import com.example.uberapp_tim6.models.User;
-=======
 import com.example.uberapp_tim6.models.enumerations.Status;
->>>>>>> Stashed changes
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
@@ -50,12 +47,9 @@ public class DriverRideHistoryFragment extends ListFragment {
 
     private static final String ARG_DRIVER = "arg_driver";
     private DriverRideHistoryFragment fragmet;
-<<<<<<< Updated upstream
-    private List<RideDTO> finishedRides;
+
     private UserInfoDTO driver;
-=======
     private final List<RideDTO> finishedRides = new ArrayList<>();
->>>>>>> Stashed changes
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
