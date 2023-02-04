@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -36,6 +37,7 @@ import com.example.uberapp_tim6.DTOS.CreateReviewDTO;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.CreateRideDTO;
 
+import com.example.uberapp_tim6.DTOS.DriverInfoDTO;
 import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
 import com.example.uberapp_tim6.DTOS.JWTTokenDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
@@ -49,6 +51,8 @@ import com.example.uberapp_tim6.DTOS.TimeAndDistanceDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.activities.MessageListActivity;
+import com.example.uberapp_tim6.driver.fragments.DriverMainFragment;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.models.enumerations.VehicleName;
@@ -103,7 +107,12 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
 
     private WebSocketClient webSocketClient;
 
+    private static final String ARG_PASSENGER = "arg_PASSENGER";
+
+    private UserInfoDTO passenger;
+
     private Context context;
+    private PassengerMainFragment fragment;
 
     private EditText departureEditText;
 
@@ -115,10 +124,12 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
 
     MapView map;
 
+
     private View step1;
     private View step2;
     private View step3;
     private View step4;
+    private View waiting;
 
     private View latestActiveView;
     private View currentRideView;
@@ -145,12 +156,19 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
     }
 
     public static PassengerMainFragment newInstance(UserInfoDTO passenger) {
-        return new PassengerMainFragment();
+        PassengerMainFragment fragment = new PassengerMainFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_PASSENGER, passenger);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        passenger = (UserInfoDTO) getArguments().getSerializable(ARG_PASSENGER);
+        fragment = this;
+        userPrefs = getContext().getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -206,6 +224,17 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
         latestActiveView = step1;
         step2 = view.findViewById(R.id.create_ride_spinner);
         step4 = view.findViewById(R.id.create_ride_option_select);
+
+        waiting = view.findViewById(R.id.passengerWaitForDriver);
+        ImageView gifLoading = waiting.findViewById(R.id.loadingGif);
+        GifDrawable gifDrawable = null;
+        try {
+            gifDrawable = new GifDrawable(getContext().getResources(), R.drawable.loading_gif);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        gifLoading.setImageDrawable(gifDrawable);
         spinnerVehicleType = view.findViewById(R.id.spinner_vehicle_type);
         babyCheckbox = view.findViewById(R.id.checkbox_babies);
         petCheckbox = view.findViewById(R.id.checkbox_pets);
@@ -307,6 +336,10 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         builder.setView(dialogView);
         dialog = builder.create();
+        // dodati samo da kad naruci voznju uradi prebacaj na odgovarajuc meni
+        // step4.setVisibility(Visibility.GONE)
+        // wait.setVisibility(Visibility.VISIBLE)
+        // latestActiveView = wait;
         step4Order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -468,8 +501,10 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
     private void changeToCurrentRide(){
         latestActiveView.setVisibility(View.GONE);
         currentRideView.setVisibility(View.VISIBLE);
+        latestActiveView = currentRideView;
     }
     private void setCurrentRideData(RideDTO rideDTO){
+        CircleImageView driverProfilePic = currentRideView.findViewById(R.id.driverProfilePicture);
         TextView departureTextView = currentRideView.findViewById(R.id.departure_text_view);
         departureTextView.setText(rideDTO.getLocations().get(0).getDeparture().getAddress());
 
@@ -477,13 +512,20 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
         destinationTextView.setText(rideDTO.getLocations().get(0).getDestination().getAddress());
 
         TextView driverNameAndLastName = currentRideView.findViewById(R.id.driverNameAndLastName);
-        ServiceUtils.driverService.getDriverById(Integer.toString(rideDTO.getDriver().getId())).enqueue(
+        ServiceUtils.userService.getUserById(Integer.toString(rideDTO.getDriver().getId())).enqueue(
                 new Callback<UserInfoDTO>() {
                     @Override
                     public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
                         if (response.isSuccessful()) {
+                            Glide.with(getContext()).load(response.body().getProfilePicture()).into(driverProfilePic);
                             String nameAndLastName = response.body().getName() + " " + response.body().getSurname();
                             driverNameAndLastName.setText(nameAndLastName);
+                            driverProfilePic.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    openChat(response.body(),rideDTO);
+                                }
+                            });
                         }
                     }
                     @Override
@@ -493,9 +535,16 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                 });
 
     }
+    private void openChat(UserInfoDTO user, RideDTO body) {
+        String userId = user.getId().toString();
 
-
-
+        Intent intent = new Intent(getActivity(), MessageListActivity.class);
+        intent.putExtra("Sender",userId);
+        intent.putExtra("Ride",body);
+        intent.putExtra("text", "message.getDateTime().toString()");
+        intent.putExtra("currentUser",passenger);
+        startActivityForResult(intent, 0);
+    }
 
 
     private void populateDialogAndShow(View dialogView, AlertDialog dialog, RideDTO ride) {
@@ -649,6 +698,9 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                             RideDTO rideDTO = gson.fromJson(message, RideDTO.class);
                             if (rideDTO.getStatus() == Status.ACCEPTED) {
                                 dialog.dismiss();
+                                step1.setVisibility(View.GONE);
+                                waiting.setVisibility(View.VISIBLE);
+                                latestActiveView = waiting;
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                                 builder1.setMessage("Your ride was accepted!");
                                 builder1.setCancelable(true);
@@ -687,7 +739,7 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                                 View dialogLayout = inflater.inflate(R.layout.finished_ride_popup, null);
                                 builder1.setView(dialogLayout);
                                 builder1.setCancelable(true);
-                                builder1.setTitle("You arrived at your destination!");
+                                //builder1.setTitle("You arrived at your destination!");
                                 TextView dateTextView = dialogLayout.findViewById(R.id.datetime);
                                 dateTextView.setText(rideDTO.getEndTime().toString());
 
@@ -743,10 +795,38 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                                         map.getOverlays().clear();
                                         currentRideView.setVisibility(View.GONE);
                                         step1.setVisibility(View.VISIBLE);
+                                        latestActiveView = step1;
                                     }
                                 });
                                 AlertDialog alert11 = builder1.create();
                                 alert11.show();
+                            }
+                            if(rideDTO.status == Status.REJECTED){
+
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("Your ride is canceled.");
+                                builder1.setCancelable(true);
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                                map.getOverlays().clear();
+                                waiting.setVisibility(View.GONE);
+                                step1.setVisibility(View.VISIBLE);
+                                latestActiveView = step1;
+
+
+                            }
+
+                            if(rideDTO.status == Status.PANIC){
+
+                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                builder1.setMessage("Your ride is interupted because panic was pressed.");
+                                builder1.setCancelable(true);
+                                AlertDialog alert11 = builder1.create();
+                                alert11.show();
+                                map.getOverlays().clear();
+                                latestActiveView.setVisibility(View.GONE);
+                                step1.setVisibility(View.VISIBLE);
+                                latestActiveView = step1;
                             }
                         }
                         catch (Exception e){
@@ -821,6 +901,9 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                         @Override
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
                             map.getOverlays().clear();
+                            step1.setVisibility(View.GONE);
+                            waiting.setVisibility(View.VISIBLE);
+                            latestActiveView = waiting;
                             MapService.getRoute(response.body().currentLocation, response1.body().getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
                             carMarker = MapService.DrawMarker(response.body().currentLocation,R.drawable.car_icon,map, getContext());
                             MapService.ZoomTo(response.body().currentLocation,16.0,map);

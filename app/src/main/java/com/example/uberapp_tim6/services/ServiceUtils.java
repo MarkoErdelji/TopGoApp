@@ -22,7 +22,7 @@ public class ServiceUtils {
 
 
 
-    public static final String LOCALHOST = "192.168.72.140:8000";
+    public static final String LOCALHOST = "192.168.100.4:8000";
 
 
 
