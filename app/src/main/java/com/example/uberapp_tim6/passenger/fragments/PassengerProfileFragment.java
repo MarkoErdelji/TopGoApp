@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +24,9 @@ import com.example.uberapp_tim6.adapters.DriverDocumentDialogAdapter;
 import com.example.uberapp_tim6.adapters.PassengerRoutesDialogAdapter;
 import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.models.User;
+import com.example.uberapp_tim6.passenger.PassengerMainActivity;
 import com.example.uberapp_tim6.services.ServiceUtils;
+import com.example.uberapp_tim6.tools.FragmentTransition;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.format.DateTimeFormatter;
@@ -59,6 +62,7 @@ public class PassengerProfileFragment extends Fragment {
     private TextView address;
     private UserInfoDTO passenger;
     private View iconRoutes;
+    private Button editProfile;
 
     private View routesDialogView;
 
@@ -108,6 +112,23 @@ public class PassengerProfileFragment extends Fragment {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(this.getContext());
         builder2.setView(routesDialogView);
         routesDialog = builder2.create();
+        //FragmentTransition.to(PassengerProfileFragment.newInstance(passenger),dvm,false,R.id.mainContent);
+        editProfile = getView().findViewById(R.id.edit_profile_btn);
+        Button reports = getView().findViewById(R.id.reports_profile_btn);
+        PassengerMainActivity dvm = (PassengerMainActivity) this.getActivity();
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(PassengerEditProfileFragment.newInstance(passenger),dvm,false,R.id.mainContent);
+            }
+        });
+        reports.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransition.to(PassengerReportFragments.newInstance(passenger),dvm,false,R.id.mainContent);
+            }
+        });
+
 
         iconRoutes = getView().findViewById(R.id.imageRouteLayout);
         iconRoutes.setOnClickListener(new View.OnClickListener() {

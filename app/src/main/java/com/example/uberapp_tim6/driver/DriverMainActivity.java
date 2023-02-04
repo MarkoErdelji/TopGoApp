@@ -302,6 +302,10 @@ public class DriverMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
+                SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = userPrefs.edit();
+                editor.clear();
+                editor.apply();
                 startActivity(new Intent(DriverMainActivity.this, UserLoginActivity.class));
                 finish();
                 return true;
