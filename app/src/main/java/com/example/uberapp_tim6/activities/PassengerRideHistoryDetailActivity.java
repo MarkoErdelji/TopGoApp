@@ -3,6 +3,7 @@ package com.example.uberapp_tim6.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,6 +86,22 @@ public class PassengerRideHistoryDetailActivity extends AppCompatActivity {
         rateNow = findViewById(R.id.rate_layout);
         Button rateBtn = findViewById(R.id.rate_button);
         ImageView fav = findViewById(R.id.fav_button);
+        ImageView chat = findViewById(R.id.chat_button);
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userId = ride.driver.getId().toString();
+
+                Intent intent = new Intent(PassengerRideHistoryDetailActivity.this, MessageListActivity.class);
+                intent.putExtra("Sender",userId);
+                intent.putExtra("Ride",ride);
+                intent.putExtra("text", "message.getDateTime().toString()");
+                intent.putExtra("currentUser",passenger);
+                startActivityForResult(intent, 0);
+
+            }
+        });
 
 
         fav.setOnClickListener(new View.OnClickListener() {
