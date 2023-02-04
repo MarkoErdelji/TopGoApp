@@ -12,7 +12,7 @@
         <RelativeLayout
             android:id="@+id/layout_seats_input"
             android:layout_width="200sp"
-            android:layout_height="70sp"
+            android:layout_height="wrap_content"
             android:paddingLeft="30sp"
             >
             <TextView
@@ -20,7 +20,7 @@
                 android:layout_width="110sp"
                 android:layout_marginLeft="8sp"
                 android:layout_centerVertical="true"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:text="@string/num_of_seats"/>
@@ -34,6 +34,32 @@
                 android:layout_width="20sp"
                 android:layout_height="40sp"
                 android:inputType="number" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:paddingLeft="30sp"
+            android:id="@+id/datetimepicker_layout"
+            android:layout_below="@id/layout_seats_input"
+            android:layout_width="200sp"
+            android:layout_marginLeft="8sp"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/datetime_input_title"
+            android:layout_width="100sp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/start_time"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_date_time"
+            android:layout_toRightOf="@id/datetime_input_title"
+            android:textColor="@color/black"
+            android:background="@drawable/ic_action_calendar"
+            android:layout_width="40sp"
+            android:layout_marginTop="25px"
+            android:layout_height="wrap_content"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/checkbox_layout"
@@ -55,6 +81,7 @@
                 android:layout_below="@id/checkbox_babies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
                 android:text="For pets" />
         </RelativeLayout>
 
@@ -64,6 +91,7 @@
             android:padding="10dp"
             android:layout_below="@id/checkbox_layout"
             android:gravity="center"
+            android:layout_marginTop="2sp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content">
 

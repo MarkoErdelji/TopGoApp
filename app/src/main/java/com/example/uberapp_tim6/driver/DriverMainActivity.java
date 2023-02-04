@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.uberapp_tim6.DTOS.CreateReviewResponseDTO;
 import com.example.uberapp_tim6.DTOS.RejectionTextDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
@@ -465,7 +466,7 @@ public class DriverMainActivity extends AppCompatActivity {
                     CircleImageView passengerIcon = new CircleImageView(dvm.getApplicationContext());
                     passengerIcon.setId(View.generateViewId());
                     passengerIcon.setLayoutParams(new RelativeLayout.LayoutParams(100, 100));
-                    passengerIcon.setImageResource(R.drawable.tate);
+                    Glide.with(DriverMainActivity.this).load(user.getProfilePicture()).into(passengerIcon);
                     layoutParams = (RelativeLayout.LayoutParams) passengerIcon.getLayoutParams();
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 

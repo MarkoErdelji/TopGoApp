@@ -5,13 +5,13 @@
         <item name="android:windowBackground">@color/backgroundC</item>
         <item name="colorPrimary">@color/primaryC</item>
         <item name="colorPrimaryVariant">@color/primaryC</item>
-        <item name="colorOnPrimary">@color/blackShadows</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/silverSand</item>
         <item name="colorSecondaryVariant">@color/silverSand</item>
         <item name="colorOnSecondary">@color/textC</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:statusBarColor">@color/primaryC</item>
         <item name="background">@color/backgroundC</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
