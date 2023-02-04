@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -16,6 +17,10 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.uberapp_tim6.driver.DriverMainActivity;
+import com.example.uberapp_tim6.passenger.PassengerMainActivity;
+import com.example.uberapp_tim6.tools.TokenHolder;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,8 +44,23 @@ public class SplashScreenActivity extends AppCompatActivity {
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
-                            finish();
+                            SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                            String role = userPrefs.getString("role", "notLogged");
+                            if (role.equals("notLogged")) {
+                                startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
+                                finish();
+                            }
+                            else {
+                                TokenHolder.getInstance().setRefreshToken(userPrefs.getString("refreshToken", ""));
+                                TokenHolder.getInstance().setJwtToken(userPrefs.getString("JWToken", ""));
+                                if (role.equals("DRIVER")) {
+                                    startActivity(new Intent(SplashScreenActivity.this, DriverMainActivity.class));
+                                    finish();
+                                } else if (role.equals("USER")) {
+                                    startActivity(new Intent(SplashScreenActivity.this, PassengerMainActivity.class));
+                                    finish();
+                                }
+                            }
                         }
                     }, SPLASH_TIME_OUT);
                 } else {
@@ -56,8 +76,23 @@ public class SplashScreenActivity extends AppCompatActivity {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
-                        finish();
+                        SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                        String role = userPrefs.getString("role", "notLogged");
+                        if (role.equals("notLogged")) {
+                            startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
+                            finish();
+                        }
+                        else {
+                            TokenHolder.getInstance().setRefreshToken(userPrefs.getString("refreshToken", ""));
+                            TokenHolder.getInstance().setJwtToken(userPrefs.getString("JWToken", ""));
+                            if (role.equals("DRIVER")) {
+                                startActivity(new Intent(SplashScreenActivity.this, DriverMainActivity.class));
+                                finish();
+                            } else if (role.equals("USER")) {
+                                startActivity(new Intent(SplashScreenActivity.this, PassengerMainActivity.class));
+                                finish();
+                            }
+                        }
                     }
                 }, SPLASH_TIME_OUT);
             }
@@ -73,8 +108,23 @@ public class SplashScreenActivity extends AppCompatActivity {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
-                        finish();
+                        SharedPreferences userPrefs = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
+                        String role = userPrefs.getString("role", "notLogged");
+                        if (role.equals("notLogged")) {
+                            startActivity(new Intent(SplashScreenActivity.this, UserLoginActivity.class));
+                            finish();
+                        }
+                        else {
+                            TokenHolder.getInstance().setRefreshToken(userPrefs.getString("refreshToken", ""));
+                            TokenHolder.getInstance().setJwtToken(userPrefs.getString("JWToken", ""));
+                            if (role.equals("DRIVER")) {
+                                startActivity(new Intent(SplashScreenActivity.this, DriverMainActivity.class));
+                                finish();
+                            } else if (role.equals("USER")) {
+                                startActivity(new Intent(SplashScreenActivity.this, PassengerMainActivity.class));
+                                finish();
+                            }
+                        }
                     }
                 }, SPLASH_TIME_OUT);
             }

@@ -22,19 +22,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.uberapp_tim6.DTOS.DriverActivityDTO;
+import com.example.uberapp_tim6.DTOS.DriverInfoDTO;
+import com.example.uberapp_tim6.DTOS.DriverWorkHoursDTO;
+import com.example.uberapp_tim6.DTOS.EndTimeDTO;
 import com.example.uberapp_tim6.DTOS.GeoLocationDTO;
 import com.example.uberapp_tim6.DTOS.PanicDTO;
 import com.example.uberapp_tim6.DTOS.ReasonDTO;
+import com.example.uberapp_tim6.DTOS.StartTimeDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserRef;
 import com.example.uberapp_tim6.DTOS.VehicleInfoDTO;
+import com.example.uberapp_tim6.DTOS.WorkHoursDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.models.enumerations.Status;
@@ -93,6 +101,9 @@ public class DriverMainFragment extends Fragment {
     private VehicleInfoDTO vehicle;
     private GeoLocationDTO center;
     private boolean drawnPassengers = false;
+    private Switch activitySwitch;
+    private TextView activityStatus;
+    private WorkHoursDTO currentWorkHour;
 
     SharedPreferences userPrefs;
 
@@ -139,6 +150,8 @@ public class DriverMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        activitySwitch = view.findViewById(R.id.working_hours_switch);
+        activityStatus = view.findViewById(R.id.activity_status);
         panicButton = view.findViewById(R.id.panic_button);
         endButton = view.findViewById(R.id.end_button);
         startButton = view.findViewById(R.id.start_button);
@@ -149,6 +162,8 @@ public class DriverMainFragment extends Fragment {
         ImageView arrow = view.findViewById(R.id.bottom_drawer_show_icon);
         BottomSheetBehavior<View> bsb = BottomSheetBehavior.from(v);
         bsb.setPeekHeight(appBar.getHeight()+100);
+
+        checkForDriverWorkingHour();
 
 
         bsb.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -245,6 +260,97 @@ public class DriverMainFragment extends Fragment {
                     }
                 });
 
+
+            }
+        });
+
+//activityStatus
+           activitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    if(!activitySwitch.isPressed()) {
+                        activityStatus.setText("Active");
+                        return;
+                    }
+
+                    ServiceUtils.driverService.addDriverWorkHour(driver.getId(),new StartTimeDTO()).enqueue(new Callback<WorkHoursDTO>() {
+                        @Override
+                        public void onResponse(Call<WorkHoursDTO> call, Response<WorkHoursDTO> response) {
+                            currentWorkHour = response.body();
+                            ServiceUtils.driverService.changeDriverActivity(driver.getId(),new DriverActivityDTO(true)).enqueue(new Callback<DriverInfoDTO>() {
+                                @Override
+                                public void onResponse(Call<DriverInfoDTO> call, Response<DriverInfoDTO> response) {
+                                    activityStatus.setText("Active");
+                                }
+
+                                @Override
+                                public void onFailure(Call<DriverInfoDTO> call, Throwable t) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<WorkHoursDTO> call, Throwable t) {
+
+                        }
+                    });
+                } else {
+                    if(!activitySwitch.isPressed()) {
+                        activityStatus.setText("Inactive");
+                        return;
+                    }
+                    ServiceUtils.driverService.putDriverWorkHour(currentWorkHour.getId(),new EndTimeDTO()).enqueue(new Callback<WorkHoursDTO>() {
+                        @Override
+                        public void onResponse(Call<WorkHoursDTO> call, Response<WorkHoursDTO> response) {
+                            currentWorkHour = null;
+                            ServiceUtils.driverService.changeDriverActivity(driver.getId(),new DriverActivityDTO(false)).enqueue(new Callback<DriverInfoDTO>() {
+                                @Override
+                                public void onResponse(Call<DriverInfoDTO> call, Response<DriverInfoDTO> response) {
+                                    activityStatus.setText("Inactive");
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<DriverInfoDTO> call, Throwable t) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<WorkHoursDTO> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+    private void checkForDriverWorkingHour() {
+
+        ServiceUtils.driverService.getDriverWorkingHours(driver.getId(),null,null).enqueue(new Callback<DriverWorkHoursDTO>() {
+            @Override
+            public void onResponse(Call<DriverWorkHoursDTO> call, Response<DriverWorkHoursDTO> response) {
+                for (WorkHoursDTO workHour:response.body().results
+                     ) {
+                    if (workHour.end == null) {
+
+                        currentWorkHour = workHour;
+                        activitySwitch.setChecked(true);
+                    }
+
+                }
+                if (currentWorkHour == null)activitySwitch.setChecked(false);
+
+            }
+
+            @Override
+            public void onFailure(Call<DriverWorkHoursDTO> call, Throwable t) {
 
             }
         });

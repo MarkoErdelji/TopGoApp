@@ -28,6 +28,7 @@
         <item name="android:minWidth">24dp</item>
         <item name="android:width">40dp</item>
     </style>
+    
 
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/gray</item>

@@ -43,17 +43,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
+public class PassengerRideHistoryDetailActivity extends AppCompatActivity {
     RatingBar vehicleRatingBar;
     RatingBar driverRatingBar;
     TextView driverComment;
     TextView vehicleComment;
-    RelativeLayout rating ;
+    RelativeLayout rating;
     RelativeLayout rateNow;
+    boolean added = false;
 
     @SuppressLint("SetTextI18n")
     @Override
-
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +64,8 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        RideDTO ride = (RideDTO)getIntent().getSerializableExtra("ride");
-        UserInfoDTO passenger = (UserInfoDTO)getIntent().getSerializableExtra("passenger");
+        RideDTO ride = (RideDTO) getIntent().getSerializableExtra("ride");
+        UserInfoDTO passenger = (UserInfoDTO) getIntent().getSerializableExtra("passenger");
         TextView departure = findViewById(R.id.departure_text_view);
         TextView destination = findViewById(R.id.destination_text_view);
         TextView driver_name = findViewById(R.id.driver_name);
@@ -86,31 +86,56 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
         Button rateBtn = findViewById(R.id.rate_button);
         ImageView fav = findViewById(R.id.fav_button);
 
+
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fav.setImageResource(R.drawable.star_icon_full);
-                FavouriteRideDTO favouriteRide = new FavouriteRideDTO();
-                favouriteRide.setVehicleType(ride.getVehicleType());
-                favouriteRide.setPassengers(ride.getPassengers());
-                favouriteRide.setBabyTransport(ride.isBabyTransport());
-                favouriteRide.setLocations(ride.getLocations());
-                favouriteRide.setPetTransport(ride.isPetTransport());
-                favouriteRide.setFavoriteName(ride.getLocations().get(0).getDestination().getAddress());
-                ServiceUtils.rideService.addFavouriteRides(favouriteRide).enqueue(new Callback<List<FavouriteRideInfoDTO>>() {
-                    @Override
-                    public void onResponse(Call<List<FavouriteRideInfoDTO>> call, Response<List<FavouriteRideInfoDTO>> response) {
+                if (!added) {
+                    fav.setImageResource(R.drawable.star_icon_full);
+                    FavouriteRideDTO favouriteRide = new FavouriteRideDTO();
+                    favouriteRide.setVehicleType(ride.getVehicleType());
+                    favouriteRide.setPassengers(ride.getPassengers());
+                    favouriteRide.setBabyTransport(ride.isBabyTransport());
+                    favouriteRide.setLocations(ride.getLocations());
+                    favouriteRide.setPetTransport(ride.isPetTransport());
+                    favouriteRide.setFavoriteName(ride.getLocations().get(0).getDestination().getAddress());
+                    added = true;
+                    ServiceUtils.rideService.addFavouriteRides(favouriteRide).enqueue(new Callback<List<FavouriteRideInfoDTO>>() {
+                        @Override
+                        public void onResponse(Call<List<FavouriteRideInfoDTO>> call, Response<List<FavouriteRideInfoDTO>> response) {
+                        }
 
-                    }
+                        @Override
+                        public void onFailure(Call<List<FavouriteRideInfoDTO>> call, Throwable t) {
 
-                    @Override
-                    public void onFailure(Call<List<FavouriteRideInfoDTO>> call, Throwable t) {
+                        }
+                    });
 
-                    }
-                });
+                }
+            }
+
+        });
+        ServiceUtils.rideService.getFavouriteRides().enqueue(new Callback<List<FavouriteRideInfoDTO>>() {
+            @Override
+            public void onResponse(Call<List<FavouriteRideInfoDTO>> call, Response<List<FavouriteRideInfoDTO>> response) {
+                for (FavouriteRideInfoDTO favRide : response.body()
+                ) {
+                    if (favRide.getLocations().get(0).getDestination().getAddress().equals(ride.getLocations().get(0).getDestination().getAddress()))
+                        if (favRide.getLocations().get(0).getDeparture().getAddress().equals(ride.getLocations().get(0).getDeparture().getAddress())) {
+                            added = true;
+                            fav.setImageResource(R.drawable.star_icon_full);
+
+                        }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FavouriteRideInfoDTO>> call, Throwable t) {
 
             }
         });
+
 
         rateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,12 +151,11 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
         });
 
 
-
         Call<UserInfoDTO> call = ServiceUtils.driverService.getDriverById(ride.getDriver().getId().toString());
         call.enqueue(new Callback<UserInfoDTO>() {
             @Override
             public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
-                UserInfoDTO driver =response.body();
+                UserInfoDTO driver = response.body();
                 Call<VehicleInfoDTO> vehicleCall = ServiceUtils.driverService.getDriverVehicle(driver.getId().toString());
                 vehicleCall.enqueue(new Callback<VehicleInfoDTO>() {
                     @Override
@@ -145,16 +169,16 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
                         car_name.setText(vehicle.getModel());
                         car_type.setText(vehicle.getVehicleType());
                         date.setText("Date: " + ride.getStartTime().toLocalDate());
-                        price.setText("Price: "+ ride.getTotalCost() + "RSD");
-                        time.setText("Time: " + ride.getStartTime().getHour()+":"+ride.getStartTime().getMinute() +"-" + ride.getEndTime().getHour()+":"+ride.getEndTime().getMinute());
-                        estimated.setText("Estimated: "+ ride.getEstimatedTimeInMinutes() +"Min");
+                        price.setText("Price: " + ride.getTotalCost() + "RSD");
+                        time.setText("Time: " + ride.getStartTime().getHour() + ":" + ride.getStartTime().getMinute() + "-" + ride.getEndTime().getHour() + ":" + ride.getEndTime().getMinute());
+                        estimated.setText("Estimated: " + ride.getEstimatedTimeInMinutes() + "Min");
                         Glide.with(getApplicationContext()).load(driver.getProfilePicture()).into(driver_image);
                         ServiceUtils.rideService.getRideReviews(ride.getId().toString()).enqueue(new Callback<List<RideReviewsDTO>>() {
                             @Override
                             public void onResponse(Call<List<RideReviewsDTO>> call, Response<List<RideReviewsDTO>> response) {
                                 {
 
-                                    if (response.body().get(0).getDriverReview().getId()!=0) {
+                                    if (response.body().get(0).getDriverReview().getId() != 0) {
                                         for (RideReviewsDTO rew : response.body()
                                         ) {
                                             if (rew.getVehicleReview().getPassenger().getId().equals(passenger.getId())) {
@@ -168,9 +192,7 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
                                             }
 
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         rating.setVisibility(View.GONE);
                                         rateNow.setVisibility(View.VISIBLE);
                                     }
@@ -184,10 +206,6 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
 
                             }
                         });
-
-
-
-
 
 
                     }
@@ -207,13 +225,6 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
         });
 
 
-
-
-
-
-
-
-
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -228,7 +239,7 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
         View dialogLayout = inflater.inflate(R.layout.review_dialog, null);
         builder1.setView(dialogLayout);
         builder1.setCancelable(true);
-        builder1.setPositiveButton("Rate", new DialogInterface.OnClickListener(){
+        builder1.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 CreateReviewDTO createVehicleReview = new CreateReviewDTO();
@@ -270,6 +281,7 @@ public class PassengerRideHistoryDetailActivity  extends AppCompatActivity  {
                         });
 
                     }
+
                     @Override
                     public void onFailure(Call<CreateReviewResponseDTO> call, Throwable t) {
 

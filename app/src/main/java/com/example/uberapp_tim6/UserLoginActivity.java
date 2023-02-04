@@ -76,6 +76,8 @@ public class UserLoginActivity extends AppCompatActivity {
                             editor1.putString("id", JwtDecoder.getIdFromToken(jwtToken).toString());
                             String role = JwtDecoder.getRoleFromToken(jwtToken);
                             editor1.putString("role",role);
+                            editor1.putString("refreshToken",refreshToken);
+                            editor1.putString("JWToken",jwtToken);
                             editor1.putString("email", JwtDecoder.getEmailFromToken(jwtToken));
                             editor1.apply();
                             if(role.equals("DRIVER")) {
