@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
 import com.example.uberapp_tim6.DTOS.UserRef;
 import com.example.uberapp_tim6.R;
+import com.example.uberapp_tim6.activities.MessageListActivity;
+import com.example.uberapp_tim6.activities.PassengerRideHistoryDetailActivity;
 import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
 import com.example.uberapp_tim6.adapters.ReviewAdapter;
 import com.example.uberapp_tim6.models.Ride;
@@ -40,11 +43,15 @@ import retrofit2.Response;
 public class CertainRideFromHistory extends AppCompatActivity {
     Context context = this;
     CertainRideFromHistory certainRideFromHistory;
+    private UserInfoDTO driver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certain_ride_from_history);
         certainRideFromHistory = this;
+        driver = (UserInfoDTO) getIntent().getSerializableExtra("currentUser");
+
+
 
         int rideId = (int) getIntent().getSerializableExtra("rideId");
         Call<RideDTO> call = ServiceUtils.rideService.getRide(Integer.toString(rideId));
@@ -145,6 +152,21 @@ public class CertainRideFromHistory extends AppCompatActivity {
                     layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
                     passengerIcon.setLayoutParams(layoutParams);
+
+                    passengerIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String userId = user.getId().toString();
+
+                            Intent intent = new Intent(CertainRideFromHistory.this, MessageListActivity.class);
+                            intent.putExtra("Sender",userId);
+                            intent.putExtra("Ride",body);
+                            intent.putExtra("text", "message.getDateTime().toString()");
+                            intent.putExtra("currentUser",driver);
+                            startActivityForResult(intent, 0);
+                        }
+                    });
+
                     passengerLayout.addView(passengerIcon);
                     // Create new passenger name TextView
                     TextView passengerName = new TextView(context);
