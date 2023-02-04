@@ -91,6 +91,7 @@ public class PassengerMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_passenger_main);
         String channelId = "scheduled_ride_channel";
         String channelName = "Scheduled Ride";
+
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
@@ -308,11 +309,13 @@ public class PassengerMainActivity extends AppCompatActivity {
                         try {
 
                             message.replace("\"","");
-
+                            Intent intent = new Intent(PassengerMainActivity.this, PassengerMainActivity.class);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(PassengerMainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(PassengerMainActivity.this, "scheduled_ride_channel")
                                     .setSmallIcon(R.drawable.topgologo)
                                     .setContentTitle("Scheduled Ride")
                                     .setContentText(message)
+                                    .setContentIntent(pendingIntent)
                                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                     .setAutoCancel(true);
 

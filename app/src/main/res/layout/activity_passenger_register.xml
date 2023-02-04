@@ -136,11 +136,33 @@
                     android:maxLines="1" />
             </RelativeLayout>
 
+
+
+            <RelativeLayout
+                android:id="@+id/confirmPasswordLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:layout_below="@id/passwordLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp">
+
+                <EditText
+                    android:id="@+id/confirmPasswordTextBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="30sp"
+                    android:background="@drawable/edit_text"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/phoneNumberLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/passwordLayout"
+                android:layout_below="@id/confirmPasswordLayout"
                 android:paddingStart="40dp"
                 android:paddingEnd="40dp"
                 android:layout_centerHorizontal="true"

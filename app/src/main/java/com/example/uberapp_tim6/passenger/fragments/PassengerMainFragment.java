@@ -368,17 +368,21 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                                 });
                         builder.create().show();
                         return;
-                    } else if (selectedTime.isAfter(LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC))) && selectedTime.isBefore(LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC)).plusMinutes(15))) {
-                        selectedTime = LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC));
+                    } else if (selectedTime.isAfter(LocalDateTime.now()) && selectedTime.isBefore(LocalDateTime.now().plusMinutes(15))) {
+                        selectedTime = LocalDateTime.now();
                     }
                 }
 
                 else{
-                    selectedTime = LocalDateTime.now(ZoneId.ofOffset("UTC",ZoneOffset.UTC));
+                    selectedTime = null;
 
                 }
-                Log.d("SYSTEM DATE:",selectedTime.toString());
-                createRideDTO.setScheduledTime(selectedTime.toString());
+                if(selectedTime != null) {
+                    createRideDTO.setScheduledTime(selectedTime.toString());
+                }
+                else{
+                    createRideDTO.setScheduledTime(null);
+                }
 
                 Call<RideDTO> createRideCall = ServiceUtils.rideService.createRide(createRideDTO);
                 createRideCall.enqueue(new Callback<RideDTO>() {
@@ -471,24 +475,38 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                 new Callback<RideDTO>() {
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
-                        if (response.body() != null) {
-                            changeToCurrentRide();
-                            //map.getOverlays().clear();
-                            MapService.getRoute(response.body().getLocations().get(0).getDeparture(), response.body().getLocations().get(0).getDestination(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());
-                            carMarker = MapService.DrawMarker(response.body().getLocations().get(0).getDeparture(),R.drawable.car_icon,map,getContext());
-                            MapService.ZoomTo(response.body().getLocations().get(0).getDeparture(),16.0,map);
-                            changeToCurrentRide();
-                            setCurrentRideData(response.body());
-                            Button panicBtn = currentRideView.findViewById(R.id.panicBtn);
-                            panicBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    showPanicPopup(response.body());
+
+                        ServiceUtils.driverService.getDriverVehicle(String.valueOf(response.body().getDriver().getId())).enqueue(new Callback<VehicleInfoDTO>() {
+                            @Override
+                            public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response1) {
+                                if(response1.isSuccessful()) {
+                                    map.getOverlays().clear();
+                                    latestActiveView.setVisibility(View.GONE);
+                                    waiting.setVisibility(View.VISIBLE);
+                                    latestActiveView = waiting;
+                                    MapService.getRoute(response1.body().currentLocation, response.body().getLocations().get(0).getDeparture(), R.drawable.destination_marker, R.drawable.destination_marker, map, getContext());
+                                    carMarker = MapService.DrawMarker(response1.body().currentLocation, R.drawable.car_icon, map, getContext());
+                                    MapService.ZoomTo(response1.body().currentLocation, 16.0, map);
+                                    changeToCurrentRide();
+                                    setCurrentRideData(response.body());
+                                    Button panicBtn = currentRideView.findViewById(R.id.panicBtn);
+                                    panicBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            showPanicPopup(response.body());
+                                        }
+                                    });
                                 }
-                            });
-                    }else{
-                            checkForAcceptedRide();
-                        }
+                                else{
+                                    checkForAcceptedRide();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
+
+                            }
+                        });
 
                 }
 
@@ -698,7 +716,7 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                             RideDTO rideDTO = gson.fromJson(message, RideDTO.class);
                             if (rideDTO.getStatus() == Status.ACCEPTED) {
                                 dialog.dismiss();
-                                step1.setVisibility(View.GONE);
+                                latestActiveView.setVisibility(View.GONE);
                                 waiting.setVisibility(View.VISIBLE);
                                 latestActiveView = waiting;
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
@@ -901,7 +919,7 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                         @Override
                         public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response) {
                             map.getOverlays().clear();
-                            step1.setVisibility(View.GONE);
+                            latestActiveView.setVisibility(View.GONE);
                             waiting.setVisibility(View.VISIBLE);
                             latestActiveView = waiting;
                             MapService.getRoute(response.body().currentLocation, response1.body().getLocations().get(0).getDeparture(),R.drawable.destination_marker,R.drawable.destination_marker,map,getContext());

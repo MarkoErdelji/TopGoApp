@@ -55,6 +55,7 @@ public class PassengerRegisterActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.paswordTextBox);
         EditText PhoneNumber = findViewById(R.id.phoneNumberTextBox);
         EditText Address = findViewById(R.id.addressTextBox);
+        EditText confirmPassword = findViewById(R.id.confirmPasswordTextBox);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +74,10 @@ public class PassengerRegisterActivity extends AppCompatActivity {
                 }
                 if (password.getText().length() == 0) {
                     password.setError("Error: Field Password cannot be empty!");
+                    return;
+                }
+                if(confirmPassword.getText().length() == 0){
+                    confirmPassword.setError("Error: Field Confirm Password cannot be empty!");
                     return;
                 }
                 if (PhoneNumber.getText().length() == 0) {
@@ -113,6 +118,18 @@ public class PassengerRegisterActivity extends AppCompatActivity {
 
                 if (password.getText().length() < 6) {
                     password.setError("Error: Field Password must be at least 6 characters long!");
+                    return;
+                }
+
+                if (confirmPassword.getText().length() < 6) {
+                    confirmPassword.setError("Error: Field Confirm Password must be at least 6 characters long!");
+                    return;
+                }
+
+
+                if (!String.valueOf(confirmPassword.getText()).equals(String.valueOf(password.getText()))) {
+                    confirmPassword.setError("Error: Passwords must match!");
+                    password.setError("Error: Passwords must match!");
                     return;
                 }
                 Pattern phoneNumberNamePattern = Pattern.compile(phoneNumberRegex);

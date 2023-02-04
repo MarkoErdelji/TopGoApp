@@ -83,4 +83,5 @@
     <string name="total_earned">Total earned:</string>
     <string name="routes">Routes</string>
     <string name="waiting_for_driver_to_start_a_ride">Waiting for driver to start a ride.</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

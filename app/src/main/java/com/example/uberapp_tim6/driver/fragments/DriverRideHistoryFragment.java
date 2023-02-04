@@ -19,16 +19,22 @@ import android.widget.Toast;
 
 import com.example.uberapp_tim6.DTOS.RideDTO;
 import com.example.uberapp_tim6.DTOS.UserInfoDTO;
+import com.example.uberapp_tim6.DTOS.UserRidesListDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
 import com.example.uberapp_tim6.driver.CertainRideFromHistory;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
+<<<<<<< Updated upstream
 import com.example.uberapp_tim6.models.User;
+=======
+import com.example.uberapp_tim6.models.enumerations.Status;
+>>>>>>> Stashed changes
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
 import java.time.Clock;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,8 +50,12 @@ public class DriverRideHistoryFragment extends ListFragment {
 
     private static final String ARG_DRIVER = "arg_driver";
     private DriverRideHistoryFragment fragmet;
+<<<<<<< Updated upstream
     private List<RideDTO> finishedRides;
     private UserInfoDTO driver;
+=======
+    private final List<RideDTO> finishedRides = new ArrayList<>();
+>>>>>>> Stashed changes
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -79,12 +89,17 @@ public class DriverRideHistoryFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         driver = (UserInfoDTO) getArguments().getSerializable(ARG_DRIVER);
 
-        Call<List<RideDTO>> call = ServiceUtils.rideService.getDriverFinishedRides(driver.getId().toString());
-        call.enqueue(new Callback<List<RideDTO>>() {
+        Call<UserRidesListDTO> call = ServiceUtils.driverService.getDriverRides(driver.getId(),0,10000);
+        call.enqueue(new Callback<UserRidesListDTO>() {
             @Override
-            public void onResponse(Call<List<RideDTO>> call, Response<List<RideDTO>> response) {
+            public void onResponse(Call<UserRidesListDTO> call, Response<UserRidesListDTO> response) {
+                finishedRides.clear();
                 if (response.body() != null) {
-                    finishedRides = response.body();
+                    response.body().getResults().forEach(result->{
+                        if(result.status == Status.FINISHED){
+                            finishedRides.add(result);
+                        }
+                    });
                     DriverRideHistoryAdapter adapter = new DriverRideHistoryAdapter(getActivity(), finishedRides);
                     setListAdapter(adapter);
                 } else {
@@ -95,7 +110,7 @@ public class DriverRideHistoryFragment extends ListFragment {
             }
 
             @Override
-            public void onFailure(Call<List<RideDTO>> call, Throwable t) {
+            public void onFailure(Call<UserRidesListDTO> call, Throwable t) {
             }
         });
 
