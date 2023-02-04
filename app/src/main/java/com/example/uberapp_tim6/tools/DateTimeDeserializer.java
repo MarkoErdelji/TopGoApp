@@ -19,8 +19,7 @@ public class DateTimeDeserializer implements JsonDeserializer<LocalDateTime> {
         int day = array.get(2).getAsInt();
         int hour = array.get(3).getAsInt();
         int minute = array.get(4).getAsInt();
-        int second = array.get(5).getAsInt();
-        int nano = array.get(6).getAsInt();
-        return LocalDateTime.of(year, month, day, hour, minute, second, nano);
+
+        return LocalDateTime.of(year, month, day, hour, minute);
     }
 }

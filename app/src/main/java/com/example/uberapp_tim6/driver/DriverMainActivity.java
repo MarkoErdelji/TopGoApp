@@ -50,6 +50,7 @@ import com.example.uberapp_tim6.driver.fragments.DriverProfileFragment;
 import com.example.uberapp_tim6.driver.fragments.DriverRideHistoryFragment;
 
 import com.example.uberapp_tim6.models.NavItem;
+import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.DateTimeDeserializer;
 import com.example.uberapp_tim6.tools.DateTimeSerializer;
@@ -254,8 +255,14 @@ public class DriverMainActivity extends AppCompatActivity {
                         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new DateTimeSerializer());
                         Gson gson = gsonBuilder.create();
                         RideDTO rideDTO = gson.fromJson(message, RideDTO.class);
-                        Log.d("Ride", rideDTO.toString());
-                        showAcceptancePopUp(rideDTO);
+                        if(!(rideDTO.status == Status.PENDING || rideDTO.status == Status.SCHEDULED)){
+                            FragmentTransition.to(DriverMainFragment.newInstance(driver), dvm, false, R.id.mainContent);
+
+                        }
+                        else {
+                            Log.d("Ride", rideDTO.toString());
+                            showAcceptancePopUp(rideDTO);
+                        }
                     }
                 });
             }

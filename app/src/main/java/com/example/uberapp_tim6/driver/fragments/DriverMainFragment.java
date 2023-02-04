@@ -46,10 +46,12 @@ import com.example.uberapp_tim6.DTOS.WorkHoursDTO;
 import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.activities.MessageListActivity;
 import com.example.uberapp_tim6.models.enumerations.Status;
+import com.example.uberapp_tim6.passenger.fragments.PassengerMainFragment;
 import com.example.uberapp_tim6.services.MapService;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.DateTimeDeserializer;
 import com.example.uberapp_tim6.tools.DateTimeSerializer;
+import com.example.uberapp_tim6.tools.FragmentTransition;
 import com.example.uberapp_tim6.tools.TokenHolder;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -503,6 +505,8 @@ public class DriverMainFragment extends Fragment {
         });
     return false;
     }
+
+
 
     private boolean checkForActiveRide() {
         Call<RideDTO> call = ServiceUtils.rideService.getDriverActiveRide(driver.getId().toString());

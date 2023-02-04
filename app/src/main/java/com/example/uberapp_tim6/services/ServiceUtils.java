@@ -22,7 +22,11 @@ public class ServiceUtils {
 
 
 
+<<<<<<< Updated upstream
     public static final String LOCALHOST = "192.168.72.140:8000";
+=======
+    public static final String LOCALHOST = "192.168.0.197:8000";
+>>>>>>> Stashed changes
 
 
 

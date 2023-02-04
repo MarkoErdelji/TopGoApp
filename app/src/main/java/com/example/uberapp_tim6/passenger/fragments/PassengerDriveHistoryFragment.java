@@ -20,9 +20,12 @@ import com.example.uberapp_tim6.R;
 import com.example.uberapp_tim6.activities.PassengerRideHistoryDetailActivity;
 import com.example.uberapp_tim6.adapters.PassengerRideHistoryAdapter;
 import com.example.uberapp_tim6.models.Ride;
+import com.example.uberapp_tim6.models.enumerations.Status;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,7 +42,7 @@ public class PassengerDriveHistoryFragment extends ListFragment {
     private static final String ARG_PASSENGER = "arg_passenger";
 
     UserInfoDTO passenger;
-    private List<RideDTO> rides;
+    private List<RideDTO> rides = new ArrayList<>();
 
     public PassengerDriveHistoryFragment() {
         // Required empty public constructor
@@ -66,18 +69,23 @@ public class PassengerDriveHistoryFragment extends ListFragment {
         passenger = (UserInfoDTO) getArguments().getSerializable(ARG_PASSENGER);
         super.onCreate(savedInstanceState);
 
-        Call<List<RideDTO>> call = ServiceUtils.passengerService.getPassengerRides();
-        call.enqueue(new Callback<List<RideDTO>>() {
+        Call<UserRidesListDTO> call = ServiceUtils.passengerService.getPassengerRides(passenger.getId(),0,100000);
+        call.enqueue(new Callback<UserRidesListDTO>() {
 
             @Override
-            public void onResponse(Call<List<RideDTO>> call, Response<List<RideDTO>> response) {
-                rides = response.body();
-                PassengerRideHistoryAdapter adapter = new PassengerRideHistoryAdapter(getActivity(), response.body());
+            public void onResponse(Call<UserRidesListDTO> call, Response<UserRidesListDTO> response) {
+                rides.clear();
+                response.body().getResults().forEach(result->{
+                    if(result.status == Status.FINISHED){
+                        rides.add(result);
+                    }
+                });
+                PassengerRideHistoryAdapter adapter = new PassengerRideHistoryAdapter(getActivity(), rides);
                 setListAdapter(adapter);
             }
 
             @Override
-            public void onFailure(Call<List<RideDTO>> call, Throwable t) {
+            public void onFailure(Call<UserRidesListDTO> call, Throwable t) {
 
             }
         });
