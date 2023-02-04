@@ -476,10 +476,11 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                     @Override
                     public void onResponse(Call<RideDTO> call, Response<RideDTO> response) {
 
+                        if(response.isSuccessful()){
                         ServiceUtils.driverService.getDriverVehicle(String.valueOf(response.body().getDriver().getId())).enqueue(new Callback<VehicleInfoDTO>() {
                             @Override
                             public void onResponse(Call<VehicleInfoDTO> call, Response<VehicleInfoDTO> response1) {
-                                if(response1.isSuccessful()) {
+                                if (response1.isSuccessful()) {
                                     map.getOverlays().clear();
                                     latestActiveView.setVisibility(View.GONE);
                                     waiting.setVisibility(View.VISIBLE);
@@ -497,16 +498,18 @@ public class PassengerMainFragment extends Fragment implements DatePickerDialog.
                                         }
                                     });
                                 }
-                                else{
-                                    checkForAcceptedRide();
-                                }
                             }
+
 
                             @Override
                             public void onFailure(Call<VehicleInfoDTO> call, Throwable t) {
 
                             }
-                        });
+                            });
+                            }
+                                    else{
+                                checkForAcceptedRide();
+                            }
 
                 }
 
