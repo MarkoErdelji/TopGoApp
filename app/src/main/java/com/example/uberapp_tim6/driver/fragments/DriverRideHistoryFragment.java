@@ -24,6 +24,7 @@ import com.example.uberapp_tim6.adapters.DriverRideHistoryAdapter;
 import com.example.uberapp_tim6.driver.CertainRideFromHistory;
 import com.example.uberapp_tim6.models.Ride;
 import com.example.uberapp_tim6.models.RideHistory;
+import com.example.uberapp_tim6.models.User;
 import com.example.uberapp_tim6.services.ServiceUtils;
 import com.example.uberapp_tim6.tools.Mokap;
 
@@ -44,6 +45,7 @@ public class DriverRideHistoryFragment extends ListFragment {
     private static final String ARG_DRIVER = "arg_driver";
     private DriverRideHistoryFragment fragmet;
     private List<RideDTO> finishedRides;
+    private UserInfoDTO driver;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -75,7 +77,7 @@ public class DriverRideHistoryFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserInfoDTO driver = (UserInfoDTO) getArguments().getSerializable(ARG_DRIVER);
+        driver = (UserInfoDTO) getArguments().getSerializable(ARG_DRIVER);
 
         Call<List<RideDTO>> call = ServiceUtils.rideService.getDriverFinishedRides(driver.getId().toString());
         call.enqueue(new Callback<List<RideDTO>>() {
@@ -119,6 +121,7 @@ public class DriverRideHistoryFragment extends ListFragment {
 
         Intent intent = new Intent(getActivity(), CertainRideFromHistory.class);
         intent.putExtra("rideId", finishedRides.get(position).getId());
+        intent.putExtra("currentUser", driver);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
 
