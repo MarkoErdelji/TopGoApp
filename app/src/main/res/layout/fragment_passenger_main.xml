@@ -163,6 +163,10 @@
                 android:id="@+id/passengerCurrentRide"
                 android:visibility="gone"
                 layout="@layout/passenger_current_ride"/>
+            <include
+                android:id="@+id/passengerWaitForDriver"
+                android:visibility="gone"
+                layout="@layout/passenger_wait_for_driver"/>
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

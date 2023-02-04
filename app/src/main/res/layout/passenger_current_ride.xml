@@ -71,24 +71,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/routeInfo"
         android:textSize="20sp"
-        android:text="@string/driver"/>
+        android:text="@string/driver"
+        android:layout_centerHorizontal="true"/>
     <RelativeLayout
         android:id="@+id/driverLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/driverTextView"
+        android:layout_centerHorizontal="true"
         >
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/driverProfilePicture"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/tate"/>
+            android:src="@drawable/tate"
+            android:layout_centerHorizontal="true"/>
         <TextView
             android:id="@+id/driverNameAndLastName"
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/driverProfilePicture"
+            android:layout_below="@id/driverProfilePicture"
             android:text="@string/imenko_prezimic"
             android:layout_centerVertical="true"
             />
@@ -104,20 +107,10 @@
             android:background="@drawable/edit_text"
             android:id="@+id/panicBtn"
             android:layout_width="100dp"
-            android:layout_marginStart="15dp"
-            android:layout_toEndOf="@id/chatBtn"
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:textAlignment="center"
             android:text="@string/panic"
-            android:layout_height="45dp" />
-        <androidx.appcompat.widget.AppCompatButton
-            android:background="@drawable/back_button"
-            android:id="@+id/chatBtn"
-            android:layout_width="100dp"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            android:text="@string/chat"
             android:layout_height="45dp" />
     </RelativeLayout>
 </RelativeLayout>

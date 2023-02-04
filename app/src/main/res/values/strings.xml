@@ -82,4 +82,5 @@
     <string name="total_rides">Total rides:</string>
     <string name="total_earned">Total earned:</string>
     <string name="routes">Routes</string>
+    <string name="waiting_for_driver_to_start_a_ride">Waiting for driver to start a ride.</string>
 </resources>
